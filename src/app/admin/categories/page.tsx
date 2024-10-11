@@ -44,7 +44,7 @@ const Categories = async ({ searchParams }: CategoriesProps) => {
             </div>
             <div className='flex flex-col gap-y-7 p-5'>
                 <SearchBar />
-                <div className='overflow-hidden rounded-2xl border bg-background'>
+                <div className='h-[570px] overflow-auto rounded-2xl border'>
                     <Suspense
                         key={search + offset}
                         fallback={<Skeleton className='h-20 w-full' />}>

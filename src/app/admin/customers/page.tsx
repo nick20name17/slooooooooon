@@ -45,7 +45,7 @@ const Customers = async ({ searchParams }: CustomersProps) => {
             </div>
             <div className='flex flex-col gap-y-7 p-5'>
                 <SearchBar />
-                <div className='rounded-2xl border'>
+                <div className='h-[570px] overflow-auto rounded-2xl border'>
                     <Suspense
                         key={search + offset}
                         fallback={<Skeleton className='h-20 w-full' />}>

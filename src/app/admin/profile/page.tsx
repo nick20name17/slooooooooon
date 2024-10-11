@@ -9,7 +9,7 @@ const Costs = async () => {
         <>
             <div className='flex items-center justify-between border-b p-5'>
                 <div className='flex items-center gap-x-4'>
-                    <div className='bg-purple flex size-8 items-center justify-center rounded-sm'>
+                    <div className='flex size-8 items-center justify-center rounded-sm bg-purple'>
                         <UserRound className='size-6' />
                     </div>
                     <h1 className='text-4xl font-bold'>Профайл</h1>

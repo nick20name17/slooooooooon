@@ -30,18 +30,18 @@ const Costs = async ({ searchParams }: ProductsProps) => {
         <>
             <div className='flex items-center justify-between border-b p-5'>
                 <div className='flex items-center gap-x-4'>
-                    <div className='bg-red flex size-8 items-center justify-center rounded-sm'>
+                    <div className='flex size-8 items-center justify-center rounded-sm bg-red'>
                         <CircleDollarSign className='size-6' />
                     </div>
                     <h1 className='text-4xl font-bold'>Витрати</h1>
-                    <div className='border-red flex size-10 items-center justify-center rounded-full border font-bold'>
+                    <div className='flex size-10 items-center justify-center rounded-full border border-red font-bold'>
                         {costs?.count}
                     </div>
                 </div>
             </div>
             <div className='flex flex-col gap-y-7 p-5'>
                 <SearchBar />
-                <div className='overflow-hidden rounded-2xl border bg-background'>
+                <div className='h-[500px] overflow-auto rounded-2xl border'>
                     <Suspense
                         key={search + offset}
                         fallback={<Skeleton className='h-20 w-full' />}></Suspense>

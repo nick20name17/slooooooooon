@@ -53,7 +53,7 @@ const Orders = async ({ searchParams }: ProductsProps) => {
                     <StatusFilter />
                 </div>
                 <SearchBar />
-                <div className='overflow-hidden rounded-2xl border bg-background'>
+                <div className='h-[500px] overflow-auto rounded-2xl border'>
                     <Suspense
                         key={search + offset}
                         fallback={<Skeleton className='h-20 w-full' />}>

@@ -50,7 +50,7 @@ const Products = async ({ searchParams }: ProductsProps) => {
             <div className='flex flex-col gap-y-7 p-5'>
                 <CategoryFilter />
                 <SearchBar />
-                <div className='overflow-hidden rounded-2xl border bg-background'>
+                <div className='h-[500px] overflow-auto rounded-2xl border'>
                     <Suspense
                         key={search + offset}
                         fallback={<Skeleton className='h-20 w-full' />}>
