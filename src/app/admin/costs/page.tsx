@@ -16,15 +16,23 @@ interface ProductsProps {
     searchParams: CostsQueryParams
 }
 
+const CostsCount = async ({ searchParams }: ProductsProps) => {
+    const { count } = await getCosts({
+        search: searchParams.search || '',
+        offset: searchParams.offset || 0,
+        limit: defaultLimit
+    })
+
+    return (
+        <div className='flex size-10 items-center justify-center rounded-full border border-red font-bold'>
+            {count}
+        </div>
+    )
+}
+
 const Costs = async ({ searchParams }: ProductsProps) => {
     const search = searchParams?.search || ''
     const offset = searchParams?.offset || 0
-
-    const costs = await getCosts({
-        search,
-        offset,
-        limit: defaultLimit
-    })
 
     return (
         <>
@@ -34,9 +42,9 @@ const Costs = async ({ searchParams }: ProductsProps) => {
                         <CircleDollarSign className='size-6' />
                     </div>
                     <h1 className='text-4xl font-bold'>Витрати</h1>
-                    <div className='flex size-10 items-center justify-center rounded-full border border-red font-bold'>
-                        {costs?.count}
-                    </div>
+                    <Suspense fallback={<Skeleton className='size-10 rounded-full' />}>
+                        <CostsCount searchParams={searchParams} />
+                    </Suspense>
                 </div>
             </div>
             <div className='flex flex-col gap-y-7 p-5'>

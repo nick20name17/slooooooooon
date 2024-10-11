@@ -8,7 +8,7 @@ import { toast } from 'sonner'
 
 import { orderSchema } from '../../config/schemas'
 
-import { AddOrderItems } from './add-order-items'
+import { AddOrderItems, OrderItem, type SingleVariantProduct } from './add-order-items'
 import { OrderCustomers } from './order-customers'
 import { OrderCity, OrderDelivery, OrderWarehouses } from './order-delivery'
 import { StatusSelect } from './status-select'
@@ -44,6 +44,19 @@ export const EditOrdersModal = ({ order }: EditOrderProps) => {
     const [open, setOpen] = useState(false)
     const router = useRouter()
 
+    const [singleVariantProducts, setSingleVariantProducts] = useState<
+        SingleVariantProduct[]
+    >(
+        order?.order_items.map((item) => ({
+            variant: item.variant,
+            id: item.variant.product.id,
+            title: item.variant.product.title,
+            year: item.variant.product.year,
+            category: item.variant.product.category,
+            thumbnail: ''
+        }))
+    )
+
     const [warehouseLabel, setWarehouseLabel] = useState('')
     const [cityLabel, setCityLabel] = useState('')
 
@@ -66,9 +79,6 @@ export const EditOrdersModal = ({ order }: EditOrderProps) => {
 
     const deliveryType = form.watch('delivery_type')
     const city = form.watch('city')
-    const warehouse = form.watch('warehouse')
-
-    console.log(warehouse)
 
     const mutation = useMutation({
         mutationFn: (data: OrderFormValues) => {
@@ -96,7 +106,7 @@ export const EditOrdersModal = ({ order }: EditOrderProps) => {
         onSuccess: (_, values) => {
             form.reset()
             setOpen(false)
-            toast.success('Замовлення успішно додано')
+            toast.success(`Замовлення ${order.id} успішно відредаговано`)
             router.refresh()
 
             updateComment(order.comments[0].id, {
@@ -130,7 +140,7 @@ export const EditOrdersModal = ({ order }: EditOrderProps) => {
                         <SheetHeader className='flex flex-row items-center justify-between gap-x-4 border-b py-4'>
                             <div className='flex items-center gap-x-4'>
                                 <SheetTitle className='text-4xl'>
-                                    Редагувати Замовлення
+                                    Редагувати Замовлення {order.id}
                                 </SheetTitle>
                                 <FormField
                                     control={form.control}
@@ -204,20 +214,50 @@ export const EditOrdersModal = ({ order }: EditOrderProps) => {
                             control={form.control}
                             name='order_items'
                             render={({ field }) => (
-                                <FormItem className='mt-4 flex w-full items-start justify-between gap-x-4 space-y-0 border-t pt-4'>
-                                    <FormLabel className='w-1/5 text-lg'>
-                                        Товари
-                                    </FormLabel>
-                                    <div className='flex flex-col gap-y-2'>
-                                        <FormControl>
-                                            <AddOrderItems
-                                                orderItems={field.value}
-                                                setOrderItems={field.onChange}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </div>
-                                </FormItem>
+                                <div>
+                                    <FormItem className='mt-4 flex w-full items-start justify-between gap-x-4 space-y-0 border-t pt-4'>
+                                        <FormLabel className='w-1/5 text-lg'>
+                                            Товари
+                                        </FormLabel>
+                                        <div className='flex flex-col gap-y-2'>
+                                            <FormControl>
+                                                <AddOrderItems
+                                                    singleVariantProducts={
+                                                        singleVariantProducts
+                                                    }
+                                                    setSingleVariantProducts={
+                                                        setSingleVariantProducts
+                                                    }
+                                                    orderItems={field.value}
+                                                    setOrderItems={field.onChange}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </div>
+                                    </FormItem>
+
+                                    {singleVariantProducts.length > 0 ? (
+                                        <ul className='mt-4 max-h-56 overflow-auto rounded-2xl border'>
+                                            {singleVariantProducts.map((product) => (
+                                                <li
+                                                    className='border-b last:border-b-0'
+                                                    key={product.id}>
+                                                    <OrderItem
+                                                        product={product}
+                                                        singleVariantProducts={
+                                                            singleVariantProducts
+                                                        }
+                                                        setSingleVariantProducts={
+                                                            setSingleVariantProducts
+                                                        }
+                                                        orderItems={field.value}
+                                                        setOrderItems={field.onChange}
+                                                    />
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    ) : null}
+                                </div>
                             )}
                         />
 

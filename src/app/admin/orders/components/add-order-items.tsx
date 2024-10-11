@@ -1,12 +1,12 @@
 import { useQuery } from '@tanstack/react-query'
-import { Check, Plus, PlusCircle, Search } from 'lucide-react'
+import { Check, Plus, PlusCircle, Search, X } from 'lucide-react'
 import Image from 'next/image'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
 
 import type { Category } from '@/api/categories/categories.type'
 import { clientApi } from '@/api/client'
-import type { OrderItemAddData } from '@/api/orders/orders.type'
+import type { OrderItemAddData, OrderItemVariant } from '@/api/orders/orders.type'
 import type { Product } from '@/api/products/products.type'
 import type { Variant } from '@/api/variants/variants.type'
 import productFallback from '@/assets/images/product-fallback.jpg'
@@ -31,16 +31,28 @@ import {
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
 
-interface SingleVariantProduct extends Product {
-    variant: Variant
+export interface SingleVariantProduct {
+    variant: Variant | OrderItemVariant
+    id: number
+    title: string
+    year: number
+    category: Category
+    thumbnail: string
 }
 
 interface AddProductToOrderProps {
     orderItems: OrderItemAddData[]
     setOrderItems: (product: OrderItemAddData[]) => void
+    singleVariantProducts: SingleVariantProduct[]
+    setSingleVariantProducts: (products: SingleVariantProduct[]) => void
 }
 
-export const AddOrderItems = ({ orderItems, setOrderItems }: AddProductToOrderProps) => {
+export const AddOrderItems = ({
+    orderItems,
+    setOrderItems,
+    singleVariantProducts,
+    setSingleVariantProducts
+}: AddProductToOrderProps) => {
     const [open, setOpen] = useState(false)
 
     const [search, setSearch] = useState('')
@@ -56,7 +68,7 @@ export const AddOrderItems = ({ orderItems, setOrderItems }: AddProductToOrderPr
 
     const productsData = data || []
 
-    const singleVariantProducts = productsData.flatMap((item) =>
+    const singleVariantProductsData = productsData.flatMap((item) =>
         item.variants.map((variant) => ({
             ...item,
             variant: variant
@@ -69,6 +81,7 @@ export const AddOrderItems = ({ orderItems, setOrderItems }: AddProductToOrderPr
             onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <Button
+                    type='button'
                     size='sm'
                     variant='outline'
                     className='rounded-full border-green bg-background px-3.5 text-lg font-bold drop-shadow-[3px_4px_0px_#23a901] transition-all hover:bg-green/15 hover:drop-shadow-none'>
@@ -98,8 +111,8 @@ export const AddOrderItems = ({ orderItems, setOrderItems }: AddProductToOrderPr
                                 <div className='py-6 text-center text-lg'>
                                     Завантаження...
                                 </div>
-                            ) : singleVariantProducts?.length > 0 ? (
-                                singleVariantProducts?.map((product) => (
+                            ) : singleVariantProductsData?.length > 0 ? (
+                                singleVariantProductsData?.map((product) => (
                                     <li
                                         className='border-b last:border-b-0'
                                         key={product.id}>
@@ -107,6 +120,10 @@ export const AddOrderItems = ({ orderItems, setOrderItems }: AddProductToOrderPr
                                             product={product}
                                             setOrderItems={setOrderItems}
                                             orderItems={orderItems}
+                                            setSingleVariantProducts={
+                                                setSingleVariantProducts
+                                            }
+                                            singleVariantProducts={singleVariantProducts}
                                         />
                                     </li>
                                 ))
@@ -120,6 +137,7 @@ export const AddOrderItems = ({ orderItems, setOrderItems }: AddProductToOrderPr
                 </div>
 
                 <Button
+                    type='button'
                     onClick={() => setOpen(false)}
                     className='ml-auto flex w-16 items-center gap-x-1.5'>
                     Готово
@@ -129,26 +147,73 @@ export const AddOrderItems = ({ orderItems, setOrderItems }: AddProductToOrderPr
     )
 }
 
-const OrderItem = ({
+export const OrderItem = ({
     product,
     orderItems,
-    setOrderItems
+    setOrderItems,
+    setSingleVariantProducts,
+    singleVariantProducts
 }: {
     product: SingleVariantProduct
     setOrderItems: (product: OrderItemAddData[]) => void
     orderItems: OrderItemAddData[]
+    singleVariantProducts: SingleVariantProduct[]
+    setSingleVariantProducts: (products: SingleVariantProduct[]) => void
 }) => {
+    const [isHovered, setIsHovered] = useState(false)
+
     const isInventory = product.variant.inventory <= 0
 
-    const [quantity, setQuantity] = useState(isInventory ? 0 : 1)
+    const existingItem = orderItems.find((p) => p.id === product.variant.id)
+    const initialQuantity = existingItem ? existingItem.amount : isInventory ? 0 : 1
 
-    const isAdded = orderItems.some((p) => p.id === product.variant.id)
+    const [quantity, setQuantity] = useState(initialQuantity)
+
+    const isAdded = Boolean(existingItem)
+
+    useEffect(() => {
+        const itemInOrder = orderItems.find((p) => p.id === product.variant.id)
+        if (itemInOrder) {
+            setQuantity(itemInOrder.amount)
+        } else {
+            setQuantity(isInventory ? 0 : 1)
+        }
+    }, [orderItems, product.variant.id, isInventory])
+
+    const handleQuantityChange = (newQuantity: number) => {
+        setQuantity(newQuantity)
+
+        if (newQuantity === 0) {
+            setOrderItems(orderItems.filter((p) => p.id !== product.variant.id))
+            setSingleVariantProducts(
+                singleVariantProducts.filter((p) => p.variant.id !== product.variant.id)
+            )
+        } else {
+            if (isAdded) {
+                setOrderItems(
+                    orderItems.map((p) =>
+                        p.id === product.variant.id ? { ...p, amount: newQuantity } : p
+                    )
+                )
+            } else {
+                setOrderItems([
+                    ...orderItems,
+                    { id: product.variant.id, amount: newQuantity }
+                ])
+                setSingleVariantProducts([...singleVariantProducts, product])
+            }
+        }
+    }
 
     const onAdd = () => {
         if (isAdded) {
             setOrderItems(orderItems.filter((p) => p.id !== product.variant.id))
+            setSingleVariantProducts(
+                singleVariantProducts.filter((p) => p.variant.id !== product.variant.id)
+            )
         } else {
             setOrderItems([...orderItems, { id: product.variant.id, amount: quantity }])
+            setSingleVariantProducts([...singleVariantProducts, product])
         }
     }
 
@@ -159,14 +224,13 @@ const OrderItem = ({
             <div className='flex items-center gap-x-4'>
                 <Image
                     className='h-[60px] w-20 rounded-lg object-cover'
-                    src={product.thumbnail ? product.thumbnail : productFallback.src}
+                    src={product.thumbnail ? product?.thumbnail : productFallback.src}
                     alt={product.title}
                     width={60}
                     height={40}
                 />
-
                 <div>
-                    {product.year} | Категорія: {product.category.name}
+                    {product?.year} | Категорія: {product?.category?.name}
                 </div>
                 <div>{product.title}</div>
             </div>
@@ -191,14 +255,15 @@ const OrderItem = ({
                     minValue={isInventory ? 0 : 1}
                     maxValue={product.variant.inventory}
                     value={quantity}
-                    onChange={setQuantity}
+                    onChange={handleQuantityChange} // Handle quantity change
                 />
             </div>
 
-            <div> {price} грн</div>
+            <div>{price} грн</div>
 
             <div className='flex justify-end pr-4'>
                 <Button
+                    type='button'
                     disabled={isInventory}
                     className={cn(
                         isAdded
@@ -207,8 +272,16 @@ const OrderItem = ({
                     )}
                     onClick={onAdd}
                     variant='outline'
-                    size='icon'>
-                    {isAdded ? <Check className='size-4' /> : <Plus className='size-4' />}
+                    size='icon'
+                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)}>
+                    {isHovered ? (
+                        <X className='size-4' />
+                    ) : isAdded ? (
+                        <Check className='size-4' />
+                    ) : (
+                        <Plus className='size-4' />
+                    )}
                 </Button>
             </div>
         </div>

@@ -19,16 +19,36 @@ interface CustomersProps {
     searchParams: BaseQueryParams
 }
 
-const Customers = async ({ searchParams }: CustomersProps) => {
-    const search = searchParams?.search || ''
-    const offset = searchParams?.offset || 0
-
-    const customers = await getCustomers({
-        search,
-        offset,
+const CustomersCount = async ({ searchParams }: CustomersProps) => {
+    const { count } = await getCustomers({
+        search: searchParams.search || '',
+        offset: searchParams.offset || 0,
         limit: defaultLimit
     })
 
+    return (
+        <div className='flex size-10 items-center justify-center rounded-full border border-sand font-bold'>
+            {count}
+        </div>
+    )
+}
+
+const CustomerTable = async ({ searchParams }: CustomersProps) => {
+    const { results } = await getCustomers({
+        search: searchParams.search || '',
+        offset: searchParams.offset || 0,
+        limit: defaultLimit
+    })
+
+    return (
+        <CustomersTable
+            columns={columns}
+            data={results}
+        />
+    )
+}
+
+const Customers = async ({ searchParams }: CustomersProps) => {
     return (
         <>
             <div className='flex items-center justify-between border-b p-5'>
@@ -37,22 +57,17 @@ const Customers = async ({ searchParams }: CustomersProps) => {
                         <UsersRound className='size-6' />
                     </div>
                     <h1 className='text-4xl font-bold'>Клієнти</h1>
-                    <div className='flex size-10 items-center justify-center rounded-full border border-sand font-bold'>
-                        {customers?.count}
-                    </div>
+                    <Suspense fallback={<Skeleton className='size-10 rounded-full' />}>
+                        <CustomersCount searchParams={searchParams} />
+                    </Suspense>
                 </div>
                 <AddCustomersModal />
             </div>
             <div className='flex flex-col gap-y-7 p-5'>
                 <SearchBar />
                 <div className='h-[570px] overflow-auto rounded-2xl border'>
-                    <Suspense
-                        key={search + offset}
-                        fallback={<Skeleton className='h-20 w-full' />}>
-                        <CustomersTable
-                            columns={columns}
-                            data={customers?.results}
-                        />
+                    <Suspense fallback={<Skeleton className='size-full' />}>
+                        <CustomerTable searchParams={searchParams} />
                     </Suspense>
                 </div>
             </div>

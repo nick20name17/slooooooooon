@@ -16,24 +16,44 @@ export const metadata = {
     title: 'Замовлення'
 }
 
-interface ProductsProps {
+interface OrdersProps {
     searchParams: OrdersQueryParams
 }
 
-const Orders = async ({ searchParams }: ProductsProps) => {
-    const search = searchParams?.search || ''
-    const offset = searchParams?.offset || 0
-
-    const status =
-        searchParams?.status === 'all' ? undefined : searchParams?.status || undefined
-
-    const orders = await getOrders({
-        offset,
-        search,
-        status,
-        limit: defaultLimit
+const OrdersCount = async ({ searchParams }: OrdersProps) => {
+    const { count } = await getOrders({
+        search: searchParams.search || '',
+        offset: searchParams.offset || 0,
+        limit: defaultLimit,
+        status:
+            searchParams?.status === 'all' ? undefined : searchParams?.status || undefined
     })
 
+    return (
+        <div className='flex size-10 items-center justify-center rounded-full border border-green font-bold'>
+            {count}
+        </div>
+    )
+}
+
+const OrderTable = async ({ searchParams }: OrdersProps) => {
+    const { results } = await getOrders({
+        search: searchParams.search || '',
+        offset: searchParams.offset || 0,
+        limit: defaultLimit,
+        status:
+            searchParams?.status === 'all' ? undefined : searchParams?.status || undefined
+    })
+
+    return (
+        <OrdersTable
+            columns={columns}
+            data={results}
+        />
+    )
+}
+
+const Orders = async ({ searchParams }: OrdersProps) => {
     return (
         <>
             <div className='flex items-center justify-between border-b p-5'>
@@ -42,9 +62,9 @@ const Orders = async ({ searchParams }: ProductsProps) => {
                         <ShoppingBag className='size-6' />
                     </div>
                     <h1 className='text-4xl font-bold'>Замовлення</h1>
-                    <div className='flex size-10 items-center justify-center rounded-full border border-green font-bold'>
-                        {orders?.count}
-                    </div>
+                    <Suspense fallback={<Skeleton className='size-10 rounded-full' />}>
+                        <OrdersCount searchParams={searchParams} />
+                    </Suspense>
                 </div>
                 <AddOrdersModal />
             </div>
@@ -54,13 +74,8 @@ const Orders = async ({ searchParams }: ProductsProps) => {
                 </div>
                 <SearchBar />
                 <div className='h-[500px] overflow-auto rounded-2xl border'>
-                    <Suspense
-                        key={search + offset}
-                        fallback={<Skeleton className='h-20 w-full' />}>
-                        <OrdersTable
-                            columns={columns}
-                            data={orders?.results}
-                        />
+                    <Suspense fallback={<Skeleton className='size-full' />}>
+                        <OrderTable searchParams={searchParams} />
                     </Suspense>
                 </div>
             </div>

@@ -18,16 +18,36 @@ interface CategoriesProps {
     searchParams: BaseQueryParams
 }
 
-const Categories = async ({ searchParams }: CategoriesProps) => {
-    const search = searchParams?.search || ''
-    const offset = searchParams?.offset || 0
-
-    const categories = await getCategories({
-        search,
-        offset,
+const CategoriesCount = async ({ searchParams }: CategoriesProps) => {
+    const { count } = await getCategories({
+        search: searchParams.search || '',
+        offset: searchParams.offset || 0,
         limit: defaultLimit
     })
 
+    return (
+        <div className='flex size-10 items-center justify-center rounded-full border border-seeblue font-bold'>
+            {count}
+        </div>
+    )
+}
+
+const CategoriesTable = async ({ searchParams }: CategoriesProps) => {
+    const { results } = await getCategories({
+        search: searchParams.search || '',
+        offset: searchParams.offset || 0,
+        limit: defaultLimit
+    })
+
+    return (
+        <CategoryTable
+            columns={columns}
+            data={results}
+        />
+    )
+}
+
+const Categories = async ({ searchParams }: CategoriesProps) => {
     return (
         <>
             <div className='flex items-center justify-between border-b p-5'>
@@ -36,22 +56,17 @@ const Categories = async ({ searchParams }: CategoriesProps) => {
                         <LayoutGrid className='size-6' />
                     </div>
                     <h1 className='text-4xl font-bold'>Категорії</h1>
-                    <div className='flex size-10 items-center justify-center rounded-full border border-seeblue font-bold'>
-                        {categories?.count}
-                    </div>
+                    <Suspense fallback={<Skeleton className='size-10 rounded-full' />}>
+                        <CategoriesCount searchParams={searchParams} />
+                    </Suspense>
                 </div>
                 <AddCategoryModal />
             </div>
             <div className='flex flex-col gap-y-7 p-5'>
                 <SearchBar />
                 <div className='h-[570px] overflow-auto rounded-2xl border'>
-                    <Suspense
-                        key={search + offset}
-                        fallback={<Skeleton className='h-20 w-full' />}>
-                        <CategoryTable
-                            columns={columns}
-                            data={categories?.results}
-                        />
+                    <Suspense fallback={<Skeleton className='size-full' />}>
+                        <CategoriesTable searchParams={searchParams} />
                     </Suspense>
                 </div>
             </div>

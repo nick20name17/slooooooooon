@@ -20,19 +20,40 @@ interface ProductsProps {
     searchParams: ProductsQueryParams
 }
 
-const Products = async ({ searchParams }: ProductsProps) => {
-    const search = searchParams?.search || ''
-    const offset = searchParams?.offset || 0
-    const categories =
-        searchParams?.categories === 'all' ? '' : searchParams?.categories || ''
-
-    const products = await getProducts({
-        search,
-        offset,
+const ProductsCount = async ({ searchParams }: ProductsProps) => {
+    const { count } = await getProducts({
+        search: searchParams.search || '',
+        offset: searchParams.offset || 0,
         limit: defaultLimit,
-        categories
+        categories:
+            searchParams?.categories === 'all' ? '' : searchParams?.categories || ''
     })
 
+    return (
+        <div className='flex size-10 items-center justify-center rounded-full border border-blue font-bold'>
+            {count}
+        </div>
+    )
+}
+
+const ProductTable = async ({ searchParams }: ProductsProps) => {
+    const { results } = await getProducts({
+        search: searchParams.search || '',
+        offset: searchParams.offset || 0,
+        limit: defaultLimit,
+        categories:
+            searchParams?.categories === 'all' ? '' : searchParams?.categories || ''
+    })
+
+    return (
+        <ProductsTable
+            columns={columns}
+            data={results}
+        />
+    )
+}
+
+const Products = async ({ searchParams }: ProductsProps) => {
     return (
         <>
             <div className='flex items-center justify-between border-b p-5'>
@@ -41,9 +62,9 @@ const Products = async ({ searchParams }: ProductsProps) => {
                         <Archive className='size-6' />
                     </div>
                     <h1 className='text-4xl font-bold'>Товари</h1>
-                    <div className='flex size-10 items-center justify-center rounded-full border border-blue font-bold'>
-                        {products?.count}
-                    </div>
+                    <Suspense fallback={<Skeleton className='size-10 rounded-full' />}>
+                        <ProductsCount searchParams={searchParams} />
+                    </Suspense>
                 </div>
                 <AddProductsModal />
             </div>
@@ -51,13 +72,8 @@ const Products = async ({ searchParams }: ProductsProps) => {
                 <CategoryFilter />
                 <SearchBar />
                 <div className='h-[500px] overflow-auto rounded-2xl border'>
-                    <Suspense
-                        key={search + offset}
-                        fallback={<Skeleton className='h-20 w-full' />}>
-                        <ProductsTable
-                            columns={columns}
-                            data={products?.results}
-                        />
+                    <Suspense fallback={<Skeleton className='size-full' />}>
+                        <ProductTable searchParams={searchParams} />
                     </Suspense>
                 </div>
             </div>

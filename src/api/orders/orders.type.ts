@@ -1,3 +1,4 @@
+import type { Category } from '../categories/categories.type'
 import type { Customer } from '../customers/customers.type'
 import type { Variant } from '../variants/variants.type'
 
@@ -14,10 +15,24 @@ export interface Order {
 
 export type OrderStatus = 'completed' | 'failed' | 'raw'
 
+interface OrderItemProduct {
+    id: number
+    title: string
+    year: number
+    slug: string
+    description: string
+    category: Category
+    full_description: string
+}
+
+export type OrderItemVariant = Omit<Variant, 'product'> & {
+    product: OrderItemProduct
+}
+
 export interface OrderItem {
     id: number
     order: number
-    variant: Variant
+    variant: OrderItemVariant
     price: string
     quantity: number
 }

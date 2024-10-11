@@ -8,7 +8,7 @@ import { toast } from 'sonner'
 
 import { orderSchema } from '../../config/schemas'
 
-import { AddOrderItems } from './add-order-items'
+import { AddOrderItems, OrderItem, type SingleVariantProduct } from './add-order-items'
 import { OrderCustomers } from './order-customers'
 import { OrderCity, OrderDelivery, OrderWarehouses } from './order-delivery'
 import { StatusSelect } from './status-select'
@@ -41,6 +41,10 @@ export const AddOrdersModal = () => {
 
     const [warehouseLabel, setWarehouseLabel] = useState('')
     const [cityLabel, setCityLabel] = useState('')
+
+    const [singleVariantProducts, setSingleVariantProducts] = useState<
+        SingleVariantProduct[]
+    >([])
 
     const form = useCustomForm(orderSchema, {
         customer: '',
@@ -188,20 +192,50 @@ export const AddOrdersModal = () => {
                             control={form.control}
                             name='order_items'
                             render={({ field }) => (
-                                <FormItem className='mt-4 flex w-full items-start justify-between gap-x-4 space-y-0 border-t pt-4'>
-                                    <FormLabel className='w-1/5 text-lg'>
-                                        Товари
-                                    </FormLabel>
-                                    <div className='flex flex-col gap-y-2'>
-                                        <FormControl>
-                                            <AddOrderItems
-                                                orderItems={field.value}
-                                                setOrderItems={field.onChange}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </div>
-                                </FormItem>
+                                <div>
+                                    <FormItem className='mt-4 flex w-full items-start justify-between gap-x-4 space-y-0 border-t pt-4'>
+                                        <FormLabel className='w-1/5 text-lg'>
+                                            Товари
+                                        </FormLabel>
+                                        <div className='flex flex-col gap-y-2'>
+                                            <FormControl>
+                                                <AddOrderItems
+                                                    singleVariantProducts={
+                                                        singleVariantProducts
+                                                    }
+                                                    setSingleVariantProducts={
+                                                        setSingleVariantProducts
+                                                    }
+                                                    orderItems={field.value}
+                                                    setOrderItems={field.onChange}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </div>
+                                    </FormItem>
+
+                                    {singleVariantProducts.length > 0 ? (
+                                        <ul className='mt-4 max-h-56 overflow-auto rounded-2xl border'>
+                                            {singleVariantProducts.map((product) => (
+                                                <li
+                                                    className='border-b last:border-b-0'
+                                                    key={product.id}>
+                                                    <OrderItem
+                                                        product={product}
+                                                        singleVariantProducts={
+                                                            singleVariantProducts
+                                                        }
+                                                        setSingleVariantProducts={
+                                                            setSingleVariantProducts
+                                                        }
+                                                        orderItems={field.value}
+                                                        setOrderItems={field.onChange}
+                                                    />
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    ) : null}
+                                </div>
                             )}
                         />
 
