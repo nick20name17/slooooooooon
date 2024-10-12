@@ -24,7 +24,7 @@ const ProductsCount = async ({ searchParams }: ProductsProps) => {
     const { count } = await getProducts({
         search: searchParams.search || '',
         offset: searchParams.offset || 0,
-        limit: defaultLimit,
+        limit: searchParams.limit,
         categories:
             searchParams?.categories === 'all' ? '' : searchParams?.categories || ''
     })
@@ -40,7 +40,7 @@ const ProductTable = async ({ searchParams }: ProductsProps) => {
     const { results } = await getProducts({
         search: searchParams.search || '',
         offset: searchParams.offset || 0,
-        limit: defaultLimit,
+        limit: searchParams.limit,
         categories:
             searchParams?.categories === 'all' ? '' : searchParams?.categories || ''
     })
@@ -54,6 +54,8 @@ const ProductTable = async ({ searchParams }: ProductsProps) => {
 }
 
 const Products = async ({ searchParams }: ProductsProps) => {
+    const { search = '', offset = 0, categories } = searchParams
+
     return (
         <>
             <div className='flex items-center justify-between border-b p-5'>
@@ -63,7 +65,14 @@ const Products = async ({ searchParams }: ProductsProps) => {
                     </div>
                     <h1 className='text-4xl font-bold'>Товари</h1>
                     <Suspense fallback={<Skeleton className='size-10 rounded-full' />}>
-                        <ProductsCount searchParams={searchParams} />
+                        <ProductsCount
+                            searchParams={{
+                                search,
+                                offset,
+                                limit: defaultLimit,
+                                categories: categories === 'all' ? '' : categories || ''
+                            }}
+                        />
                     </Suspense>
                 </div>
                 <AddProductsModal />
@@ -73,7 +82,14 @@ const Products = async ({ searchParams }: ProductsProps) => {
                 <SearchBar />
                 <div className='h-[500px] overflow-auto rounded-2xl border'>
                     <Suspense fallback={<Skeleton className='size-full' />}>
-                        <ProductTable searchParams={searchParams} />
+                        <ProductTable
+                            searchParams={{
+                                search,
+                                offset,
+                                limit: defaultLimit,
+                                categories: categories === 'all' ? '' : categories || ''
+                            }}
+                        />
                     </Suspense>
                 </div>
             </div>

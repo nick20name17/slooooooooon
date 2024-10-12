@@ -24,7 +24,7 @@ const OrdersCount = async ({ searchParams }: OrdersProps) => {
     const { count } = await getOrders({
         search: searchParams.search || '',
         offset: searchParams.offset || 0,
-        limit: defaultLimit,
+        limit: searchParams.limit,
         status:
             searchParams?.status === 'all' ? undefined : searchParams?.status || undefined
     })
@@ -40,9 +40,8 @@ const OrderTable = async ({ searchParams }: OrdersProps) => {
     const { results } = await getOrders({
         search: searchParams.search || '',
         offset: searchParams.offset || 0,
-        limit: defaultLimit,
-        status:
-            searchParams?.status === 'all' ? undefined : searchParams?.status || undefined
+        limit: searchParams.limit,
+        status: searchParams?.status
     })
 
     return (
@@ -54,6 +53,8 @@ const OrderTable = async ({ searchParams }: OrdersProps) => {
 }
 
 const Orders = async ({ searchParams }: OrdersProps) => {
+    const { search = '', offset = 0, status } = searchParams
+
     return (
         <>
             <div className='flex items-center justify-between border-b p-5'>
@@ -63,7 +64,14 @@ const Orders = async ({ searchParams }: OrdersProps) => {
                     </div>
                     <h1 className='text-4xl font-bold'>Замовлення</h1>
                     <Suspense fallback={<Skeleton className='size-10 rounded-full' />}>
-                        <OrdersCount searchParams={searchParams} />
+                        <OrdersCount
+                            searchParams={{
+                                search,
+                                offset,
+                                limit: defaultLimit,
+                                status: status === 'all' ? undefined : status || undefined
+                            }}
+                        />
                     </Suspense>
                 </div>
                 <AddOrdersModal />
@@ -75,7 +83,14 @@ const Orders = async ({ searchParams }: OrdersProps) => {
                 <SearchBar />
                 <div className='h-[500px] overflow-auto rounded-2xl border'>
                     <Suspense fallback={<Skeleton className='size-full' />}>
-                        <OrderTable searchParams={searchParams} />
+                        <OrderTable
+                            searchParams={{
+                                search,
+                                offset,
+                                limit: defaultLimit,
+                                status: status === 'all' ? undefined : status || undefined
+                            }}
+                        />
                     </Suspense>
                 </div>
             </div>

@@ -23,7 +23,7 @@ const CustomersCount = async ({ searchParams }: CustomersProps) => {
     const { count } = await getCustomers({
         search: searchParams.search || '',
         offset: searchParams.offset || 0,
-        limit: defaultLimit
+        limit: searchParams.limit
     })
 
     return (
@@ -37,7 +37,7 @@ const CustomerTable = async ({ searchParams }: CustomersProps) => {
     const { results } = await getCustomers({
         search: searchParams.search || '',
         offset: searchParams.offset || 0,
-        limit: defaultLimit
+        limit: searchParams.limit
     })
 
     return (
@@ -49,6 +49,8 @@ const CustomerTable = async ({ searchParams }: CustomersProps) => {
 }
 
 const Customers = async ({ searchParams }: CustomersProps) => {
+    const { search = '', offset = 0 } = searchParams
+
     return (
         <>
             <div className='flex items-center justify-between border-b p-5'>
@@ -58,7 +60,9 @@ const Customers = async ({ searchParams }: CustomersProps) => {
                     </div>
                     <h1 className='text-4xl font-bold'>Клієнти</h1>
                     <Suspense fallback={<Skeleton className='size-10 rounded-full' />}>
-                        <CustomersCount searchParams={searchParams} />
+                        <CustomersCount
+                            searchParams={{ search, offset, limit: defaultLimit }}
+                        />
                     </Suspense>
                 </div>
                 <AddCustomersModal />
@@ -67,7 +71,9 @@ const Customers = async ({ searchParams }: CustomersProps) => {
                 <SearchBar />
                 <div className='h-[570px] overflow-auto rounded-2xl border'>
                     <Suspense fallback={<Skeleton className='size-full' />}>
-                        <CustomerTable searchParams={searchParams} />
+                        <CustomerTable
+                            searchParams={{ search, offset, limit: defaultLimit }}
+                        />
                     </Suspense>
                 </div>
             </div>

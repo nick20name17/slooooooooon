@@ -22,7 +22,7 @@ const CategoriesCount = async ({ searchParams }: CategoriesProps) => {
     const { count } = await getCategories({
         search: searchParams.search || '',
         offset: searchParams.offset || 0,
-        limit: defaultLimit
+        limit: searchParams.limit
     })
 
     return (
@@ -36,7 +36,7 @@ const CategoriesTable = async ({ searchParams }: CategoriesProps) => {
     const { results } = await getCategories({
         search: searchParams.search || '',
         offset: searchParams.offset || 0,
-        limit: defaultLimit
+        limit: searchParams.limit
     })
 
     return (
@@ -48,6 +48,8 @@ const CategoriesTable = async ({ searchParams }: CategoriesProps) => {
 }
 
 const Categories = async ({ searchParams }: CategoriesProps) => {
+    const { search = '', offset = 0 } = searchParams
+
     return (
         <>
             <div className='flex items-center justify-between border-b p-5'>
@@ -57,7 +59,13 @@ const Categories = async ({ searchParams }: CategoriesProps) => {
                     </div>
                     <h1 className='text-4xl font-bold'>Категорії</h1>
                     <Suspense fallback={<Skeleton className='size-10 rounded-full' />}>
-                        <CategoriesCount searchParams={searchParams} />
+                        <CategoriesCount
+                            searchParams={{
+                                search,
+                                offset,
+                                limit: defaultLimit
+                            }}
+                        />
                     </Suspense>
                 </div>
                 <AddCategoryModal />
@@ -66,7 +74,13 @@ const Categories = async ({ searchParams }: CategoriesProps) => {
                 <SearchBar />
                 <div className='h-[570px] overflow-auto rounded-2xl border'>
                     <Suspense fallback={<Skeleton className='size-full' />}>
-                        <CategoriesTable searchParams={searchParams} />
+                        <CategoriesTable
+                            searchParams={{
+                                search,
+                                offset,
+                                limit: defaultLimit
+                            }}
+                        />
                     </Suspense>
                 </div>
             </div>
