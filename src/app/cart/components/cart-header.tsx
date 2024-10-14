@@ -1,9 +1,16 @@
 'use client'
 
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
+
+import type { CartProduct } from '@/app/components/catalogue/product-add-to-cart'
 
 export const CartHeader = () => {
-    const cartItems = JSON.parse(localStorage.getItem('cart') || '[]') as any[]
+    const [cartItems, setCartItems] = useState<CartProduct[]>([])
+
+    useEffect(() => {
+        setCartItems(JSON.parse(localStorage.getItem('cart') || '[]'))
+    }, [])
 
     return (
         <div className='flex items-center justify-between gap-x-4 text-background'>
