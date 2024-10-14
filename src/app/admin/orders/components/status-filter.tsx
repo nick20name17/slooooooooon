@@ -1,6 +1,7 @@
 'use client'
 
 import { useQueryState } from 'nuqs'
+import { useEffect } from 'react'
 
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 
@@ -9,6 +10,10 @@ export const StatusFilter = () => {
         shallow: false,
         defaultValue: 'all'
     })
+
+    useEffect(() => {
+        setStatus(status)
+    }, [])
 
     return (
         <ToggleGroup

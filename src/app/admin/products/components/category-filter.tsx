@@ -2,6 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query'
 import { useQueryState } from 'nuqs'
+import { useEffect } from 'react'
 
 import type { Category } from '@/api/categories/categories.type'
 import { clientApi } from '@/api/client'
@@ -27,6 +28,10 @@ export const CategoryFilter = () => {
     const { data: categories, isLoading } = useQuery({
         queryFn: () => clientApi<Category[]>('/categories')
     })
+
+    useEffect(() => {
+        setCategory(category)
+    }, [])
 
     if (isLoading) {
         return <Skeleton className='h-10 w-80 rounded-md' />

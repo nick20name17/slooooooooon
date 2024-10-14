@@ -6,7 +6,7 @@ import type { Product } from '@/api/products/products.type'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
-type CartProduct = Product & {
+export type CartProduct = Product & {
     variant: Product['variants'][0]
 }
 
@@ -43,13 +43,14 @@ export const ProductAddToCart = ({ product }: { product: Product }) => {
     }
 
     useEffect(() => {
-        window.addEventListener(
-            'storage',
-            () => {
-                setCart(JSON.parse(localStorage.getItem('cart') || '[]') as CartProduct[])
-            },
-            false
-        )
+        const handleStorageChange = () => {
+            setCart(JSON.parse(localStorage.getItem('cart') || '[]') as any[])
+        }
+        window.addEventListener('storage', handleStorageChange, false)
+
+        return () => {
+            window.removeEventListener('storage', handleStorageChange)
+        }
     }, [])
 
     return (
