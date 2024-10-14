@@ -2,10 +2,8 @@
 
 import Link from 'next/link'
 
-import type { CartProduct } from '@/app/components/catalogue/product-add-to-cart'
-
 export const CartHeader = () => {
-    const cartItems = JSON.parse(localStorage.getItem('cart') || '[]') as CartProduct[]
+    const cartItems = JSON.parse(localStorage.getItem('cart') || '[]') as any[]
 
     return (
         <div className='flex items-center justify-between gap-x-4 text-background'>
