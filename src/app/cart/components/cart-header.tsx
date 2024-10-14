@@ -6,7 +6,9 @@ import { useEffect, useState } from 'react'
 import type { CartProduct } from '@/app/components/catalogue/product-add-to-cart'
 
 export const CartHeader = () => {
-    const [cartItems, setCartItems] = useState<CartProduct[]>([])
+    const [cartItems, setCartItems] = useState<CartProduct[]>(
+        JSON.parse(localStorage.getItem('cart') || '[]')
+    )
 
     useEffect(() => {
         setCartItems(JSON.parse(localStorage.getItem('cart') || '[]'))
@@ -14,7 +16,11 @@ export const CartHeader = () => {
 
     return (
         <div className='flex items-center justify-between gap-x-4 text-background'>
-            <h1 className='text-3xl font-bold'>Кошик ({cartItems.length})</h1>
+            <h1 className='text-3xl font-bold'>
+                {cartItems.length > 0
+                    ? `Кошик (${cartItems.length})`
+                    : 'Ваш кошик пустий'}
+            </h1>
             <Link
                 href='/'
                 className='flex size-10 items-center justify-center rounded-full border transition-colors hover:brightness-150'>

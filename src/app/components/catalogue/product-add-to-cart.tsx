@@ -8,6 +8,7 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 export type CartProduct = Product & {
     variant: Product['variants'][0]
+    quantity: number
 }
 
 export const ProductAddToCart = ({ product }: { product: Product }) => {
@@ -34,7 +35,8 @@ export const ProductAddToCart = ({ product }: { product: Product }) => {
                     ...cart,
                     {
                         ...product,
-                        variant: product.variants.find((v) => v.id === +variantId)
+                        variant: product.variants.find((v) => v.id === +variantId),
+                        quantity: 1
                     }
                 ])
             )

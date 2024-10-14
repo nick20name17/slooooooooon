@@ -6,10 +6,10 @@ import type { Product } from '@/api/products/products.type'
 import productFallback from '@/assets/images/product-fallback.jpg'
 import { cn } from '@/lib/utils'
 
-const anonymousPro = Ubuntu_Mono({
+const ubuntuMono = Ubuntu_Mono({
     subsets: ['latin'],
     weight: ['700'],
-    display: 'swap'
+    display: 'block'
 })
 
 export const CatalogueProduct = ({ product }: { product: Product }) => {
@@ -18,7 +18,7 @@ export const CatalogueProduct = ({ product }: { product: Product }) => {
             <div
                 className={cn(
                     'w-16 rounded-xl bg-background py-1 text-center text-lg font-bold leading-none text-[#e6ddb9]',
-                    anonymousPro.className
+                    ubuntuMono.className
                 )}>
                 {product.year}
             </div>

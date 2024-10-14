@@ -257,7 +257,7 @@ export const OrderItem = ({
                     minValue={isInventory ? 0 : 1}
                     maxValue={product.variant.inventory}
                     value={quantity}
-                    onChange={handleQuantityChange} // Handle quantity change
+                    onChange={handleQuantityChange}
                 />
             </div>
 
