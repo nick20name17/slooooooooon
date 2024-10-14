@@ -1,8 +1,10 @@
-import type { Category } from '../categories/categories.type'
+import type { Comment } from '../comments/comments.type'
 import type { Customer } from '../customers/customers.type'
-import type { Variant } from '../variants/variants.type'
+import type { OrderItem } from '../order-items/order-items.type'
 
 import type { BaseQueryParams, Response } from '@/types/api'
+
+export type OrderStatus = 'completed' | 'failed' | 'raw'
 
 export interface Order {
     id: number
@@ -13,46 +15,14 @@ export interface Order {
     comments: Comment[]
 }
 
-export type OrderStatus = 'completed' | 'failed' | 'raw'
-
-interface OrderItemProduct {
-    id: number
-    title: string
-    year: number
-    slug: string
-    description: string
-    category: Category
-    full_description: string
-}
-
-export type OrderItemVariant = Omit<Variant, 'product'> & {
-    product: OrderItemProduct
-}
-
-export interface OrderItem {
-    id: number
-    order: number
-    variant: OrderItemVariant
-    price: string
-    quantity: number
-}
-
-interface Comment {
-    id: number
-    order: number
-    text: string
-    created_at: string
-    updated_at: string
-}
-
 export interface OrdersAddData {
     status: OrderStatus
     customer: number
     waybill: string
-    order_items: OrderItemAddData[]
+    order_items: OrderItems[]
 }
 
-export interface OrderItemAddData {
+export interface OrderItems {
     id: number
     amount: number
 }

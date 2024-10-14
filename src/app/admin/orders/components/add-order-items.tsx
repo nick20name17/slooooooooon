@@ -6,7 +6,8 @@ import { useDebouncedCallback } from 'use-debounce'
 
 import type { Category } from '@/api/categories/categories.type'
 import { clientApi } from '@/api/client'
-import type { OrderItemAddData, OrderItemVariant } from '@/api/orders/orders.type'
+import type { OrderItemsVariant } from '@/api/order-items/order-items.type'
+import type { OrderItems } from '@/api/orders/orders.type'
 import type { Product } from '@/api/products/products.type'
 import type { Variant } from '@/api/variants/variants.type'
 import productFallback from '@/assets/images/product-fallback.jpg'
@@ -32,7 +33,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
 
 export interface SingleVariantProduct {
-    variant: Variant | OrderItemVariant
+    variant: Variant | OrderItemsVariant
     id: number
     title: string
     year: number
@@ -41,8 +42,8 @@ export interface SingleVariantProduct {
 }
 
 interface AddProductToOrderProps {
-    orderItems: OrderItemAddData[]
-    setOrderItems: (product: OrderItemAddData[]) => void
+    orderItems: OrderItems[]
+    setOrderItems: (product: OrderItems[]) => void
     singleVariantProducts: SingleVariantProduct[]
     setSingleVariantProducts: (products: SingleVariantProduct[]) => void
 }
@@ -155,8 +156,8 @@ export const OrderItem = ({
     singleVariantProducts
 }: {
     product: SingleVariantProduct
-    setOrderItems: (product: OrderItemAddData[]) => void
-    orderItems: OrderItemAddData[]
+    setOrderItems: (product: OrderItems[]) => void
+    orderItems: OrderItems[]
     singleVariantProducts: SingleVariantProduct[]
     setSingleVariantProducts: (products: SingleVariantProduct[]) => void
 }) => {
@@ -165,6 +166,7 @@ export const OrderItem = ({
     const isInventory = product.variant.inventory <= 0
 
     const existingItem = orderItems.find((p) => p.id === product.variant.id)
+
     const initialQuantity = existingItem ? existingItem.amount : isInventory ? 0 : 1
 
     const [quantity, setQuantity] = useState(initialQuantity)
@@ -264,7 +266,7 @@ export const OrderItem = ({
             <div className='flex justify-end pr-4'>
                 <Button
                     type='button'
-                    disabled={isInventory}
+                    disabled={isInventory && !isAdded}
                     className={cn(
                         isAdded
                             ? 'border-green text-green outline outline-[rgba(61,181,119,0.40)] hover:border-destructive hover:bg-transparent hover:text-destructive hover:outline-[rgba(198,47,47,0.40)]'

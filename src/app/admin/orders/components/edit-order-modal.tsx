@@ -7,12 +7,18 @@ import { useState } from 'react'
 import { toast } from 'sonner'
 
 import { orderSchema } from '../../config/schemas'
+import { getUniqueItems } from '../../utils/get-unique-items'
 
 import { AddOrderItems, OrderItem, type SingleVariantProduct } from './add-order-items'
 import { OrderCustomers } from './order-customers'
 import { OrderCity, OrderDelivery, OrderWarehouses } from './order-delivery'
 import { StatusSelect } from './status-select'
 import { updateComment } from '@/api/comments/comments'
+import {
+    addOrderItems,
+    deleteOrderItems,
+    updateOrderItems
+} from '@/api/order-items/order-items'
 import { updateOrder } from '@/api/orders/orders'
 import type { Order } from '@/api/orders/orders.type'
 import { Button } from '@/components/ui/button'
@@ -49,7 +55,7 @@ export const EditOrdersModal = ({ order }: EditOrderProps) => {
     >(
         order?.order_items.map((item) => ({
             variant: item.variant,
-            id: item.variant.product.id,
+            id: item.variant.id,
             title: item.variant.product.title,
             year: item.variant.product.year,
             category: item.variant.product.category,
@@ -70,7 +76,7 @@ export const EditOrdersModal = ({ order }: EditOrderProps) => {
         city: cityRef,
         warehouse: warehouseRef,
         order_items: order.order_items.map((item) => ({
-            id: item.id,
+            id: item.variant.id,
             amount: item.quantity
         })),
         status: order.status,
@@ -79,6 +85,56 @@ export const EditOrdersModal = ({ order }: EditOrderProps) => {
 
     const deliveryType = form.watch('delivery_type')
     const city = form.watch('city')
+
+    const orderItems = form.watch('order_items')
+
+    const toDelete = getUniqueItems(
+        orderItems,
+        order.order_items.map((item) => ({
+            id: item.variant.id,
+            amount: item.quantity
+        }))
+    )
+
+    const getUniqueItems2 = <T extends { id: number; amount: number }>(
+        firstArray: T[],
+        secondArray: T[]
+    ): T[] => {
+        const firstArrayKeys = new Set(
+            firstArray.map((item) => `${item.id}-${item.amount}`)
+        )
+
+        return secondArray.filter(
+            (item) => !firstArrayKeys.has(`${item.id}-${item.amount}`)
+        )
+    }
+
+    const uniqueItems = getUniqueItems2(
+        order.order_items.map((item) => ({
+            id: item.variant.id,
+            amount: item.quantity
+        })),
+        orderItems
+    )
+
+    console.log(singleVariantProducts)
+
+    const orderItemsToMutate = {
+        delete: order?.order_items.filter((item) =>
+            toDelete.some((p) => p.id === item.variant.id)
+        ),
+        add: singleVariantProducts.filter((orderItem) => !!(orderItem as any).variants),
+        update: order?.order_items
+            .filter((item) => uniqueItems.some((p) => p.id === item.variant.id))
+            .map((item) => {
+                const uniqueItem = uniqueItems.find((p) => p.id === item.variant.id)
+
+                return {
+                    id: item.id,
+                    amount: uniqueItem?.amount || 0
+                }
+            })
+    }
 
     const mutation = useMutation({
         mutationFn: (data: OrderFormValues) => {
@@ -98,7 +154,6 @@ export const EditOrdersModal = ({ order }: EditOrderProps) => {
 
             return updateOrder(order.id, {
                 status: data.status,
-                order_items: data.order_items,
                 waybill,
                 customer: +data.customer
             })
@@ -108,6 +163,28 @@ export const EditOrdersModal = ({ order }: EditOrderProps) => {
             setOpen(false)
             toast.success(`Замовлення ${order.id} успішно відредаговано`)
             router.refresh()
+
+            orderItemsToMutate.add.forEach(async (orderItem) =>
+                addOrderItems({
+                    price: orderItem.variant.price,
+                    quantity:
+                        orderItems.find((p) => p.id === orderItem.variant.id)?.amount ||
+                        0,
+                    variant: orderItem.variant.id,
+                    order: order.id
+                })
+            )
+
+            orderItemsToMutate.update.forEach(async (orderItem) =>
+                updateOrderItems(orderItem.id, {
+                    quantity: +orderItem.amount,
+                    order: order.id
+                })
+            )
+
+            orderItemsToMutate.delete.forEach(async (orderItem) =>
+                deleteOrderItems(orderItem.id)
+            )
 
             updateComment(order.comments[0].id, {
                 order: order.id,

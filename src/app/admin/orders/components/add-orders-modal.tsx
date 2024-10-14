@@ -46,6 +46,8 @@ export const AddOrdersModal = () => {
         SingleVariantProduct[]
     >([])
 
+    console.log(singleVariantProducts)
+
     const form = useCustomForm(orderSchema, {
         customer: '',
         delivery_type: 'self',

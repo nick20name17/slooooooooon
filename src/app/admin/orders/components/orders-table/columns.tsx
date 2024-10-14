@@ -48,7 +48,7 @@ export const columns: ColumnDef<Order>[] = [
         accessorKey: 'status',
         cell: ({ row }) => (
             <StatusCell
-                key={row.original.id}
+                key={row.original.id + row.original.status}
                 order={row.original}
             />
         )

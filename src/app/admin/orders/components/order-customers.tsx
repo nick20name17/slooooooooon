@@ -43,7 +43,13 @@ export const OrderCustomers = ({ customerId, setCustomerId }: OrderCustomersProp
     const options =
         customers?.map((customer) => ({
             value: customer.id.toString(),
-            label: customer.first_name + ' ' + customer.last_name
+            label:
+                customer.first_name +
+                ' ' +
+                customer.last_name +
+                ' ' +
+                customer.surname +
+                ` (id:${customer.id})`
         })) || []
 
     return (
