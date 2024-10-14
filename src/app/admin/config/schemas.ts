@@ -65,6 +65,19 @@ const variantsSchema = object({
     }).min(1, "Ціна є обов'язковою")
 })
 
+const imageUrlSchema = object({
+    id: number({
+        required_error: "Це поле є обов'язковим"
+    }).min(1, "Це поле є обов'язковим"),
+    url: string({
+        required_error: "Це поле є обов'язковим"
+    })
+})
+
+const imageFileSchema = instanceof_zod(File)
+
+const imageSchema = union([imageFileSchema, imageUrlSchema])
+
 export const productsSchema = object({
     title: string({
         required_error: "Це поле є обов'язковим"
@@ -84,8 +97,8 @@ export const productsSchema = object({
     full_description: string({
         required_error: "Це поле є обов'язковим"
     }).min(1, "Це поле є обов'язковим"),
-    thumbnail: array(instanceof_zod(File)).min(1, "Це поле є обов'язковим"),
-    images: array(instanceof_zod(File)).min(1, 'Завантажте хоча б 1 зображення'),
+    thumbnail: array(imageSchema).min(1, "Це поле є обов'язковим"),
+    images: array(imageSchema).min(1, 'Завантажте хоча б 1 зображення'),
     recommendations: array(recommendationSchema).min(1, 'Додайте хоча б 1 рекомендацію'),
     variants: array(variantsSchema).min(1, 'Додайте хоча б 1 варіацію')
 })

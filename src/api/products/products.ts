@@ -1,3 +1,5 @@
+import axios from 'axios'
+
 import { clientApi } from '../client'
 import { serverApi } from '../server'
 
@@ -29,27 +31,35 @@ export const addProduct = async (data: ProductAddData) => {
 }
 
 export const addProductThumbnail = async (id: number, data: FormData) => {
-    const response = await clientApi<Product>(`/products/${id}/upload-thumbnail/`, {
-        method: 'POST',
+    // const response = await clientApi<Product>(`/products/${id}/upload-thumbnail/`, {
+    //     method: 'POST',
+    //     headers: {
+    //         'Content-Type': 'multipart/form-data'
+    //     },
+    //     body: data
+    // })
+
+    axios.post(`https://api.slooon.shop/api/products/${id}/upload-thumbnail/`, data, {
         headers: {
-            'Content-Type': 'multipart/form-data'
-        },
-        body: data
+            Authorization: 'Token 823b033432f4b63d1096167d4171564686886f50'
+        }
     })
 
-    return response
+    // return response
 }
 
 export const addProductImage = async (id: number, data: FormData) => {
-    const response = await clientApi<Product>(`/products/${id}/upload-images/`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'multipart/form-data'
-        },
-        body: data
-    })
+    // await clientApi<Product>(`/products/${id}/upload-images/`, {
+    //     method: 'POST',
 
-    return response
+    //     body: data
+    // })
+
+    axios.post(`https://api.slooon.shop/api/products/${id}/upload-images/`, data, {
+        headers: {
+            Authorization: 'Token 823b033432f4b63d1096167d4171564686886f50'
+        }
+    })
 }
 
 export const updateProduct = async (id: number, data: ProductAddData) => {
@@ -63,6 +73,14 @@ export const updateProduct = async (id: number, data: ProductAddData) => {
 
 export const deleteProduct = async (id: number) => {
     const response = await clientApi<ProductResponse>(`/products/${id}/`, {
+        method: 'DELETE'
+    })
+
+    return response
+}
+
+export const deleteProductImage = async (id: number) => {
+    const response = await clientApi(`/images/${id}/`, {
         method: 'DELETE'
     })
 

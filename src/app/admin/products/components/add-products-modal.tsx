@@ -55,9 +55,6 @@ const generateSlug = (name: string) => {
 }
 
 export const AddProductsModal = () => {
-    const [images, setImages] = useState<File[]>([])
-    const [thumbnail, setThumbnail] = useState<File[]>([])
-
     const [open, setOpen] = useState(false)
 
     const router = useRouter()
@@ -75,9 +72,7 @@ export const AddProductsModal = () => {
         variants: []
     })
 
-    const title = form.watch('title')
-    const recommendations = form.watch('recommendations')
-    const variants = form.watch('variants')
+    const { title, recommendations, variants, images, thumbnail } = form.watch()
 
     useEffect(() => {
         form.setValue('slug', generateSlug(title))
@@ -105,24 +100,25 @@ export const AddProductsModal = () => {
                 })
             })
 
-            images.forEach(async (img) => {
-                const formData = new FormData()
-                formData.append('image', img)
+            const imagesFormData = new FormData()
 
-                addProductImage(response?.id!, formData)
+            images.forEach((img) => {
+                imagesFormData.append('image', img as File)
             })
 
-            const formData = new FormData()
-            formData.append('thumbnail', thumbnail[0])
+            if (images.length > 0) {
+                addProductImage(response?.id!, imagesFormData)
+            }
 
-            addProductThumbnail(response?.id!, formData)
+            const thumbnailFormData = new FormData()
+            thumbnailFormData.append('thumbnail', thumbnail[0] as File)
+
+            addProductThumbnail(response?.id!, thumbnailFormData)
 
             toast.success('Товар успішно доданий')
             form.reset()
             setOpen(false)
             router.refresh()
-
-            setImages([])
         }
     })
 
@@ -132,9 +128,6 @@ export const AddProductsModal = () => {
 
     const onProductAdd = (formData: ProductsFormValues) => {
         const { thumbnail, images, recommendations, variants, ...rest } = formData
-
-        setImages(images || [])
-        setThumbnail(thumbnail || [])
 
         mutation.mutate(rest)
     }

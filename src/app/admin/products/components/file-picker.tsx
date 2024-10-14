@@ -1,6 +1,7 @@
 'use client'
 
 import { FileIcon, Upload, X } from 'lucide-react'
+import Image from 'next/image'
 import { useCallback, useEffect, useState } from 'react'
 import { type FileRejection, useDropzone } from 'react-dropzone'
 import { toast } from 'sonner'
@@ -17,9 +18,14 @@ interface UploadedFile extends File {
     preview?: string
 }
 
+export interface UploadedUrl {
+    url: string
+    id: number
+}
+
 interface FilePickerProps {
-    value?: UploadedFile[]
-    onChange?: (files: UploadedFile[]) => void
+    value?: (UploadedFile | UploadedUrl)[]
+    onChange?: (files: (UploadedFile | UploadedUrl)[]) => void
     multiple?: boolean
 }
 
@@ -28,11 +34,12 @@ export const FilePicker = ({
     onChange,
     multiple = true
 }: FilePickerProps) => {
-    const [files, setFiles] = useState<UploadedFile[]>(
-        value?.map((file) => ({
-            ...file,
-            preview: URL.createObjectURL(file)
-        }))
+    const [files, setFiles] = useState<(UploadedFile | UploadedUrl)[]>(
+        value?.map((file) =>
+            'url' in file
+                ? file
+                : { ...file, preview: URL.createObjectURL(file as UploadedFile) }
+        )
     )
 
     const onDrop = useCallback(
@@ -82,12 +89,12 @@ export const FilePicker = ({
     })
 
     const removeFile = useCallback(
-        (fileToRemove: UploadedFile) => {
+        (fileToRemove: UploadedFile | UploadedUrl) => {
             const updatedFiles = files?.filter((file) => file !== fileToRemove)
             setFiles(updatedFiles)
             onChange?.(updatedFiles)
 
-            if (fileToRemove?.preview && fileToRemove?.preview?.startsWith('blob:')) {
+            if ('preview' in fileToRemove && fileToRemove?.preview?.startsWith('blob:')) {
                 URL.revokeObjectURL(fileToRemove.preview)
             }
         },
@@ -97,7 +104,11 @@ export const FilePicker = ({
     useEffect(() => {
         return () =>
             files?.forEach((file) => {
-                if (file.preview && file.preview.startsWith('blob:')) {
+                if (
+                    'preview' in file &&
+                    file.preview &&
+                    file.preview.startsWith('blob:')
+                ) {
                     URL.revokeObjectURL(file.preview)
                 }
             })
@@ -108,7 +119,7 @@ export const FilePicker = ({
             <CardContent
                 {...getRootProps()}
                 className={cn(
-                    'h-40 cursor-pointer rounded-lg border p-6 text-center transition-colors',
+                    'h-36 cursor-pointer rounded-lg border p-6 text-center transition-colors',
                     files.length > 0
                         ? ''
                         : 'flex flex-col items-center justify-center gap-y-4',
@@ -120,34 +131,67 @@ export const FilePicker = ({
 
                 {files?.length > 0 ? (
                     <ul className='flex items-center justify-start gap-x-4'>
-                        {files?.map((file) => (
-                            <li
-                                onClick={(e) => e.stopPropagation()}
-                                key={file.name}
-                                className='relative size-24'>
-                                {file?.type?.startsWith('image/') ? (
-                                    <img
-                                        src={file.preview}
-                                        alt={file.name}
-                                        className='size-full rounded-xl border object-cover'
-                                        onLoad={() => {
-                                            URL.revokeObjectURL(file?.preview!)
-                                        }}
-                                    />
-                                ) : (
-                                    <FileIcon className='secondary size-6' />
-                                )}
-                                <p className='mt-2 truncate text-sm'>{file.name}</p>
-                                <Button
-                                    type='button'
-                                    variant='outline'
-                                    onClick={() => removeFile(file)}
-                                    className='absolute -right-2 -top-2 size-6 rounded-full p-1'>
-                                    <X className='size-3' />
-                                    <span className='sr-only'>Remove {file.name}</span>
-                                </Button>
-                            </li>
-                        ))}
+                        {files?.map((file) =>
+                            'url' in file ? (
+                                <li
+                                    onClick={(e) => e.stopPropagation()}
+                                    key={file.id}
+                                    className='relative size-24'>
+                                    {file.url ? (
+                                        <Image
+                                            width={96}
+                                            height={96}
+                                            src={file.url}
+                                            alt={`Uploaded from URL ${file.id}`}
+                                            className='size-full rounded-xl border object-cover'
+                                        />
+                                    ) : null}
+                                    <Button
+                                        type='button'
+                                        variant='outline'
+                                        onClick={() => removeFile(file)}
+                                        className='absolute -right-2 -top-2 size-6 rounded-full p-1'>
+                                        <X className='size-3' />
+                                        <span className='sr-only'>
+                                            Remove URL {file.url}
+                                        </span>
+                                    </Button>
+                                </li>
+                            ) : (
+                                <li
+                                    onClick={(e) => e.stopPropagation()}
+                                    key={(file as UploadedFile).name}
+                                    className='relative size-24'>
+                                    {file?.type?.startsWith('image/') ? (
+                                        <Image
+                                            width={96}
+                                            height={96}
+                                            src={(file as UploadedFile).preview!}
+                                            alt={(file as UploadedFile).name}
+                                            className='size-full rounded-xl border object-cover'
+                                            onLoad={() => {
+                                                URL.revokeObjectURL(
+                                                    (file as UploadedFile).preview!
+                                                )
+                                            }}
+                                        />
+                                    ) : (
+                                        <FileIcon className='secondary size-6' />
+                                    )}
+
+                                    <Button
+                                        type='button'
+                                        variant='outline'
+                                        onClick={() => removeFile(file)}
+                                        className='absolute -right-2 -top-2 size-6 rounded-full p-1'>
+                                        <X className='size-3' />
+                                        <span className='sr-only'>
+                                            Remove {(file as UploadedFile).name}
+                                        </span>
+                                    </Button>
+                                </li>
+                            )
+                        )}
                     </ul>
                 ) : (
                     <>
@@ -156,7 +200,6 @@ export const FilePicker = ({
                         ) : (
                             <>
                                 <Upload className='mx-auto size-6 text-secondary' />
-
                                 <p>
                                     Перетягніть ваші файли сюди або натисніть щоб вибрати
                                     їх

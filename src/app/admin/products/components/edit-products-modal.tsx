@@ -15,7 +15,12 @@ import { ProductRecommendation } from './product-recommendation'
 import { ProductVariant } from './product-variant'
 import type { Category } from '@/api/categories/categories.type'
 import { clientApi } from '@/api/client'
-import { updateProduct } from '@/api/products/products'
+import {
+    addProductImage,
+    addProductThumbnail,
+    deleteProductImage,
+    updateProduct
+} from '@/api/products/products'
 import type { Product } from '@/api/products/products.type'
 import {
     addRecommendation,
@@ -76,8 +81,16 @@ export const EditProductsModal = ({ product }: EditProductsProps) => {
             packaging: variant.packaging.split(' ')[0]
         })),
         category: product.category.id.toString(),
-        thumbnail: [],
-        images: [],
+        thumbnail: [
+            {
+                id: product.id,
+                url: product.thumbnail
+            }
+        ],
+        images: product.images.map((image) => ({
+            id: image.id,
+            url: image.image
+        })),
         description: product.description,
         full_description: product.full_description,
         slug: product.slug,
@@ -85,7 +98,12 @@ export const EditProductsModal = ({ product }: EditProductsProps) => {
         title: product.title
     })
 
-    const { title, recommendations, variants } = form.watch()
+    const { title, recommendations, variants, images, thumbnail } = form.watch()
+
+    const imagesToMutate = {
+        add: images.filter((img) => (img as File).size),
+        delete: getUniqueItems(images as any, product.images)
+    }
 
     const variantsToMutate = {
         delete: getUniqueItems(variants, product.variants),
@@ -114,18 +132,18 @@ export const EditProductsModal = ({ product }: EditProductsProps) => {
                 'thumbnail' | 'recommendations' | 'variants' | 'images'
             >
         ) => updateProduct(product.id, data),
-        onSuccess: (response) => {
+        onSuccess: () => {
             variantsToMutate.add.forEach(async (v) =>
                 addVariant({
                     ...v,
-                    product: response?.id!
+                    product: product?.id!
                 })
             )
 
             variantsToMutate.update.forEach(async (v) => {
                 updateVariant(v.id, {
                     ...v,
-                    product: response?.id!
+                    product: product?.id!
                 })
             })
 
@@ -134,14 +152,14 @@ export const EditProductsModal = ({ product }: EditProductsProps) => {
             reccomendationsToMutate.add.forEach(async (v) =>
                 addRecommendation({
                     ...v,
-                    product: response?.id!
+                    product: product?.id!
                 })
             )
 
             reccomendationsToMutate.update.forEach(async (v) => {
                 updateRecommendation(v.id, {
                     ...v,
-                    product: response?.id!
+                    product: product?.id!
                 })
             })
 
@@ -149,17 +167,16 @@ export const EditProductsModal = ({ product }: EditProductsProps) => {
                 deleteRecommendation(v.id)
             )
 
-            // images.forEach(async (img) => {
-            //     const formData = new FormData()
-            //     formData.append('image', img)
+            imagesToMutate.delete.forEach(async (img) => {
+                deleteProductImage(img.id)
+            })
 
-            //     addProductImage(response?.id!, formData)
-            // })
+            if ('size' in thumbnail[0]) {
+                const thumbnailFormData = new FormData()
+                thumbnailFormData.append('thumbnail', thumbnail[0])
 
-            // const formData = new FormData()
-            // formData.append('thumbnail', thumbnail[0])
-
-            // addProductThumbnail(response?.id!, formData)
+                addProductThumbnail(product?.id!, thumbnailFormData)
+            }
 
             toast.success('Товар успішно відредагований')
             form.reset()
@@ -174,6 +191,16 @@ export const EditProductsModal = ({ product }: EditProductsProps) => {
 
     const onProductEdit = (formData: ProductsFormValues) => {
         const { thumbnail, images, recommendations, variants, ...rest } = formData
+
+        if (imagesToMutate.add.length > 0) {
+            const imagesToAddFormData = new FormData()
+
+            imagesToMutate.add.forEach((img) => {
+                imagesToAddFormData.append('image', img as File)
+            })
+
+            addProductImage(product?.id!, imagesToAddFormData)
+        }
 
         mutation.mutate(rest)
     }
