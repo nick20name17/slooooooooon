@@ -12,7 +12,9 @@ import { getQueryParamString } from '@/app/admin/utils/get-query-params-string'
 export const getProducts = async (queryParams: Partial<ProductsQueryParams>) => {
     const queryString = getQueryParamString(queryParams)
 
-    const response = await serverApi<ProductResponse>(`/products?${queryString}`)
+    const response = await serverApi<ProductResponse | Product[]>(
+        `/products?${queryString}`
+    )
 
     return response
 }

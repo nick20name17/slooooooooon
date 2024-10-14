@@ -8,7 +8,7 @@ import { CategoryFilter } from './components/category-filter'
 import { columns } from './components/products-table/columns'
 import { ProductsTable } from './components/products-table/products-table'
 import { getProducts } from '@/api/products/products'
-import type { ProductsQueryParams } from '@/api/products/products.type'
+import type { ProductResponse, ProductsQueryParams } from '@/api/products/products.type'
 import { defaultLimit } from '@/app/admin/config/api'
 import { Skeleton } from '@/components/ui/skeleton'
 
@@ -21,34 +21,34 @@ interface ProductsProps {
 }
 
 const ProductsCount = async ({ searchParams }: ProductsProps) => {
-    const { count } = await getProducts({
+    const data = (await getProducts({
         search: searchParams.search || '',
         offset: searchParams.offset || 0,
         limit: searchParams.limit,
         categories:
             searchParams?.categories === 'all' ? '' : searchParams?.categories || ''
-    })
+    })) as ProductResponse
 
     return (
         <div className='flex size-10 items-center justify-center rounded-full border border-blue font-bold'>
-            {count}
+            {data.count}
         </div>
     )
 }
 
 const ProductTable = async ({ searchParams }: ProductsProps) => {
-    const { results } = await getProducts({
+    const data = (await getProducts({
         search: searchParams.search || '',
         offset: searchParams.offset || 0,
         limit: searchParams.limit,
         categories:
             searchParams?.categories === 'all' ? '' : searchParams?.categories || ''
-    })
+    })) as ProductResponse
 
     return (
         <ProductsTable
             columns={columns}
-            data={results}
+            data={data.results}
         />
     )
 }

@@ -8,7 +8,8 @@ import { ReactQueryProvider } from '@/providers/react-query-provider'
 const anonymousPro = Anonymous_Pro({
     subsets: ['cyrillic'],
     weight: ['400', '700'],
-    display: 'swap'
+    display: 'block',
+    preload: true
 })
 
 export const metadata: Metadata = {
