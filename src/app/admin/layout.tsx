@@ -6,7 +6,7 @@ const AdminLayout = ({ children }: React.PropsWithChildren) => {
         <>
             <div className='flex h-screen items-start justify-center gap-x-6 p-6'>
                 <SideBar />
-                <main className='min-h-full w-full rounded-3xl border'>{children}</main>
+                <main className='min-h-full flex-1 rounded-3xl border'>{children}</main>
             </div>
             <Toaster
                 duration={5000}
