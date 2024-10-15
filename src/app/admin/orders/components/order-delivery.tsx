@@ -2,7 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query'
 import { Check, ChevronsUpDown, Search } from 'lucide-react'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
 
 import { getCities, getWarehouses } from '@/api/delivery/delivery'
@@ -25,17 +25,21 @@ import {
 } from '@/components/ui/select'
 import { cn } from '@/lib/utils'
 
-interface OrderDeliveryProps {
+interface OrderDeliveryProps extends React.HtmlHTMLAttributes<HTMLDivElement> {
     deliveryType: string
     setDeliveryType: (value: string) => void
 }
 
-export const OrderDelivery = ({ setDeliveryType, deliveryType }: OrderDeliveryProps) => {
+export const OrderDelivery = ({
+    setDeliveryType,
+    deliveryType,
+    ...props
+}: OrderDeliveryProps) => {
     return (
         <Select
             onValueChange={setDeliveryType}
             defaultValue={deliveryType}>
-            <SelectTrigger>
+            <SelectTrigger className={props.className}>
                 <SelectValue placeholder='Виберіть тип доставки' />
             </SelectTrigger>
             <SelectContent>
@@ -46,7 +50,7 @@ export const OrderDelivery = ({ setDeliveryType, deliveryType }: OrderDeliveryPr
     )
 }
 
-interface OrderCityProps {
+interface OrderCityProps extends React.HtmlHTMLAttributes<HTMLDivElement> {
     city: string
     deliveryType: string
     setCity: React.Dispatch<React.SetStateAction<string>>
@@ -56,15 +60,20 @@ interface OrderCityProps {
 export const OrderCity = ({
     city,
     setCity,
-    setCityLabel
-    // deliveryType
+    setCityLabel,
+    deliveryType,
+
+    ...props
 }: OrderCityProps) => {
     const [open, setOpen] = useState(false)
     const [search, setSearch] = useState('')
 
     const handleSearch = useDebouncedCallback((search: string) => {
         setSearch(search)
-        // setCity('')
+
+        if (deliveryType === 'self') {
+            setCity('')
+        }
     }, 250)
 
     const { data, isLoading, isFetching } = useQuery({
@@ -82,11 +91,11 @@ export const OrderCity = ({
         return []
     }, [data?.data])
 
-    // useEffect(() => {
-    //     return () => {
-    //         setCity('')
-    //     }
-    // }, [deliveryType])
+    useEffect(() => {
+        return () => {
+            setCity('')
+        }
+    }, [deliveryType])
 
     return (
         <Popover
@@ -98,7 +107,7 @@ export const OrderCity = ({
                     variant='outline'
                     role='combobox'
                     aria-expanded={open}
-                    className='w-full justify-between'>
+                    className={cn('w-full justify-between', props.className)}>
                     {city
                         ? options?.find((option) => option.value === city)?.label
                         : 'Виберіть населений пункт'}
@@ -164,7 +173,7 @@ export const OrderCity = ({
     )
 }
 
-interface OrderWarehousesProps {
+interface OrderWarehousesProps extends React.HtmlHTMLAttributes<HTMLDivElement> {
     city: string
     warehouses: string
     setWarehouses: React.Dispatch<React.SetStateAction<string>>
@@ -175,14 +184,14 @@ export const OrderWarehouses = ({
     city,
     warehouses,
     setWarehouses,
-    setWarehouseLabel
+    setWarehouseLabel,
+    ...props
 }: OrderWarehousesProps) => {
     const [open, setOpen] = useState(false)
     const [search, setSearch] = useState('')
 
     const handleSearch = useDebouncedCallback((search: string) => {
         setSearch(search)
-        // setWarehouses('')
     }, 250)
 
     const { data, isLoading, isFetching } = useQuery({
@@ -200,9 +209,11 @@ export const OrderWarehouses = ({
         return []
     }, [data?.data, city])
 
-    // useEffect(() => {
-    //     setWarehouses('')
-    // }, [city])
+    useEffect(() => {
+        if (city) {
+            setWarehouses('')
+        }
+    }, [city])
 
     return (
         <Popover
@@ -215,7 +226,7 @@ export const OrderWarehouses = ({
                     variant='outline'
                     role='combobox'
                     aria-expanded={open}
-                    className='w-full justify-between'>
+                    className={cn('w-full justify-between', props.className)}>
                     {warehouses
                         ? options?.find((option) => option.value === warehouses)?.label
                         : 'Виберіть відділення або поштомат'}

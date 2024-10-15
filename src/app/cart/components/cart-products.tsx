@@ -7,6 +7,7 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
 import type { CartProduct } from '@/app/components/catalogue/product-add-to-cart'
+import productFallback from '@/assets/images/product-fallback.jpg'
 import { Button } from '@/components/ui/button'
 import { InputStepper } from '@/components/ui/input-stepper'
 import {
@@ -111,7 +112,7 @@ const CartProduct = ({
             <Image
                 priority
                 className='h-[60px] w-20 rounded-lg object-cover'
-                src={product.thumbnail}
+                src={product.thumbnail ? product?.thumbnail : productFallback.src}
                 alt={product.title}
                 width={80}
                 height={60}

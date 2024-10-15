@@ -5,7 +5,7 @@ import { Loader2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 
-import { categorySchema } from '../../config/schemas'
+import { categorySchema } from '../../../../config/schemas'
 
 import { updateCategory } from '@/api/categories/categories'
 import type { Category } from '@/api/categories/categories.type'

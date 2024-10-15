@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
-import { orderSchema } from '../../config/schemas'
+import { orderSchema } from '../../../../config/schemas'
 
 import { AddOrderItems, OrderItem, type SingleVariantProduct } from './add-order-items'
 import { OrderCustomers } from './order-customers'
@@ -45,8 +45,6 @@ export const AddOrdersModal = () => {
     const [singleVariantProducts, setSingleVariantProducts] = useState<
         SingleVariantProduct[]
     >([])
-
-    console.log(singleVariantProducts)
 
     const form = useCustomForm(orderSchema, {
         customer: '',

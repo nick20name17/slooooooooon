@@ -151,3 +151,5 @@ export const orderSchema = discriminatedUnion('delivery_type', [
     selfOrderSchema,
     novaPoshtaOrderSchema
 ])
+
+export const checkoutSchema = orderSchema.and(customerSchema)

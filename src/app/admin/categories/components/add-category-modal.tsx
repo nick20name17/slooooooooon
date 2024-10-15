@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
-import { categorySchema } from '../../config/schemas'
+import { categorySchema } from '../../../../config/schemas'
 
 import { addCategory } from '@/api/categories/categories'
 import { Button } from '@/components/ui/button'

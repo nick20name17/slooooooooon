@@ -1,7 +1,7 @@
 import { clientApi } from '../client'
 import { serverApi } from '../server'
 
-import type { CustomerAddData, CustomerResponse } from './customers.type'
+import type { Customer, CustomerAddData, CustomerResponse } from './customers.type'
 import { getQueryParamString } from '@/app/admin/utils/get-query-params-string'
 import type { BaseQueryParams } from '@/types/api'
 
@@ -14,7 +14,7 @@ export const getCustomers = async (queryParams: Partial<BaseQueryParams>) => {
 }
 
 export const addCustomer = async (data: CustomerAddData) => {
-    const response = await clientApi<CustomerResponse>('/customers/', {
+    const response = await clientApi<Customer>('/customers/', {
         method: 'POST',
         body: JSON.stringify(data)
     })

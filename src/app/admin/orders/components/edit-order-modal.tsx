@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
-import { orderSchema } from '../../config/schemas'
+import { orderSchema } from '../../../../config/schemas'
 import { getUniqueItems } from '../../utils/get-unique-items'
 
 import { AddOrderItems, OrderItem, type SingleVariantProduct } from './add-order-items'

@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
-import { productsSchema } from '../../config/schemas'
+import { productsSchema } from '../../../../config/schemas'
 import { transliterate } from '../../utils/transliterate'
 
 import { FilePicker } from './file-picker'

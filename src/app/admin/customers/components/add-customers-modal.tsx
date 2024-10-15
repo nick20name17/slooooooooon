@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
-import { customerSchema } from '../../config/schemas'
+import { customerSchema } from '../../../../config/schemas'
 
 import { addCustomer } from '@/api/customers/customers'
 import { Button } from '@/components/ui/button'

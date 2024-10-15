@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
-import { customerSchema } from '../../config/schemas'
+import { customerSchema } from '../../../../config/schemas'
 
 import { updateCustomer } from '@/api/customers/customers'
 import type { Customer } from '@/api/customers/customers.type'
