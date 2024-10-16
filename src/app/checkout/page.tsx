@@ -1,6 +1,16 @@
+import dynamic from 'next/dynamic'
 import Link from 'next/link'
 
-import { CheckoutForm } from './components/checkout-form'
+export const metadata = {
+    title: 'Оформлення замовлення'
+}
+
+const CheckoutForm = dynamic(
+    () => import('./components/checkout-form').then((mod) => mod.CheckoutForm),
+    {
+        ssr: false
+    }
+)
 
 const Checkout = () => {
     return (

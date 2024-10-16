@@ -1,18 +1,15 @@
 'use client'
 
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
 
 import type { CartProduct } from '@/app/components/catalogue/product-add-to-cart'
+import { useLocalStorage } from '@/hooks/use-local-storage'
 
 export const CartHeader = () => {
-    const [cartItems, setCartItems] = useState<CartProduct[]>(
+    const [cartItems] = useLocalStorage<CartProduct[]>(
+        'cart',
         JSON.parse(localStorage.getItem('cart') || '[]')
     )
-
-    useEffect(() => {
-        setCartItems(JSON.parse(localStorage.getItem('cart') || '[]'))
-    }, [])
 
     return (
         <div className='flex items-center justify-between gap-x-4 text-background'>

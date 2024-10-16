@@ -4,7 +4,7 @@ import { Trash2 } from 'lucide-react'
 import { Ubuntu_Mono } from 'next/font/google'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import type { CartProduct } from '@/app/components/catalogue/product-add-to-cart'
 import productFallback from '@/assets/images/product-fallback.jpg'
@@ -17,6 +17,7 @@ import {
     SelectTrigger,
     SelectValue
 } from '@/components/ui/select'
+import { useLocalStorage } from '@/hooks/use-local-storage'
 import { cn } from '@/lib/utils'
 
 const ubuntuMono = Ubuntu_Mono({
@@ -26,7 +27,8 @@ const ubuntuMono = Ubuntu_Mono({
 })
 
 export const CartProducts = () => {
-    const [cartItems, setCartItems] = useState<CartProduct[]>(
+    const [cartItems, setCartItems] = useLocalStorage<CartProduct[]>(
+        'cart',
         JSON.parse(localStorage.getItem('cart') || '[]')
     )
 
@@ -35,7 +37,7 @@ export const CartProducts = () => {
             (item) => item.id !== id || item.variant.id !== variantId
         )
         setCartItems(updatedCartItems)
-        localStorage.setItem('cart', JSON.stringify(updatedCartItems))
+        setCartItems(updatedCartItems)
     }
 
     const onAmountChange = (id: number, variantId: number, amount: number) => {
@@ -50,12 +52,7 @@ export const CartProducts = () => {
         })
 
         setCartItems(updatedCartItems)
-        localStorage.setItem('cart', JSON.stringify(updatedCartItems))
     }
-
-    useEffect(() => {
-        setCartItems(JSON.parse(localStorage.getItem('cart') || '[]'))
-    }, [])
 
     return (
         <div>

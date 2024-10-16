@@ -3,7 +3,7 @@
 import { useMutation } from '@tanstack/react-query'
 import { Loader2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import { addComment } from '@/api/comments/comments'
 import { addCustomer } from '@/api/customers/customers'
@@ -20,19 +20,17 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { checkoutSchema } from '@/config/schemas'
 import { useCustomForm } from '@/hooks/use-custom-form'
+import { useLocalStorage } from '@/hooks/use-local-storage'
 
 type OrderFormValues = Zod.infer<typeof checkoutSchema>
 
 export const CheckoutForm = () => {
     const [error, setError] = useState('')
 
-    const [cartItems, setCartItems] = useState<CartProduct[]>(
+    const [cartItems, setCartItems] = useLocalStorage<CartProduct[]>(
+        'cart',
         JSON.parse(localStorage.getItem('cart') || '[]')
     )
-
-    useEffect(() => {
-        setCartItems(JSON.parse(localStorage.getItem('cart') || '[]'))
-    }, [])
 
     const router = useRouter()
 
@@ -99,7 +97,7 @@ export const CheckoutForm = () => {
             form.reset()
             router.push('/')
 
-            localStorage.setItem('cart', JSON.stringify([]))
+            setCartItems([])
         },
         onError: () => {
             setError('Щось пішло не так')

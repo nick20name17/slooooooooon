@@ -1,10 +1,11 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import type { Product } from '@/api/products/products.type'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { useLocalStorage } from '@/hooks/use-local-storage'
 
 export type CartProduct = Product & {
     variant: Product['variants'][0]
@@ -14,46 +15,29 @@ export type CartProduct = Product & {
 export const ProductAddToCart = ({ product }: { product: Product }) => {
     const [variantId, setVariantId] = useState(product.variants[0].id.toString())
 
-    const [cart, setCart] = useState(
-        JSON.parse(localStorage.getItem('cart') || '[]') as CartProduct[]
+    const [cart, setCart] = useLocalStorage<CartProduct[]>(
+        'cart',
+        JSON.parse(localStorage.getItem('cart') || '[]')
     )
 
     const isInCart = cart.some((p) => p.id === product.id && p.variant.id === +variantId)
 
     const onAddToCart = () => {
         if (isInCart) {
-            localStorage.setItem(
-                'cart',
-                JSON.stringify(
-                    cart.filter((p) => p.id !== product.id || p.variant.id !== +variantId)
-                )
+            setCart(
+                cart.filter((p) => p.id !== product.id || p.variant.id !== +variantId)
             )
         } else {
-            localStorage.setItem(
-                'cart',
-                JSON.stringify([
-                    ...cart,
-                    {
-                        ...product,
-                        variant: product.variants.find((v) => v.id === +variantId),
-                        quantity: 1
-                    }
-                ])
-            )
+            setCart([
+                ...cart,
+                {
+                    ...product,
+                    variant: product.variants?.find((v) => v.id === +variantId)!,
+                    quantity: 1
+                }
+            ])
         }
-        window.dispatchEvent(new Event('storage'))
     }
-
-    useEffect(() => {
-        const handleStorageChange = () => {
-            setCart(JSON.parse(localStorage.getItem('cart') || '[]') as any[])
-        }
-        window.addEventListener('storage', handleStorageChange, false)
-
-        return () => {
-            window.removeEventListener('storage', handleStorageChange)
-        }
-    }, [])
 
     return (
         <>

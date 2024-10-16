@@ -1,9 +1,22 @@
-import { CartHeader } from './components/cart-header'
-import { CartProducts } from './components/cart-products'
+import dynamic from 'next/dynamic'
 
 export const metadata = {
     title: 'Кошик'
 }
+
+const CartHeader = dynamic(
+    () => import('./components/cart-header').then((mod) => mod.CartHeader),
+    {
+        ssr: false
+    }
+)
+
+const CartProducts = dynamic(
+    () => import('./components/cart-products').then((mod) => mod.CartProducts),
+    {
+        ssr: false
+    }
+)
 
 const Cart = () => {
     return (
