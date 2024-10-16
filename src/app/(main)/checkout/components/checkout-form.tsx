@@ -8,12 +8,12 @@ import { useState } from 'react'
 import { addComment } from '@/api/comments/comments'
 import { addCustomer } from '@/api/customers/customers'
 import { addOrder } from '@/api/orders/orders'
+import type { CartProduct } from '@/app/(main)/components/catalogue/product-add-to-cart'
 import {
     OrderCity,
     OrderDelivery,
     OrderWarehouses
 } from '@/app/admin/orders/components/order-delivery'
-import type { CartProduct } from '@/app/components/catalogue/product-add-to-cart'
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
@@ -112,7 +112,7 @@ export const CheckoutForm = () => {
         <>
             <Form {...form}>
                 <form
-                    className='mt-10'
+                    className='mt-10 w-full'
                     onSubmit={form.handleSubmit(onOrderAdd)}>
                     <div className='space-x-4 rounded-[30px] border bg-[#d9cfaa] p-5 text-background'>
                         <h2 className='text-3xl font-bold'>1. Контактні дані</h2>

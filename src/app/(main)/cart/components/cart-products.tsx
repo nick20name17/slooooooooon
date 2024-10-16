@@ -6,7 +6,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
 
-import type { CartProduct } from '@/app/components/catalogue/product-add-to-cart'
+import type { CartProduct } from '@/app/(main)/components/catalogue/product-add-to-cart'
 import productFallback from '@/assets/images/product-fallback.jpg'
 import { Button } from '@/components/ui/button'
 import { InputStepper } from '@/components/ui/input-stepper'

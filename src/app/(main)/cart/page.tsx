@@ -20,12 +20,12 @@ const CartProducts = dynamic(
 
 const Cart = () => {
     return (
-        <main>
+        <section className='w-full'>
             <div className='flex flex-col gap-y-10 rounded-[40px] bg-[#e6ddb9] p-8'>
                 <CartHeader />
                 <CartProducts />
             </div>
-        </main>
+        </section>
     )
 }
 

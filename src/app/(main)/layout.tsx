@@ -1,46 +1,28 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { Suspense } from 'react'
 
-import { CartButton } from './components/cart-button'
-import { Catalogue } from './components/catalogue/catalogue'
-import { CatalogueSkeleton } from './components/catalogue/catalogue-skeleton'
-import { Hero } from './components/hero'
 import logo from '@/assets/images/logo.svg'
 
-interface HomeProps {
-    searchParams: {
-        categories: string
-    }
-}
-
-const Home = async ({ searchParams }: HomeProps) => {
-    const categories =
-        searchParams?.categories === 'all' ? '' : searchParams?.categories || ''
-
+const MainLayout = ({ children }: React.PropsWithChildren) => {
     return (
-        <div className='min-h-screen bg-[#212726] py-8'>
-            <header className='flex items-center justify-center'>
+        <div className='flex min-h-screen flex-col justify-between bg-[#212726] px-5'>
+            <header className='flex items-center justify-center pt-8'>
                 <Link
                     href='/'
                     className='rounded-full border-[5px] border-[#9dc16e] px-8 py-3 shadow-[0px_4px_0px_0px_#394e1f]'>
                     <Image
-                        priority
                         src={logo}
                         alt='SLON'
                         width='115'
                         height='31'
+                        priority
                     />
                 </Link>
             </header>
-            <main>
-                <Hero />
-                <Suspense fallback={<CatalogueSkeleton />}>
-                    <Catalogue categories={categories} />
-                </Suspense>
-                <CartButton />
+            <main className='flex flex-col items-center justify-center gap-y-10'>
+                {children}
             </main>
-            <footer className='mt-12 px-4'>
+            <footer className='py-8'>
                 <nav>
                     <ul className='flex items-center justify-between text-3xl font-bold text-[#e6ddb9]'>
                         <li className='transition-[color] hover:text-[#c8b241]'>
@@ -64,4 +46,4 @@ const Home = async ({ searchParams }: HomeProps) => {
     )
 }
 
-export default Home
+export default MainLayout

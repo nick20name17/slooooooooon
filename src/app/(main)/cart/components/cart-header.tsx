@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 
-import type { CartProduct } from '@/app/components/catalogue/product-add-to-cart'
+import type { CartProduct } from '@/app/(main)/components/catalogue/product-add-to-cart'
 import { useLocalStorage } from '@/hooks/use-local-storage'
 
 export const CartHeader = () => {

@@ -14,11 +14,11 @@ export const Catalogue = async ({ categories }: CatalogueProps) => {
     })) as Product[]
 
     return (
-        <section className='mt-10'>
+        <section className='mt-10 w-full'>
             <CategoryFilter />
             <ul
                 className={cn(
-                    'mt-10 grid min-h-[520px] grid-cols-3 gap-5 rounded-[30px] bg-[#e6ddb9] p-5 max-xl:grid-cols-2 max-sm:grid-cols-1',
+                    'mt-10 grid min-h-[520px] w-full grid-cols-3 gap-5 rounded-[30px] bg-[#e6ddb9] p-5 max-xl:grid-cols-2 max-sm:grid-cols-1',
                     products.length ? '' : 'grid-cols-1 items-center'
                 )}>
                 {products.length ? (

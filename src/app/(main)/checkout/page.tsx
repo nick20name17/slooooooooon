@@ -14,8 +14,8 @@ const CheckoutForm = dynamic(
 
 const Checkout = () => {
     return (
-        <main>
-            <div className='mx-4 rounded-[40px] bg-[#e6ddb9] p-8'>
+        <section className='mt-12 w-full'>
+            <div className='rounded-[40px] bg-[#e6ddb9] p-8'>
                 <div className='flex items-center justify-between gap-x-4 text-background'>
                     <h1 className='text-3xl font-bold'>Оформлення замовлення</h1>
                     <Link
@@ -38,7 +38,7 @@ const Checkout = () => {
 
                 <CheckoutForm />
             </div>
-        </main>
+        </section>
     )
 }
 
