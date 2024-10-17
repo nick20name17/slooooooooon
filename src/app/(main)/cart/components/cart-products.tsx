@@ -1,10 +1,11 @@
 'use client'
 
 import { Trash2 } from 'lucide-react'
-import { Ubuntu_Mono } from 'next/font/google'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
+
+import { YearBadge } from '../../components/year-badge'
 
 import type { CartProduct } from '@/app/(main)/components/catalogue/product-add-to-cart'
 import productFallback from '@/assets/images/product-fallback.jpg'
@@ -19,12 +20,6 @@ import {
 } from '@/components/ui/select'
 import { useLocalStorage } from '@/hooks/use-local-storage'
 import { cn } from '@/lib/utils'
-
-const ubuntuMono = Ubuntu_Mono({
-    subsets: ['latin'],
-    weight: ['700'],
-    display: 'block'
-})
 
 export const CartProducts = () => {
     const [cartItems, setCartItems] = useLocalStorage<CartProduct[]>(
@@ -114,13 +109,7 @@ const CartProduct = ({
                 width={80}
                 height={60}
             />
-            <div
-                className={cn(
-                    'mx-auto w-16 rounded-xl bg-background py-1 text-center text-lg font-bold leading-none text-[#e6ddb9]',
-                    ubuntuMono.className
-                )}>
-                {product.year}
-            </div>
+            <YearBadge year={product.year} />
             <span>{product.title + ' / ' + currentVariant?.packaging}</span>
 
             <div className='mx-auto'>

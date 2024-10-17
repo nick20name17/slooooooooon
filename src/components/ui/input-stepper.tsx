@@ -1,10 +1,11 @@
 import { CircleMinus, CirclePlus } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 
-interface InputStepperProps {
+type InputStepperProps = Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> & {
+    onChange?: (value: number) => void
     value: number
-    onChange: (value: number) => void
     maxValue?: number
     minValue?: number
 }
@@ -13,15 +14,20 @@ export const InputStepper = ({
     value,
     onChange,
     maxValue = Infinity,
-    minValue = 1
+    minValue = 1,
+    ...props
 }: InputStepperProps) => {
     return (
-        <div className='flex h-10 w-32 items-center justify-between gap-x-4 rounded-full border p-1'>
+        <div
+            className={cn(
+                'flex h-10 w-32 items-center justify-between gap-x-4 rounded-full border p-1',
+                props.className
+            )}>
             <Button
                 disabled={value <= minValue}
                 type='button'
                 className='size-8 rounded-full'
-                onClick={() => onChange(value - 1)}
+                onClick={() => onChange!(value - 1)}
                 variant='ghost'>
                 <CircleMinus className='size-5 flex-shrink-0' />
             </Button>
@@ -30,7 +36,7 @@ export const InputStepper = ({
                 disabled={value >= maxValue}
                 type='button'
                 className='size-8 rounded-full'
-                onClick={() => onChange(value + 1)}
+                onClick={() => onChange!(value + 1)}
                 variant='ghost'>
                 <CirclePlus className='size-5 flex-shrink-0' />
             </Button>

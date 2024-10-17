@@ -21,6 +21,14 @@ export const getProducts = async (queryParams: Partial<ProductsQueryParams>) => 
     return response
 }
 
+export const getProduct = async (id: number) => {
+    // const queryString = getQueryParamString(queryParams)
+
+    const response = await serverApi<Product>(`/products/${id}`)
+
+    return response
+}
+
 export const addProduct = async (data: ProductAddData) => {
     const response = await clientApi<Product>('/products/', {
         method: 'POST',

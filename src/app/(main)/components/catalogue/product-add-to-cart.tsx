@@ -6,6 +6,7 @@ import type { Product } from '@/api/products/products.type'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useLocalStorage } from '@/hooks/use-local-storage'
+import { cn } from '@/lib/utils'
 
 export type CartProduct = Product & {
     variant: Product['variants'][0]
@@ -63,7 +64,12 @@ export const ProductAddToCart = ({ product }: { product: Product }) => {
             </div>
             <Button
                 onClick={onAddToCart}
-                className='flex h-14 w-full items-center justify-center rounded-xl border-2 border-background bg-[#e6ddb9] px-7 py-3.5 text-2xl font-bold text-background shadow-[1px_2px_0px_0px_#212726] transition-all hover:bg-[#c8b241] hover:bg-background hover:text-[#e6ddb9] hover:shadow-none'>
+                className={cn(
+                    'flex h-14 w-full items-center justify-center rounded-xl border-2 border-background bg-[#e6ddb9] px-7 py-3.5 text-2xl font-bold text-background shadow-[1px_2px_0px_0px_#212726] transition-all hover:bg-[#c8b241] hover:bg-background hover:text-[#e6ddb9] hover:shadow-none'
+                    // isInCart
+                    //     ? 'bg-background text-[#e6ddb9] hover:bg-[#e6ddb9] hover:text-background'
+                    //     : 'bg-[#e6ddb9] text-background hover:bg-background hover:text-[#e6ddb9]'
+                )}>
                 {isInCart ? 'Видалити з кошика' : 'Додати до кошика'}
             </Button>
         </>
