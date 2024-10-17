@@ -64,6 +64,8 @@ export const LoginForm = () => {
                                 {/* <FormLabel className='text-lg'>Пошта</FormLabel> */}
                                 <FormControl>
                                     <Input
+                                        type='email'
+                                        inputMode='email'
                                         placeholder='Пошта'
                                         {...field}
                                     />

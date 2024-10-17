@@ -3,14 +3,24 @@
 import { LogOut } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
+import { clientApi } from '@/api/client'
 import { Button } from '@/components/ui/button'
 
 export const SignOut = () => {
     const router = useRouter()
 
-    const onSignOut = () => {
-        document.cookie = 'token=; Max-Age=0; path=/;'
-        router.push('/login')
+    const onSignOut = async () => {
+        await clientApi('/api-token-logout/', {
+            method: 'POST'
+        })
+
+        document.cookie.split(';').forEach((cookie) => {
+            const eqPos = cookie.indexOf('=')
+            const name = eqPos > -1 ? cookie.substring(0, eqPos) : cookie
+            document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT'
+        })
+
+        router.replace('/login')
     }
 
     return (
