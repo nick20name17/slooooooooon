@@ -19,7 +19,6 @@ interface ProductsProps {
 const CostsCount = async ({ searchParams }: ProductsProps) => {
     const { count } = await getCosts({
         search: searchParams.search || '',
-        offset: searchParams.offset || 0,
         limit: defaultLimit
     })
 

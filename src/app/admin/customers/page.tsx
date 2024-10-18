@@ -2,12 +2,12 @@ import { UsersRound } from 'lucide-react'
 import { Suspense } from 'react'
 
 import { SearchBar } from '../components/search-bar'
+import { defaultLimit } from '../config/api'
 
 import { AddCustomersModal } from './components/add-customers-modal'
 import { columns } from './components/customers-table/columns'
 import { CustomersTable } from './components/customers-table/customers-table'
 import { getCustomers } from '@/api/customers/customers'
-import { defaultLimit } from '@/app/admin/config/api'
 import { Skeleton } from '@/components/ui/skeleton'
 import type { BaseQueryParams } from '@/types/api'
 
@@ -22,7 +22,6 @@ interface CustomersProps {
 const CustomersCount = async ({ searchParams }: CustomersProps) => {
     const { count } = await getCustomers({
         search: searchParams.search || '',
-        offset: searchParams.offset || 0,
         limit: searchParams.limit
     })
 
@@ -34,9 +33,8 @@ const CustomersCount = async ({ searchParams }: CustomersProps) => {
 }
 
 const CustomerTable = async ({ searchParams }: CustomersProps) => {
-    const { results } = await getCustomers({
+    const { results, count } = await getCustomers({
         search: searchParams.search || '',
-        offset: searchParams.offset || 0,
         limit: searchParams.limit
     })
 
@@ -44,12 +42,13 @@ const CustomerTable = async ({ searchParams }: CustomersProps) => {
         <CustomersTable
             columns={columns}
             data={results}
+            dataCount={count}
         />
     )
 }
 
 const Customers = async ({ searchParams }: CustomersProps) => {
-    const { search = '', offset = 0 } = searchParams
+    const { search = '' } = searchParams
 
     return (
         <>
@@ -60,9 +59,7 @@ const Customers = async ({ searchParams }: CustomersProps) => {
                     </div>
                     <h1 className='text-4xl font-bold'>Клієнти</h1>
                     <Suspense fallback={<Skeleton className='size-10 rounded-full' />}>
-                        <CustomersCount
-                            searchParams={{ search, offset, limit: defaultLimit }}
-                        />
+                        <CustomersCount searchParams={{ search, limit: defaultLimit }} />
                     </Suspense>
                 </div>
                 <AddCustomersModal />
@@ -71,9 +68,7 @@ const Customers = async ({ searchParams }: CustomersProps) => {
                 <SearchBar />
                 <div className='h-[570px] overflow-auto rounded-2xl border'>
                     <Suspense fallback={<Skeleton className='size-full' />}>
-                        <CustomerTable
-                            searchParams={{ search, offset, limit: defaultLimit }}
-                        />
+                        <CustomerTable searchParams={{ search, limit: defaultLimit }} />
                     </Suspense>
                 </div>
             </div>

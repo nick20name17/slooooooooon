@@ -23,10 +23,9 @@ interface OrdersProps {
 const OrdersCount = async ({ searchParams }: OrdersProps) => {
     const { count } = await getOrders({
         search: searchParams.search || '',
-        offset: searchParams.offset || 0,
         limit: searchParams.limit,
-        status:
-            searchParams?.status === 'all' ? undefined : searchParams?.status || undefined
+        status: searchParams?.status,
+        offset: 0
     })
 
     return (
@@ -37,23 +36,24 @@ const OrdersCount = async ({ searchParams }: OrdersProps) => {
 }
 
 const OrderTable = async ({ searchParams }: OrdersProps) => {
-    const { results } = await getOrders({
+    const { results, count } = await getOrders({
         search: searchParams.search || '',
-        offset: searchParams.offset || 0,
         limit: searchParams.limit,
-        status: searchParams?.status
+        status: searchParams?.status,
+        offset: 0
     })
 
     return (
         <OrdersTable
             columns={columns}
             data={results}
+            dataCount={count}
         />
     )
 }
 
 const Orders = async ({ searchParams }: OrdersProps) => {
-    const { search = '', offset = 0, status } = searchParams
+    const { search = '', status = 'all' } = searchParams
 
     return (
         <>
@@ -67,9 +67,8 @@ const Orders = async ({ searchParams }: OrdersProps) => {
                         <OrdersCount
                             searchParams={{
                                 search,
-                                offset,
                                 limit: defaultLimit,
-                                status: status === 'all' ? undefined : status || undefined
+                                status: status === 'all' ? '' : status || ''
                             }}
                         />
                     </Suspense>
@@ -86,9 +85,9 @@ const Orders = async ({ searchParams }: OrdersProps) => {
                         <OrderTable
                             searchParams={{
                                 search,
-                                offset,
+
                                 limit: defaultLimit,
-                                status: status === 'all' ? undefined : status || undefined
+                                status: status === 'all' ? '' : status || ''
                             }}
                         />
                     </Suspense>

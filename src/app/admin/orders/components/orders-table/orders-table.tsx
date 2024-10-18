@@ -1,25 +1,65 @@
 'use client'
 
-import {
-    type ColumnDef,
-    flexRender,
-    getCoreRowModel,
-    useReactTable
-} from '@tanstack/react-table'
+import { useInfiniteQuery } from '@tanstack/react-query'
+import { flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
+import { Loader2 } from 'lucide-react'
+import { useQueryState } from 'nuqs'
+import { useMemo } from 'react'
 
+import { clientApi } from '@/api/client'
+import type { Order, OrdersResponse } from '@/api/orders/orders.type'
+import { InfiniteScroll } from '@/app/admin/components/infinite-scroll'
+import { defaultLimit } from '@/app/admin/config/api'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
+import type { DataTableProps } from '@/types/table'
 
-interface DataTableProps<TData, TValue> {
-    data: TData[]
-    columns: ColumnDef<TData, TValue>[]
-}
-
-export const OrdersTable = <TData, TValue>({
+export const OrdersTable = <_, TValue>({
     columns,
-    data
-}: DataTableProps<TData, TValue>) => {
+    data,
+    dataCount
+}: DataTableProps<Order, TValue>) => {
+    const [search] = useQueryState('search', {
+        defaultValue: ''
+    })
+
+    const [status] = useQueryState('status', {
+        defaultValue: 'all'
+    })
+
+    const parsedStatus = status === 'all' ? '' : status || ''
+
+    const {
+        data: orders,
+        isFetchingNextPage,
+        fetchNextPage,
+        hasNextPage
+    } = useInfiniteQuery({
+        queryKey: ['orders', search, status],
+        queryFn: async ({ pageParam = 0 }) => {
+            const res = await clientApi<OrdersResponse>(
+                `/orders/?limit=${defaultLimit}&offset=${pageParam}&search=${search}&status=${parsedStatus}`
+            )
+            return res?.results
+        },
+        getNextPageParam: (_, pages) => {
+            if (pages.length * defaultLimit >= dataCount) return undefined
+            else {
+                return pages.length * defaultLimit
+            }
+        },
+        initialData: {
+            pages: [data],
+            pageParams: [0]
+        },
+        cacheTime: Infinity
+    })
+
+    const flatData = useMemo(() => {
+        return orders?.pages.flatMap((page) => page) || []
+    }, [orders])
+
     const table = useReactTable({
-        data,
+        data: flatData as any,
         columns,
         getCoreRowModel: getCoreRowModel()
     })
@@ -51,6 +91,19 @@ export const OrdersTable = <TData, TValue>({
                         </TableCell>
                     </TableRow>
                 )}
+                <TableRow>
+                    <TableCell colSpan={columns.length}>
+                        <InfiniteScroll
+                            hasMore={hasNextPage!}
+                            isLoading={isFetchingNextPage}
+                            next={fetchNextPage}
+                            threshold={1}>
+                            {hasNextPage && !isFetchingNextPage ? (
+                                <Loader2 className='mx-auto my-4 size-4 animate-spin' />
+                            ) : null}
+                        </InfiniteScroll>
+                    </TableCell>
+                </TableRow>
             </TableBody>
         </Table>
     )

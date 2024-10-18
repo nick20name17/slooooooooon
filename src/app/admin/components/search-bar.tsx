@@ -13,11 +13,8 @@ import { Input } from '@/components/ui/input'
 
 export const SearchBar = () => {
     const [search, setSearch] = useQueryState('search', {
-        shallow: false
-    })
-
-    const [_, setOffset] = useQueryState('offset', {
-        shallow: false
+        shallow: false,
+        defaultValue: ''
     })
 
     const handleSearch = useDebouncedCallback((term: string) => {
@@ -26,7 +23,6 @@ export const SearchBar = () => {
         } else {
             setSearch(null)
         }
-        setOffset('0')
     }, 150)
 
     return (

@@ -59,8 +59,6 @@ export const AddOrdersModal = () => {
     const deliveryType = form.watch('delivery_type')
     const city = form.watch('city')
 
-    console.log(city)
-
     const mutation = useMutation({
         mutationFn: (data: OrderFormValues) => {
             const deliveryType =

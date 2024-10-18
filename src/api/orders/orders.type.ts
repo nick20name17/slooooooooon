@@ -42,6 +42,6 @@ export interface OrderItems {
 export type OrdersResponse = Response<Order>
 
 export interface OrdersQueryParams extends BaseQueryParams {
-    status?: OrderStatus | 'all'
+    status?: OrderStatus | 'all' | ''
     ordering?: string
 }

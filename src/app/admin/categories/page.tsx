@@ -21,7 +21,6 @@ interface CategoriesProps {
 const CategoriesCount = async ({ searchParams }: CategoriesProps) => {
     const { count } = await getCategories({
         search: searchParams.search || '',
-        offset: searchParams.offset || 0,
         limit: searchParams.limit
     })
 
@@ -33,9 +32,8 @@ const CategoriesCount = async ({ searchParams }: CategoriesProps) => {
 }
 
 const CategoriesTable = async ({ searchParams }: CategoriesProps) => {
-    const { results } = await getCategories({
+    const { results, count } = await getCategories({
         search: searchParams.search || '',
-        offset: searchParams.offset || 0,
         limit: searchParams.limit
     })
 
@@ -43,12 +41,13 @@ const CategoriesTable = async ({ searchParams }: CategoriesProps) => {
         <CategoryTable
             columns={columns}
             data={results}
+            dataCount={count}
         />
     )
 }
 
 const Categories = async ({ searchParams }: CategoriesProps) => {
-    const { search = '', offset = 0 } = searchParams
+    const { search = '' } = searchParams
 
     return (
         <>
@@ -62,7 +61,6 @@ const Categories = async ({ searchParams }: CategoriesProps) => {
                         <CategoriesCount
                             searchParams={{
                                 search,
-                                offset,
                                 limit: defaultLimit
                             }}
                         />
@@ -77,7 +75,6 @@ const Categories = async ({ searchParams }: CategoriesProps) => {
                         <CategoriesTable
                             searchParams={{
                                 search,
-                                offset,
                                 limit: defaultLimit
                             }}
                         />

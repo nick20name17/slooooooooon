@@ -1,6 +1,6 @@
 export interface BaseQueryParams {
     search: string
-    offset: number
+    offset?: number
     limit: number
 }
 

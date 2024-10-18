@@ -21,10 +21,6 @@ export const CategoryFilter = () => {
         defaultValue: 'all'
     })
 
-    const [_, setOffset] = useQueryState('offset', {
-        shallow: false
-    })
-
     const { data: categories, isLoading } = useQuery({
         queryFn: () => clientApi<Category[]>('/categories')
     })
@@ -42,7 +38,6 @@ export const CategoryFilter = () => {
             value={category}
             onValueChange={(value) => {
                 setCategory(value)
-                setOffset('0')
             }}>
             <SelectTrigger className='w-80 pl-4 text-lg'>
                 <SelectValue placeholder='Оберіть категорію' />

@@ -23,10 +23,8 @@ interface ProductsProps {
 const ProductsCount = async ({ searchParams }: ProductsProps) => {
     const data = (await getProducts({
         search: searchParams.search || '',
-        offset: searchParams.offset || 0,
         limit: searchParams.limit,
-        categories:
-            searchParams?.categories === 'all' ? '' : searchParams?.categories || ''
+        categories: searchParams?.categories
     })) as ProductResponse
 
     return (
@@ -39,22 +37,21 @@ const ProductsCount = async ({ searchParams }: ProductsProps) => {
 const ProductTable = async ({ searchParams }: ProductsProps) => {
     const data = (await getProducts({
         search: searchParams.search || '',
-        offset: searchParams.offset || 0,
         limit: searchParams.limit,
-        categories:
-            searchParams?.categories === 'all' ? '' : searchParams?.categories || ''
+        categories: searchParams?.categories
     })) as ProductResponse
 
     return (
         <ProductsTable
             columns={columns}
             data={data.results}
+            dataCount={data.count}
         />
     )
 }
 
 const Products = async ({ searchParams }: ProductsProps) => {
-    const { search = '', offset = 0, categories } = searchParams
+    const { search = '', categories = 'all' } = searchParams
 
     return (
         <>
@@ -68,7 +65,6 @@ const Products = async ({ searchParams }: ProductsProps) => {
                         <ProductsCount
                             searchParams={{
                                 search,
-                                offset,
                                 limit: defaultLimit,
                                 categories: categories === 'all' ? '' : categories || ''
                             }}
@@ -85,7 +81,6 @@ const Products = async ({ searchParams }: ProductsProps) => {
                         <ProductTable
                             searchParams={{
                                 search,
-                                offset,
                                 limit: defaultLimit,
                                 categories: categories === 'all' ? '' : categories || ''
                             }}
