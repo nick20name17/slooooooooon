@@ -71,21 +71,20 @@ export const CheckoutForm = () => {
             const deliveryType =
                 values.delivery_type === 'self' ? 'Самовивіз з міста Рівне' : 'Нова пошта'
 
-            const deliveryRefs = ` |${values.city},${values.warehouse}|`
-
-            const waybill =
-                values.delivery_type === 'self'
-                    ? deliveryType
-                    : 'Доставка новою поштою за адресою: ' +
-                      cityLabel +
-                      ', ' +
-                      warehouseLabel +
-                      deliveryRefs
-
             addOrder({
                 status: values.status,
                 order_items: values.order_items,
-                waybill,
+                waybill: {
+                    city: {
+                        ref: values?.city!,
+                        name: cityLabel
+                    },
+                    warehouse: {
+                        ref: values?.warehouse!,
+                        name: warehouseLabel
+                    },
+                    delivery_type: deliveryType
+                },
                 customer: response?.id!
             }).then((response) => {
                 addComment({

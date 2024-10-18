@@ -1,8 +1,9 @@
 import type { Customer } from '@/api/customers/customers.type'
+import type { Waybill } from '@/api/orders/orders.type'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 
 interface ContactCellProps {
-    waybill: string
+    waybill: Waybill
     customer: Customer
 }
 
@@ -23,7 +24,7 @@ export const ContactCell = ({ customer, waybill }: ContactCellProps) => {
                 </svg>
                 {customer.first_name + ' ' + customer.last_name + ' ' + customer.surname}
             </PopoverTrigger>
-            <PopoverContent className='bg-[#1111117e] backdrop-blur-[7.5px]'>
+            <PopoverContent className='w-80 bg-[#1111117e] backdrop-blur-[7.5px]'>
                 <h3 className='mb-1 text-sm text-muted-foreground'>Контакти</h3>
                 <ul className='flex flex-col gap-2 rounded-xl border bg-[#23232381] p-4 text-sm backdrop-blur-[7.5px]'>
                     <li className='flex items-center gap-x-2 border-b pb-2'>
@@ -74,6 +75,7 @@ export const ContactCell = ({ customer, waybill }: ContactCellProps) => {
                     </li>
                     <li className='flex items-center gap-x-2 border-b pb-2'>
                         <svg
+                            className='flex-shrink-0'
                             xmlns='http://www.w3.org/2000/svg'
                             width='20'
                             height='20'
@@ -84,7 +86,11 @@ export const ContactCell = ({ customer, waybill }: ContactCellProps) => {
                                 fill='#BB3BDC'
                             />
                         </svg>
-                        {waybill}
+                        {waybill?.delivery_type +
+                            ' / ' +
+                            waybill?.city?.name +
+                            ' / ' +
+                            waybill?.warehouse?.name}
                     </li>
                 </ul>
             </PopoverContent>

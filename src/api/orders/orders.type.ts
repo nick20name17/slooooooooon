@@ -10,15 +10,27 @@ export interface Order {
     id: number
     status: OrderStatus
     customer: Customer
-    waybill: string
+    waybill: Waybill
     order_items: OrderItem[]
     comments: Comment[]
+}
+
+export interface Waybill {
+    delivery_type: string
+    city: {
+        ref: string
+        name: string
+    }
+    warehouse: {
+        ref: string
+        name: string
+    }
 }
 
 export interface OrdersAddData {
     status: OrderStatus
     customer: number
-    waybill: string
+    waybill: Waybill
     order_items: OrderItems[]
 }
 

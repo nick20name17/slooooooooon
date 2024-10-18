@@ -62,7 +62,6 @@ export const OrderCity = ({
     setCity,
     setCityLabel,
     deliveryType,
-
     ...props
 }: OrderCityProps) => {
     const [open, setOpen] = useState(false)
@@ -91,11 +90,13 @@ export const OrderCity = ({
         return []
     }, [data?.data])
 
-    useEffect(() => {
-        return () => {
-            setCity('')
-        }
-    }, [deliveryType])
+    // useEffect(() => {
+    //     return () => {
+    //         if (deliveryType === 'self') {
+    //             setCity('')
+    //         }
+    //     }
+    // }, [deliveryType])
 
     return (
         <Popover

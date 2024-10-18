@@ -66,15 +66,15 @@ export const EditOrdersModal = ({ order }: EditOrderProps) => {
     const [warehouseLabel, setWarehouseLabel] = useState('')
     const [cityLabel, setCityLabel] = useState('')
 
-    const [cityRef, warehouseRef] = order.waybill?.split('|')[1]?.split(',') || []
-
     const form = useCustomForm(orderSchema, {
         customer: order.customer.id.toString(),
-        delivery_type: order.waybill.toLowerCase().includes('самовивіз з міста рівне')
+        delivery_type: order?.waybill?.delivery_type
+            .toLowerCase()
+            .includes('самовивіз з міста рівне')
             ? 'self'
             : 'nova-poshta',
-        city: cityRef,
-        warehouse: warehouseRef,
+        city: order?.waybill?.city?.ref,
+        warehouse: order?.waybill?.warehouse?.ref,
         order_items: order.order_items.map((item) => ({
             id: item.variant.id,
             amount: item.quantity
@@ -117,8 +117,6 @@ export const EditOrdersModal = ({ order }: EditOrderProps) => {
         orderItems
     )
 
-    console.log(singleVariantProducts)
-
     const orderItemsToMutate = {
         delete: order?.order_items.filter((item) =>
             toDelete.some((p) => p.id === item.variant.id)
@@ -141,20 +139,19 @@ export const EditOrdersModal = ({ order }: EditOrderProps) => {
             const deliveryType =
                 data.delivery_type === 'self' ? 'Самовивіз з міста Рівне' : 'Нова пошта'
 
-            const deliveryRefs = ` |${data.city},${data.warehouse}|`
-
-            const waybill =
-                data.delivery_type === 'self'
-                    ? deliveryType
-                    : 'Доставка новою поштою за адресою: ' +
-                      cityLabel +
-                      ', ' +
-                      warehouseLabel +
-                      deliveryRefs
-
             return updateOrder(order.id, {
                 status: data.status,
-                waybill,
+                waybill: {
+                    city: {
+                        ref: data?.city!,
+                        name: cityLabel
+                    },
+                    warehouse: {
+                        ref: data?.warehouse!,
+                        name: warehouseLabel
+                    },
+                    delivery_type: deliveryType
+                },
                 customer: +data.customer
             })
         },

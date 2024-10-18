@@ -35,7 +35,7 @@ export const columns: ColumnDef<Order>[] = [
             }, 0)
 
             return (
-                <div className='w-32'>
+                <div className='w-36'>
                     <div className='flex h-10 w-fit items-center gap-x-2 rounded-xl border border-foreground px-3 py-1'>
                         <span className='font-bold text-green'>$ </span>
                         {price} грн

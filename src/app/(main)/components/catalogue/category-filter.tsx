@@ -44,7 +44,7 @@ export const CategoryFilter = () => {
                 <TabsTrigger
                     value='all'
                     className={
-                        'rounded-full border border-[#e6ddb9] px-3 py-1.5 text-2xl font-bold text-[#e6ddb9] hover:text-[#e6ddb9] data-[state=active]:bg-[#e6ddb9] data-[state=active]:text-background'
+                        'rounded-full border border-[#e6ddb9] px-3 py-1.5 text-2xl font-bold text-[#e6ddb9] hover:!bg-background hover:!text-[#e6ddb9] data-[state=active]:bg-[#e6ddb9] data-[state=active]:text-background'
                     }>
                     Усі
                 </TabsTrigger>
@@ -53,7 +53,7 @@ export const CategoryFilter = () => {
                         key={category.id}
                         value={category.id.toString()}
                         className={
-                            'rounded-full border border-[#e6ddb9] px-3 py-1.5 text-2xl font-bold text-[#e6ddb9] hover:text-[#e6ddb9] data-[state=active]:bg-[#e6ddb9] data-[state=active]:text-background'
+                            'rounded-full border border-[#e6ddb9] px-3 py-1.5 text-2xl font-bold text-[#e6ddb9] hover:!bg-background hover:!text-[#e6ddb9] data-[state=active]:bg-[#e6ddb9] data-[state=active]:text-background'
                         }>
                         {category.name}
                     </TabsTrigger>

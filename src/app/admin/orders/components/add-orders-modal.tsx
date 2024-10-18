@@ -59,26 +59,27 @@ export const AddOrdersModal = () => {
     const deliveryType = form.watch('delivery_type')
     const city = form.watch('city')
 
+    console.log(city)
+
     const mutation = useMutation({
         mutationFn: (data: OrderFormValues) => {
             const deliveryType =
                 data.delivery_type === 'self' ? 'Самовивіз з міста Рівне' : 'Нова пошта'
 
-            const deliveryRefs = ` |${data.city},${data.warehouse}|`
-
-            const waybill =
-                data.delivery_type === 'self'
-                    ? deliveryType
-                    : 'Доставка новою поштою за адресою: ' +
-                      cityLabel +
-                      ', ' +
-                      warehouseLabel +
-                      deliveryRefs
-
             return addOrder({
                 status: data.status,
                 order_items: data.order_items,
-                waybill,
+                waybill: {
+                    city: {
+                        ref: data?.city!,
+                        name: cityLabel
+                    },
+                    warehouse: {
+                        ref: data?.warehouse!,
+                        name: warehouseLabel
+                    },
+                    delivery_type: deliveryType
+                },
                 customer: +data.customer
             })
         },
