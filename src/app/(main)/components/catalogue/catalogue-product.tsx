@@ -17,6 +17,7 @@ export const CatalogueProduct = ({ product }: { product: Product }) => {
 
             <Link
                 className='w-full'
+                prefetch
                 href={`/product/${product.id}`}>
                 <Image
                     src={product.thumbnail ? product?.thumbnail : productFallback.src}

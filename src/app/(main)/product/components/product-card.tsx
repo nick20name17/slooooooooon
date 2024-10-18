@@ -8,6 +8,7 @@ import { YearBadge } from '../../components/year-badge'
 
 import { ProductAddToCart } from './product-add-to-cart'
 import type { Product } from '@/api/products/products.type'
+import productFallback from '@/assets/images/product-fallback.jpg'
 import { Button } from '@/components/ui/button'
 import {
     Carousel,
@@ -37,7 +38,11 @@ export const ProductCard = ({ product }: ProductCardProps) => {
                 <CarouselContent className='relative h-[500px]'>
                     <CarouselItem>
                         <Image
-                            src={product.thumbnail}
+                            src={
+                                product.thumbnail
+                                    ? product.thumbnail
+                                    : productFallback.src
+                            }
                             alt={product.title}
                             height={500}
                             width={100}
@@ -47,7 +52,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
                     {product.images.map((image) => (
                         <CarouselItem key={image.id}>
                             <Image
-                                src={image.image}
+                                src={image.image ? image.image : productFallback.src}
                                 alt={product.title}
                                 height={500}
                                 width={100}
