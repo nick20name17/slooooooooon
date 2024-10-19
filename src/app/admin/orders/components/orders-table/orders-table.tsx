@@ -1,68 +1,65 @@
-'use client'
+"use client";
 
-import { useInfiniteQuery } from '@tanstack/react-query'
-import { flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
-import { Loader2 } from 'lucide-react'
-import { useQueryState } from 'nuqs'
-import { useMemo } from 'react'
+import { useInfiniteQuery } from "@tanstack/react-query";
+import {
+    flexRender,
+    getCoreRowModel,
+    useReactTable,
+} from "@tanstack/react-table";
+import { Loader2 } from "lucide-react";
+import { useMemo } from "react";
 
-import { clientApi } from '@/api/client'
-import type { Order, OrdersResponse } from '@/api/orders/orders.type'
-import { InfiniteScroll } from '@/app/admin/components/infinite-scroll'
-import { defaultLimit } from '@/app/admin/config/api'
-import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
-import type { DataTableProps } from '@/types/table'
+import { clientApi } from "@/api/client";
+import type { Order, OrdersResponse } from "@/api/orders/orders.type";
+import { InfiniteScroll } from "@/app/admin/components/infinite-scroll";
+import { defaultLimit } from "@/app/admin/config/api";
+import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
+import type { DataTableProps } from "@/types/table";
 
 export const OrdersTable = <_, TValue>({
     columns,
     data,
-    dataCount
+    dataCount,
+    searchParams,
 }: DataTableProps<Order, TValue>) => {
-    const [search] = useQueryState('search', {
-        defaultValue: ''
-    })
-
-    const [status] = useQueryState('status', {
-        defaultValue: 'all'
-    })
-
-    const parsedStatus = status === 'all' ? '' : status || ''
+    const parsedStatus =
+        searchParams.status === "all" ? "" : searchParams.status || "";
 
     const {
         data: orders,
         isFetchingNextPage,
         fetchNextPage,
-        hasNextPage
+        hasNextPage,
     } = useInfiniteQuery({
-        queryKey: ['orders', search, status],
+        queryKey: ["orders", searchParams.search, parsedStatus],
         queryFn: async ({ pageParam = 0 }) => {
             const res = await clientApi<OrdersResponse>(
-                `/orders/?limit=${defaultLimit}&offset=${pageParam}&search=${search}&status=${parsedStatus}`
-            )
-            return res?.results
+                `/orders/?limit=${defaultLimit}&offset=${pageParam}&search=${searchParams.search}&status=${parsedStatus}`
+            );
+            return res?.results;
         },
         getNextPageParam: (_, pages) => {
-            if (pages.length * defaultLimit >= dataCount) return undefined
+            if (pages.length * defaultLimit >= dataCount) return undefined;
             else {
-                return pages.length * defaultLimit
+                return pages.length * defaultLimit;
             }
         },
         initialData: {
             pages: [data],
-            pageParams: [0]
+            pageParams: [0],
         },
-        cacheTime: Infinity
-    })
+        cacheTime: Infinity,
+    });
 
     const flatData = useMemo(() => {
-        return orders?.pages.flatMap((page) => page) || []
-    }, [orders])
+        return orders?.pages.flatMap((page) => page) || [];
+    }, [orders]);
 
     const table = useReactTable({
         data: flatData as any,
         columns,
-        getCoreRowModel: getCoreRowModel()
-    })
+        getCoreRowModel: getCoreRowModel(),
+    });
 
     return (
         <Table>
@@ -71,7 +68,7 @@ export const OrdersTable = <_, TValue>({
                     table.getRowModel().rows.map((row) => (
                         <TableRow
                             key={row.id}
-                            data-state={row.getIsSelected() && 'selected'}>
+                            data-state={row.getIsSelected() && "selected"}>
                             {row.getVisibleCells().map((cell) => (
                                 <TableCell key={cell.id}>
                                     {flexRender(
@@ -86,7 +83,7 @@ export const OrdersTable = <_, TValue>({
                     <TableRow>
                         <TableCell
                             colSpan={columns.length}
-                            className='h-24 text-center'>
+                            className="h-24 text-center">
                             Нічого не знайдено
                         </TableCell>
                     </TableRow>
@@ -99,12 +96,12 @@ export const OrdersTable = <_, TValue>({
                             next={fetchNextPage}
                             threshold={1}>
                             {hasNextPage && !isFetchingNextPage ? (
-                                <Loader2 className='mx-auto my-4 size-4 animate-spin' />
+                                <Loader2 className="mx-auto my-4 size-4 animate-spin" />
                             ) : null}
                         </InfiniteScroll>
                     </TableCell>
                 </TableRow>
             </TableBody>
         </Table>
-    )
-}
+    );
+};

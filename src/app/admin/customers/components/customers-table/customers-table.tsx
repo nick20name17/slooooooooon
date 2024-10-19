@@ -1,63 +1,65 @@
-'use client'
+"use client";
 
-import { useInfiniteQuery } from '@tanstack/react-query'
-import { flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
-import { Loader2 } from 'lucide-react'
-import { useQueryState } from 'nuqs'
-import { useMemo } from 'react'
+import { useInfiniteQuery } from "@tanstack/react-query";
+import {
+    flexRender,
+    getCoreRowModel,
+    useReactTable,
+} from "@tanstack/react-table";
+import { Loader2 } from "lucide-react";
+import { useMemo } from "react";
 
-import { clientApi } from '@/api/client'
-import type { Customer, CustomerResponse } from '@/api/customers/customers.type'
-import { InfiniteScroll } from '@/app/admin/components/infinite-scroll'
-import { defaultLimit } from '@/app/admin/config/api'
-import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
-import type { DataTableProps } from '@/types/table'
+import { clientApi } from "@/api/client";
+import type {
+    Customer,
+    CustomerResponse,
+} from "@/api/customers/customers.type";
+import { InfiniteScroll } from "@/app/admin/components/infinite-scroll";
+import { defaultLimit } from "@/app/admin/config/api";
+import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
+import type { DataTableProps } from "@/types/table";
 
 export const CustomersTable = <_, TValue>({
     columns,
     data,
-    dataCount
+    dataCount,
+    searchParams,
 }: DataTableProps<Customer, TValue>) => {
-    const [search] = useQueryState('search', {
-        shallow: false,
-        defaultValue: ''
-    })
-
     const {
         data: customers,
         isFetchingNextPage,
         fetchNextPage,
-        hasNextPage
+        hasNextPage,
     } = useInfiniteQuery({
-        queryKey: ['customers', search],
+        queryKey: ["customers", searchParams.search],
         queryFn: async ({ pageParam = 0 }) => {
             const res = await clientApi<CustomerResponse>(
-                `/customers/?limit=${defaultLimit}&offset=${pageParam}&search=${search}`
-            )
-            return res?.results
+                `/customers/?limit=${defaultLimit}&offset=${pageParam}&search=${searchParams.search}`
+            );
+            return res?.results;
         },
         getNextPageParam: (_, pages) => {
-            if (pages.length * defaultLimit >= dataCount) return undefined
+            if (pages.length * defaultLimit >= dataCount) return undefined;
             else {
-                return pages.length * defaultLimit
+                return pages.length * defaultLimit;
             }
         },
         initialData: {
             pages: [data],
-            pageParams: [0]
+            pageParams: [0],
         },
-        cacheTime: Infinity
-    })
+        cacheTime: Infinity,
+    });
 
     const flatData = useMemo(() => {
-        return customers?.pages.flatMap((page) => page) || []
-    }, [customers])
+        return customers?.pages.flatMap((page) => page) || [];
+    }, [customers]);
 
     const table = useReactTable({
         data: flatData as any,
         columns,
-        getCoreRowModel: getCoreRowModel()
-    })
+        getCoreRowModel: getCoreRowModel(),
+    });
 
     return (
         <Table>
@@ -66,7 +68,7 @@ export const CustomersTable = <_, TValue>({
                     table.getRowModel().rows.map((row) => (
                         <TableRow
                             key={row.id}
-                            data-state={row.getIsSelected() && 'selected'}>
+                            data-state={row.getIsSelected() && "selected"}>
                             {row.getVisibleCells().map((cell) => (
                                 <TableCell key={cell.id}>
                                     {flexRender(
@@ -81,7 +83,7 @@ export const CustomersTable = <_, TValue>({
                     <TableRow>
                         <TableCell
                             colSpan={columns.length}
-                            className='h-24 text-center'>
+                            className="h-24 text-center">
                             Нічого не знайдено
                         </TableCell>
                     </TableRow>
@@ -95,12 +97,12 @@ export const CustomersTable = <_, TValue>({
                             next={fetchNextPage}
                             threshold={1}>
                             {hasNextPage && !isFetchingNextPage ? (
-                                <Loader2 className='mx-auto my-4 size-4 animate-spin' />
+                                <Loader2 className="mx-auto my-4 size-4 animate-spin" />
                             ) : null}
                         </InfiniteScroll>
                     </TableCell>
                 </TableRow>
             </TableBody>
         </Table>
-    )
-}
+    );
+};
