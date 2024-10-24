@@ -1,6 +1,8 @@
 "use client";
-
 import { type ColumnDef } from "@tanstack/react-table";
+import { format } from "date-fns";
+
+import { uk } from "date-fns/locale";
 
 import type { Order } from "@/api/orders/orders.type";
 import { ContactCell } from "./cells/contact-cell";
@@ -10,10 +12,12 @@ import { StatusCell } from "./cells/status-cell";
 export const columns: ColumnDef<Order>[] = [
     {
         accessorKey: "id",
-        header: () => <div className="w-14">#Замовлення</div>,
+        header: () => <div className="w-20">#Замовлення</div>,
         cell: ({ row }) => (
-            <div className="flex h-10 w-14 items-center justify-center rounded-xl border text-center">
-                #{row.original.id}
+            <div className="w-20">
+                <div className="w-14 flex h-10 items-center justify-center rounded-xl border text-center">
+                    #{row.original.id}
+                </div>
             </div>
         ),
     },
@@ -26,6 +30,17 @@ export const columns: ColumnDef<Order>[] = [
                     customer={row.original.customer}
                     waybill={row.original.waybill}
                 />
+            </div>
+        ),
+    },
+    {
+        accessorKey: "created",
+        header: () => <div className="w-32">Час / дата</div>,
+        cell: ({ row }) => (
+            <div className="w-32">
+                {format(row.original.created, "HH:mm, dd MMM", {
+                    locale: uk,
+                })}
             </div>
         ),
     },

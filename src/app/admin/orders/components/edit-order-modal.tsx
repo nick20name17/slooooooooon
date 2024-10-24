@@ -65,7 +65,7 @@ export const EditOrdersModal = ({ order }: EditOrderProps) => {
             title: item.variant.product.title,
             year: item.variant.product.year,
             category: item.variant.product.category,
-            thumbnail: "",
+            thumbnail: item.variant.product.thumbnail,
         }))
     );
 

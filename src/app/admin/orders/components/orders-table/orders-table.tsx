@@ -17,6 +17,7 @@ import {
     Table,
     TableBody,
     TableCell,
+    TableHead,
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
@@ -74,14 +75,14 @@ export const OrdersTable = <_, TValue>({
                     <TableRow key={headerGroup.id}>
                         {headerGroup.headers.map((header) => {
                             return (
-                                <TableHeader key={header.id}>
+                                <TableHead key={header.id}>
                                     {header.isPlaceholder
                                         ? null
                                         : flexRender(
                                               header.column.columnDef.header,
                                               header.getContext()
                                           )}
-                                </TableHeader>
+                                </TableHead>
                             );
                         })}
                     </TableRow>
