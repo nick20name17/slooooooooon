@@ -113,7 +113,7 @@ export const AddOrdersModal = () => {
                 <Button
                     size="lg"
                     variant="outline"
-                    className="rounded-full border-green bg-background px-3.5 text-lg font-bold drop-shadow-[3px_4px_0px_#23a901] transition-all hover:bg-green/15 hover:drop-shadow-none">
+                    className="max-sm:w-full rounded-full border-green bg-background px-3.5 text-lg font-bold drop-shadow-[3px_4px_0px_#23a901] transition-all hover:bg-green/15 hover:drop-shadow-none">
                     <PlusCircle className="mr-2 size-4 text-green" />
                     Нове замовлення
                 </Button>

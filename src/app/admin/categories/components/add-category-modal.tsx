@@ -60,7 +60,7 @@ export const AddCategoryModal = () => {
                 <Button
                     size="lg"
                     variant="outline"
-                    className="rounded-full border-seeblue bg-background px-3.5 text-lg font-bold drop-shadow-[3px_4px_0px_#1baff8] transition-all hover:bg-seeblue/15 hover:drop-shadow-none">
+                    className="max-md:w-full rounded-full border-seeblue bg-background px-3.5 text-lg font-bold drop-shadow-[3px_4px_0px_#1baff8] transition-all hover:bg-seeblue/15 hover:drop-shadow-none">
                     <PlusCircle className="mr-2 size-4 text-seeblue" />
                     Нова категорія
                 </Button>

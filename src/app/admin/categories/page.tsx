@@ -52,12 +52,14 @@ const Categories = async ({ searchParams }: CategoriesProps) => {
 
     return (
         <>
-            <div className="flex items-center justify-between border-b p-5">
+            <div className="flex items-center justify-between border-b flex-wrap gap-6 p-5 max-md:p-4 max-md:gap-4">
                 <div className="flex items-center gap-x-4">
                     <div className="flex size-8 items-center justify-center rounded-sm bg-seeblue">
                         <LayoutGrid className="size-6" />
                     </div>
-                    <h1 className="text-4xl font-bold">Категорії</h1>
+                    <h1 className="text-4xl max-md:text-3xl font-bold">
+                        Категорії
+                    </h1>
                     <Suspense
                         fallback={
                             <Skeleton className="size-10 rounded-full" />
@@ -72,9 +74,9 @@ const Categories = async ({ searchParams }: CategoriesProps) => {
                 </div>
                 <AddCategoryModal />
             </div>
-            <div className="flex flex-col gap-y-7 p-5">
+            <div className="flex flex-col gap-y-7 p-5 max-md:p-4 max-md:gap-y-5">
                 <SearchBar />
-                <div className="h-[570px] overflow-auto rounded-2xl border">
+                <div className="h-[570px]  overflow-auto rounded-2xl border">
                     <Suspense fallback={<Skeleton className="size-full" />}>
                         <CategoriesTable
                             searchParams={{

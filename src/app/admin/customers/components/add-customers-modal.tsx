@@ -65,7 +65,7 @@ export const AddCustomersModal = () => {
                 <Button
                     size="lg"
                     variant="outline"
-                    className="rounded-full border-sand bg-background px-3.5 text-lg font-bold drop-shadow-[3px_4px_0px_#ff9f0a] transition-all hover:bg-sand/15 hover:drop-shadow-none">
+                    className="max-md:w-full rounded-full border-sand bg-background px-3.5 text-lg font-bold drop-shadow-[3px_4px_0px_#ff9f0a] transition-all hover:bg-sand/15 hover:drop-shadow-none">
                     <PlusCircle className="mr-2 size-4 text-sand" />
                     Новий клієнт
                 </Button>

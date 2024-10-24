@@ -59,12 +59,14 @@ const Products = async ({ searchParams }: ProductsProps) => {
 
     return (
         <>
-            <div className="flex items-center justify-between border-b p-5">
+            <div className="flex items-center justify-between border-b flex-wrap gap-6 p-5 max-md:p-4 max-md:gap-4">
                 <div className="flex items-center gap-x-4">
                     <div className="flex size-8 items-center justify-center rounded-sm bg-blue">
                         <Archive className="size-6" />
                     </div>
-                    <h1 className="text-4xl font-bold">Товари</h1>
+                    <h1 className="text-4xl max-md:text-3xl font-bold">
+                        Товари
+                    </h1>
                     <Suspense
                         fallback={
                             <Skeleton className="size-10 rounded-full" />
@@ -83,10 +85,10 @@ const Products = async ({ searchParams }: ProductsProps) => {
                 </div>
                 <AddProductsModal />
             </div>
-            <div className="flex flex-col gap-y-7 p-5">
+            <div className="flex flex-col gap-y-7 p-5 max-md:gap-y-5 max-md:p-4">
                 <CategoryFilter />
                 <SearchBar />
-                <div className="h-[500px] overflow-auto rounded-2xl border">
+                <div className="h-[500px]  overflow-auto rounded-2xl border">
                     <Suspense fallback={<Skeleton className="size-full" />}>
                         <ProductTable
                             searchParams={{

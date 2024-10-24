@@ -6,6 +6,7 @@ import { SearchBar } from "../components/search-bar";
 import { getOrders } from "@/api/orders/orders";
 import type { OrdersQueryParams } from "@/api/orders/orders.type";
 import { defaultLimit } from "@/app/admin/config/api";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AddOrdersModal } from "./components/add-orders-modal";
 import { columns } from "./components/orders-table/columns";
@@ -58,12 +59,14 @@ const Orders = async ({ searchParams }: OrdersProps) => {
 
     return (
         <>
-            <div className="flex items-center justify-between border-b p-5">
+            <div className="flex items-center justify-between flex-wrap gap-6 border-b p-5 max-md:p-4 max-md:gap-4">
                 <div className="flex items-center gap-x-4">
                     <div className="flex size-8 items-center justify-center rounded-sm bg-green">
                         <ShoppingBag className="size-6" />
                     </div>
-                    <h1 className="text-4xl font-bold">Замовлення</h1>
+                    <h1 className="text-4xl max-md:text-3xl font-bold">
+                        Замовлення
+                    </h1>
                     <Suspense
                         fallback={
                             <Skeleton className="size-10 rounded-full" />
@@ -79,12 +82,15 @@ const Orders = async ({ searchParams }: OrdersProps) => {
                 </div>
                 <AddOrdersModal />
             </div>
-            <div className="flex flex-col gap-y-7 p-5">
-                <div className="flex justify-end">
-                    <StatusFilter />
-                </div>
+            <div className="flex flex-col gap-y-7 p-5 max-md:p-4 max-md:gap-y-5">
+                <ScrollArea className="max-w-full whitespace-nowrap ">
+                    <div className="flex justify-end">
+                        <StatusFilter />
+                    </div>
+                    <ScrollBar orientation="horizontal" />
+                </ScrollArea>
                 <SearchBar />
-                <div className="h-[500px] overflow-auto rounded-2xl border">
+                <div className="h-[500px]  overflow-auto rounded-2xl border">
                     <Suspense fallback={<Skeleton className="size-full" />}>
                         <OrderTable
                             searchParams={{
