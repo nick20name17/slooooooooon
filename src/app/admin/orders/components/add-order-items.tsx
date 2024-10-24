@@ -84,8 +84,8 @@ export const AddOrderItems = ({
                     type="button"
                     size="sm"
                     variant="outline"
-                    className="rounded-full border-green bg-background px-3.5 text-lg font-bold drop-shadow-[3px_4px_0px_#23a901] transition-all hover:bg-green/15 hover:drop-shadow-none">
-                    <PlusCircle className="mr-2 size-4 text-green" />
+                    className="rounded-full border-orders bg-background px-3.5 text-lg font-bold drop-shadow-[3px_4px_0px_#23a901] transition-all hover:bg-orders/15 hover:drop-shadow-none">
+                    <PlusCircle className="mr-2 size-4 text-orders" />
                     Додати товари
                 </Button>
             </DialogTrigger>
@@ -288,7 +288,7 @@ export const OrderItem = ({
                     disabled={isInventory && !isAdded}
                     className={cn(
                         isAdded
-                            ? "border-green text-green outline outline-[rgba(61,181,119,0.40)] hover:border-destructive hover:bg-transparent hover:text-destructive hover:outline-[rgba(198,47,47,0.40)]"
+                            ? "border-orders text-orders outline outline-[rgba(61,181,119,0.40)] hover:border-destructive hover:bg-transparent hover:text-destructive hover:outline-[rgba(198,47,47,0.40)]"
                             : ""
                     )}
                     onClick={onAdd}

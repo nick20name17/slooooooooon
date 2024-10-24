@@ -18,7 +18,7 @@ const Profile = async () => {
         <>
             <div className="flex items-center justify-between border-b flex-wrap gap-6 p-5 max-md:p-4 max-md:gap-4">
                 <div className="flex items-center gap-x-4">
-                    <div className="flex size-8 items-center justify-center rounded-sm bg-purple">
+                    <div className="flex size-8 items-center justify-center rounded-sm bg-profile">
                         <UserRound className="size-6" />
                     </div>
                     <h1 className="text-4xl max-md:text-3xl font-bold">
@@ -28,7 +28,7 @@ const Profile = async () => {
             </div>
             <div className="flex flex-col gap-y-7 p-5">
                 <div className="flex items-center gap-x-5">
-                    <div className="rounded-full size-24 border border-purple flex items-center justify-center shadow-[3px_4px_0px_0px_#2F2E65]">
+                    <div className="rounded-full size-24 border border-profile flex items-center justify-center shadow-[3px_4px_0px_0px_#2F2E65]">
                         <svg
                             width="56"
                             height="56"

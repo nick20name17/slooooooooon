@@ -66,8 +66,8 @@ export const AddCostsModal = () => {
                 <Button
                     size="lg"
                     variant="outline"
-                    className="max-md:w-full rounded-full border-red bg-background px-3.5 text-lg font-bold drop-shadow-[3px_4px_0px_#ff453a] transition-all hover:bg-red/15 hover:drop-shadow-none">
-                    <PlusCircle className="mr-2 size-4 text-red" />
+                    className="max-md:w-full rounded-full border-costs bg-background px-3.5 text-lg font-bold drop-shadow-[3px_4px_0px_#ff453a] transition-all hover:bg-costs/15 hover:drop-shadow-none">
+                    <PlusCircle className="mr-2 size-4 text-costs" />
                     Нова витрата
                 </Button>
             </SheetTrigger>
@@ -81,12 +81,12 @@ export const AddCostsModal = () => {
                             <Button
                                 type="submit"
                                 variant="outline"
-                                className="w-28 rounded-full border-red bg-background px-3.5 text-lg font-bold drop-shadow-[3px_4px_0px_#ff453a] transition-all hover:bg-red/15 hover:drop-shadow-none">
+                                className="w-28 rounded-full border-costs bg-background px-3.5 text-lg font-bold drop-shadow-[3px_4px_0px_#ff453a] transition-all hover:bg-costs/15 hover:drop-shadow-none">
                                 {mutation.isLoading ? (
                                     <Loader2 className="h-4 w-4 animate-spin" />
                                 ) : (
                                     <>
-                                        <PlusCircle className="mr-2 size-4 text-red" />
+                                        <PlusCircle className="mr-2 size-4 text-costs" />
                                         Додати
                                     </>
                                 )}

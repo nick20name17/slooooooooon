@@ -27,7 +27,7 @@ const CustomersCount = async ({ searchParams }: CustomersProps) => {
     });
 
     return (
-        <div className="flex size-10 items-center justify-center rounded-full border border-sand font-bold">
+        <div className="flex size-10 items-center justify-center rounded-full border border-clients font-bold">
             {count}
         </div>
     );
@@ -56,7 +56,7 @@ const Customers = async ({ searchParams }: CustomersProps) => {
         <>
             <div className="flex items-center justify-between border-b flex-wrap gap-6 p-5 max-md:p-4 max-md:gap-4">
                 <div className="flex items-center gap-x-4">
-                    <div className="flex size-8 items-center justify-center rounded-sm bg-sand">
+                    <div className="flex size-8 items-center justify-center rounded-sm bg-clients">
                         <UsersRound className="size-6" />
                     </div>
                     <h1 className="text-4xl max-md:text-3xl font-bold">

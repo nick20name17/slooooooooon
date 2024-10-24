@@ -24,7 +24,7 @@ const CostsCount = async ({ searchParams }: ProductsProps) => {
     });
 
     return (
-        <div className="flex size-10 items-center justify-center rounded-full border border-red font-bold">
+        <div className="flex size-10 items-center justify-center rounded-full border border-costs font-bold">
             {count}
         </div>
     );
@@ -38,7 +38,7 @@ const Costs = async ({ searchParams }: ProductsProps) => {
         <>
             <div className="flex items-center justify-between border-b flex-wrap gap-6 p-5 max-md:p-4 max-md:gap-4">
                 <div className="flex items-center gap-x-4">
-                    <div className="flex size-8 items-center justify-center rounded-sm bg-red">
+                    <div className="flex size-8 items-center justify-center rounded-sm bg-costs">
                         <CircleDollarSign className="size-6" />
                     </div>
                     <h1 className="text-4xl max-md:text-3xl font-bold">

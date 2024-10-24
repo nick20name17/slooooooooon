@@ -31,7 +31,7 @@ const OrdersCount = async ({ searchParams }: OrdersProps) => {
     });
 
     return (
-        <div className="flex size-10 items-center justify-center rounded-full border border-green font-bold">
+        <div className="flex size-10 items-center justify-center rounded-full border border-orders font-bold">
             {count}
         </div>
     );
@@ -62,7 +62,7 @@ const Orders = async ({ searchParams }: OrdersProps) => {
         <>
             <div className="flex items-center justify-between flex-wrap gap-6 border-b p-5 max-md:p-4 max-md:gap-4">
                 <div className="flex items-center gap-x-4">
-                    <div className="flex size-8 items-center justify-center rounded-sm bg-green">
+                    <div className="flex size-8 items-center justify-center rounded-sm bg-orders">
                         <ShoppingBag className="size-6" />
                     </div>
                     <h1 className="text-4xl max-md:text-3xl font-bold">

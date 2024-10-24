@@ -10,12 +10,12 @@ const config: Config = {
     theme: {
         extend: {
             colors: {
-                green: "#23a901",
-                blue: "#0a84ff",
-                sand: "#ff9f0a",
-                seeblue: "#1baff8",
-                red: "#ff453a",
-                purple: "#5e5ce6",
+                orders: "#23a901",
+                products: "#0a84ff",
+                clients: "#ff9f0a",
+                categories: "#1baff8",
+                costs: "#ff453a",
+                profile: "#5e5ce6",
                 background: "hsl(var(--background))",
                 foreground: "hsl(var(--foreground))",
                 card: {

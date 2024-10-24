@@ -147,8 +147,8 @@ export const AddProductsModal = () => {
                 <Button
                     size="lg"
                     variant="outline"
-                    className="max-md:w-full rounded-full border-blue bg-background px-3.5 text-lg font-bold drop-shadow-[3px_4px_0px_#0a84ff] transition-all hover:bg-blue/15 hover:drop-shadow-none">
-                    <PlusCircle className="mr-2 size-4 text-blue" />
+                    className="max-md:w-full rounded-full border-products bg-background px-3.5 text-lg font-bold drop-shadow-[3px_4px_0px_#0a84ff] transition-all hover:bg-products/15 hover:drop-shadow-none">
+                    <PlusCircle className="mr-2 size-4 text-products" />
                     Новий товар
                 </Button>
             </SheetTrigger>

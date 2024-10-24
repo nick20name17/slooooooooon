@@ -169,12 +169,12 @@ export const ProfileForm = ({ user }: ProfileSchemaProps) => {
                     <Button
                         type="submit"
                         variant="outline"
-                        className="w-32 rounded-full border-purple bg-background px-3.5 text-lg font-bold drop-shadow-[3px_4px_0px_#5e5ce6] transition-all hover:bg-purple/15 hover:drop-shadow-none">
+                        className="w-32 rounded-full border-profile bg-background px-3.5 text-lg font-bold drop-shadow-[3px_4px_0px_#5e5ce6] transition-all hover:bg-profile/15 hover:drop-shadow-none">
                         {false ? (
                             <Loader2 className="h-4 w-4 animate-spin" />
                         ) : (
                             <>
-                                <PlusCircle className="mr-2 size-4 text-purple" />
+                                <PlusCircle className="mr-2 size-4 text-profile" />
                                 Зберегти
                             </>
                         )}

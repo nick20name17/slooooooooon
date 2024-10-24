@@ -30,12 +30,12 @@ export const SideBar = () => {
                             className={cn(
                                 "w-full justify-start text-lg max-lg:justify-center max-lg:[&>span]:hidden",
                                 pathname === "/admin/orders"
-                                    ? "border-green"
+                                    ? "border-orders"
                                     : ""
                             )}
                             asChild>
                             <Link href="/admin/orders">
-                                <div className="mr-3 flex size-5 items-center justify-center rounded bg-green max-lg:mr-0">
+                                <div className="mr-3 flex size-5 items-center justify-center rounded bg-orders max-lg:mr-0">
                                     <ShoppingBag className="size-3 shrink-0" />
                                 </div>
                                 <span>Замовлення</span>
@@ -49,12 +49,12 @@ export const SideBar = () => {
                             className={cn(
                                 "w-full justify-start text-lg max-lg:justify-center max-lg:[&>span]:hidden",
                                 pathname === "/admin/products"
-                                    ? "border-blue"
+                                    ? "border-products"
                                     : ""
                             )}
                             asChild>
                             <Link href="/admin/products">
-                                <div className="mr-3 flex size-5 items-center justify-center rounded bg-blue max-lg:mr-0">
+                                <div className="mr-3 flex size-5 items-center justify-center rounded bg-products max-lg:mr-0">
                                     <Archive className="size-3 shrink-0" />
                                 </div>
                                 <span>Товари</span>
@@ -68,12 +68,12 @@ export const SideBar = () => {
                             className={cn(
                                 "w-full justify-start text-lg max-lg:justify-center max-lg:[&>span]:hidden",
                                 pathname === "/admin/customers"
-                                    ? "border-sand"
+                                    ? "border-clients"
                                     : ""
                             )}
                             asChild>
                             <Link href="/admin/customers">
-                                <div className="mr-3 flex size-5 items-center justify-center rounded bg-sand max-lg:mr-0">
+                                <div className="mr-3 flex size-5 items-center justify-center rounded bg-clients max-lg:mr-0">
                                     <UsersRound className="size-3 shrink-0" />
                                 </div>
                                 <span>Клієнти</span>
@@ -87,12 +87,12 @@ export const SideBar = () => {
                             className={cn(
                                 "w-full justify-start text-lg max-lg:justify-center max-lg:[&>span]:hidden",
                                 pathname === "/admin/categories"
-                                    ? "border-seeblue"
+                                    ? "border-categories"
                                     : ""
                             )}
                             asChild>
                             <Link href="/admin/categories">
-                                <div className="mr-3 flex size-5 items-center justify-center rounded bg-seeblue max-lg:mr-0">
+                                <div className="mr-3 flex size-5 items-center justify-center rounded bg-categories max-lg:mr-0">
                                     <LayoutGrid className="size-3 shrink-0" />
                                 </div>
                                 <span>Категорії</span>
@@ -105,11 +105,13 @@ export const SideBar = () => {
                             size="sm"
                             className={cn(
                                 "w-full justify-start text-lg max-lg:justify-center max-lg:[&>span]:hidden",
-                                pathname === "/admin/costs" ? "border-red" : ""
+                                pathname === "/admin/costs"
+                                    ? "border-costs"
+                                    : ""
                             )}
                             asChild>
                             <Link href="/admin/costs">
-                                <div className="mr-3 flex size-5 items-center justify-center rounded bg-red max-lg:mr-0">
+                                <div className="mr-3 flex size-5 items-center justify-center rounded bg-costs max-lg:mr-0">
                                     <CircleDollarSign className="size-3 shrink-0" />
                                 </div>
                                 <span>Витрати</span>
@@ -123,12 +125,12 @@ export const SideBar = () => {
                             className={cn(
                                 "w-full justify-start text-lg max-lg:justify-center max-lg:[&>span]:hidden",
                                 pathname === "/admin/profile"
-                                    ? "border-purple"
+                                    ? "border-profile"
                                     : ""
                             )}
                             asChild>
                             <Link href="/admin/profile">
-                                <div className="mr-3 flex size-5 items-center justify-center rounded bg-purple max-lg:mr-0">
+                                <div className="mr-3 flex size-5 items-center justify-center rounded bg-profile max-lg:mr-0">
                                     <UserRound className="size-3 shrink-0" />
                                 </div>
                                 <span>Профайл</span>
