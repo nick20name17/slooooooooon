@@ -7,6 +7,7 @@ import { getCosts } from "@/api/costs/costs";
 import type { CostsQueryParams } from "@/api/costs/costs.type";
 import { defaultLimit } from "@/app/admin/config/api";
 import { Skeleton } from "@/components/ui/skeleton";
+import { AddCostsModal } from "./components/add-costs-modal";
 
 export const metadata = {
     title: "Витрати",
@@ -50,6 +51,7 @@ const Costs = async ({ searchParams }: ProductsProps) => {
                         <CostsCount searchParams={searchParams} />
                     </Suspense>
                 </div>
+                <AddCostsModal />
             </div>
             <div className="flex flex-col gap-y-7 p-5 max-md:p-4 max-md:gap-y-5">
                 <SearchBar />

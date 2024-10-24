@@ -198,4 +198,22 @@ export const changePasswordSchema = object({
     path: ["new_password2"],
 });
 
+export const costSchema = object({
+    order: number({
+        required_error: "Це поле є обов'язковим",
+    }).min(1, "Це поле є обов'язковим"),
+    variant: string({
+        required_error: "Це поле є обов'язковим",
+    }).min(1, "Це поле є обов'язковим"),
+    description: string({
+        required_error: "Це поле є обов'язковим",
+    }).min(1, "Це поле є обов'язковим"),
+    total_coast: number({
+        required_error: "Це поле є обов'язковим",
+    }).min(1, "Це поле є обов'язковим"),
+    type: number({
+        required_error: "Це поле є обов'язковим",
+    }).min(1, "Це поле є обов'язковим"),
+});
+
 export const checkoutSchema = orderSchema.and(customerSchema);
