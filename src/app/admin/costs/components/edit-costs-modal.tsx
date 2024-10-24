@@ -27,6 +27,7 @@ import {
     SheetTitle,
     SheetTrigger,
 } from "@/components/ui/sheet";
+import { Textarea } from "@/components/ui/textarea";
 import { useCustomForm } from "@/hooks/use-custom-form";
 
 type CostFormValues = Zod.infer<typeof costSchema>;
@@ -40,7 +41,13 @@ export const EditCostsModal = ({ cost }: EditCostProps) => {
     const [open, setOpen] = useState(false);
     const router = useRouter();
 
-    const form = useCustomForm(costSchema, cost);
+    const form = useCustomForm(costSchema, {
+        description: cost.description,
+        total_coast: cost.total_coast,
+        order: cost.order,
+        type: cost.type.id,
+        variant: cost.variant,
+    });
 
     const mutation = useMutation({
         mutationFn: (data: CostFormValues) => updateCost(cost.id, data),
@@ -181,7 +188,7 @@ export const EditCostsModal = ({ cost }: EditCostProps) => {
                                     render={({ field }) => (
                                         <FormItem className="flex w-full items-start justify-between gap-x-4 space-y-0">
                                             <FormLabel className="w-1/5 text-lg">
-                                                Коментра
+                                                Коментар
                                             </FormLabel>
                                             <div className="flex w-full flex-col gap-y-2">
                                                 <FormControl>

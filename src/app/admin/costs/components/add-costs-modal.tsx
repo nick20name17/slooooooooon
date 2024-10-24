@@ -183,7 +183,7 @@ export const AddCostsModal = () => {
                                     render={({ field }) => (
                                         <FormItem className="flex w-full items-start justify-between gap-x-4 space-y-0">
                                             <FormLabel className="w-1/5 text-lg">
-                                                Коментра
+                                                Коментар
                                             </FormLabel>
                                             <div className="flex w-full flex-col gap-y-2">
                                                 <FormControl>

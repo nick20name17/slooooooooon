@@ -17,9 +17,7 @@ export const StatusFilter = () => {
 
     return (
         <ToggleGroup
-            onValueChange={(value) => {
-                setStatus(value);
-            }}
+            onValueChange={setStatus}
             value={status}
             defaultValue="all"
             type="single"

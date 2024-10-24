@@ -12,6 +12,7 @@ import { AddOrdersModal } from "./components/add-orders-modal";
 import { columns } from "./components/orders-table/columns";
 import { OrdersTable } from "./components/orders-table/orders-table";
 import { StatusFilter } from "./components/status-filter";
+import { TypeFilter } from "./components/type-filter";
 
 export const metadata = {
     title: "Замовлення",
@@ -84,13 +85,14 @@ const Orders = async ({ searchParams }: OrdersProps) => {
             </div>
             <div className="flex flex-col gap-y-7 p-5 max-md:p-4 max-md:gap-y-5">
                 <ScrollArea className="max-w-full whitespace-nowrap ">
-                    <div className="flex justify-end">
+                    <div className="flex justify-between gap-x-4">
+                        <TypeFilter />
                         <StatusFilter />
                     </div>
                     <ScrollBar orientation="horizontal" />
                 </ScrollArea>
                 <SearchBar />
-                <div className="h-[500px]  overflow-auto rounded-2xl border">
+                <div className="h-[500px] overflow-auto rounded-2xl border">
                     <Suspense fallback={<Skeleton className="size-full" />}>
                         <OrderTable
                             searchParams={{

@@ -13,7 +13,13 @@ import { clientApi } from "@/api/client";
 import type { Order, OrdersResponse } from "@/api/orders/orders.type";
 import { InfiniteScroll } from "@/app/admin/components/infinite-scroll";
 import { defaultLimit } from "@/app/admin/config/api";
-import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHeader,
+    TableRow,
+} from "@/components/ui/table";
 import type { DataTableProps } from "@/types/table";
 
 export const OrdersTable = <_, TValue>({
@@ -63,6 +69,24 @@ export const OrdersTable = <_, TValue>({
 
     return (
         <Table>
+            <TableHeader>
+                {table.getHeaderGroups().map((headerGroup) => (
+                    <TableRow key={headerGroup.id}>
+                        {headerGroup.headers.map((header) => {
+                            return (
+                                <TableHeader key={header.id}>
+                                    {header.isPlaceholder
+                                        ? null
+                                        : flexRender(
+                                              header.column.columnDef.header,
+                                              header.getContext()
+                                          )}
+                                </TableHeader>
+                            );
+                        })}
+                    </TableRow>
+                ))}
+            </TableHeader>
             <TableBody>
                 {table.getRowModel().rows?.length ? (
                     table.getRowModel().rows.map((row) => (
