@@ -194,7 +194,7 @@ export const EditProductsModal = ({ product }: EditProductsProps) => {
     });
 
     const { data: categories } = useQuery({
-        queryFn: () => clientApi<Category[]>("/categories"),
+        queryFn: () => clientApi.get<Category[]>("/categories"),
     });
 
     const onProductEdit = (formData: ProductsFormValues) => {
@@ -316,7 +316,7 @@ export const EditProductsModal = ({ product }: EditProductsProps) => {
                                                         </SelectTrigger>
                                                     </FormControl>
                                                     <SelectContent>
-                                                        {categories?.map(
+                                                        {categories?.data?.map(
                                                             (category) => (
                                                                 <SelectItem
                                                                     key={

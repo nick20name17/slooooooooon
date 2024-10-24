@@ -1,36 +1,23 @@
-'use server'
+"use server";
 
-import { cookies } from 'next/headers'
+import { cookies } from "next/headers";
 
-const baseURL = 'https://api.slooon.shop/api'
+import { baseURL } from "@/config/api";
+import axios from "axios";
 
-export const serverApi = async <T>(
-    endpoint: string,
-    options: RequestInit = {}
-): Promise<T> => {
-    try {
-        const token = cookies().get('token')?.value
+export const serverApi = axios.create({
+    baseURL,
+});
 
-        const headers: Record<string, string> = {
-            'Content-Type': 'application/json',
-            ...(options.headers as Record<string, string>)
-        }
+serverApi.interceptors.request.use(
+    (request) => {
+        const token = cookies().get("token")?.value;
         if (token) {
-            headers['Authorization'] = `Token ${token}`
+            request.headers["Authorization"] = `Token ${token}`;
         }
-
-        const response = await fetch(`${baseURL}${endpoint}`, {
-            ...options,
-            headers
-        })
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`)
-        }
-
-        return response.json()
-    } catch (error) {
-        console.error('Request failed:', error)
-        throw error
+        return request;
+    },
+    (error) => {
+        return Promise.reject(error);
     }
-}
+);

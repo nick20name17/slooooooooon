@@ -20,7 +20,7 @@ export const CategoryFilter = () => {
     });
 
     const { data: categories, isLoading } = useQuery({
-        queryFn: () => clientApi<Category[]>("/categories"),
+        queryFn: () => clientApi.get<Category[]>("/categories"),
     });
 
     const onCategoryChange = (value: string) => {
@@ -50,7 +50,7 @@ export const CategoryFilter = () => {
                         }>
                         Усі
                     </TabsTrigger>
-                    {categories?.map((category) => (
+                    {categories?.data.map((category) => (
                         <TabsTrigger
                             key={category.id}
                             value={category.id.toString()}

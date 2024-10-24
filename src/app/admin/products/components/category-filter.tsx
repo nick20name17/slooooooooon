@@ -46,7 +46,7 @@ export const CategoryFilter = () => {
                 <SelectItem key="all" value="all">
                     Усі категорії
                 </SelectItem>
-                {categories?.map((category) => (
+                {categories?.data?.map((category) => (
                     <SelectItem
                         key={category.id}
                         value={category.id.toString()}>

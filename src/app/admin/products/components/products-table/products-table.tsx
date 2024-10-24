@@ -40,10 +40,10 @@ export const ProductsTable = <_, TValue>({
     } = useInfiniteQuery({
         queryKey: ["products", searchParams.search, parsedCategories],
         queryFn: async ({ pageParam = 0 }) => {
-            const res = await clientApi<ProductResponse>(
+            const res = await clientApi.get<ProductResponse>(
                 `/products/?limit=${defaultLimit}&offset=${pageParam}&search=${searchParams.search}&categories=${parsedCategories}`
             );
-            return res?.results;
+            return res?.data.results;
         },
         getNextPageParam: (_, pages) => {
             if (pages.length * defaultLimit >= dataCount) return undefined;

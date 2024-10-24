@@ -1,5 +1,4 @@
-import type { User } from "@/api/login/login.type";
-import { serverApi } from "@/api/server";
+import { getUser } from "@/api/users/users";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { UserRound } from "lucide-react";
 import { cookies } from "next/headers";
@@ -11,9 +10,9 @@ export const metadata = {
 };
 
 const Profile = async () => {
-    const userId = cookies().get("userId")?.value;
+    const userId = cookies().get("userId")?.value || "";
 
-    const user = await serverApi<User>("/users/" + userId);
+    const user = await getUser(+userId);
 
     return (
         <>

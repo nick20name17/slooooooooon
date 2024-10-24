@@ -1,40 +1,39 @@
-import { clientApi } from '../client'
-import { serverApi } from '../server'
+import { clientApi } from "../client";
+import { serverApi } from "../server";
 
-import type { CommentAddData, CommentResponse } from './comments.type'
-import { getQueryParamString } from '@/app/admin/utils/get-query-params-string'
-import type { BaseQueryParams } from '@/types/api'
+import { getQueryParamString } from "@/app/admin/utils/get-query-params-string";
+import type { BaseQueryParams } from "@/types/api";
+import type { CommentAddData, CommentResponse } from "./comments.type";
 
 export const getComments = async (queryParams: Partial<BaseQueryParams>) => {
-    const queryString = getQueryParamString(queryParams)
+    const queryString = getQueryParamString(queryParams);
 
-    const response = await serverApi<CommentResponse>(`/comments?${queryString}`)
+    const response = await serverApi.get<CommentResponse>(
+        `/comments?${queryString}`
+    );
 
-    return response
-}
+    return response.data;
+};
 
 export const addComment = async (data: CommentAddData) => {
-    const response = await clientApi<CommentResponse>('/comments/', {
-        method: 'POST',
-        body: JSON.stringify(data)
-    })
+    const response = await clientApi.post<CommentResponse>("/comments/", data);
 
-    return response
-}
+    return response.data;
+};
 
 export const updateComment = async (id: number, data: CommentAddData) => {
-    const response = await clientApi<CommentResponse>(`/comments/${id}/`, {
-        method: 'PATCH',
-        body: JSON.stringify(data)
-    })
+    const response = await clientApi.patch<CommentResponse>(
+        `/comments/${id}/`,
+        data
+    );
 
-    return response
-}
+    return response.data;
+};
 
 export const deleteComment = async (id: number) => {
-    const response = await clientApi<CommentResponse>(`/comments/${id}/`, {
-        method: 'DELETE'
-    })
+    const response = await clientApi.delete<CommentResponse>(
+        `/comments/${id}/`
+    );
 
-    return response
-}
+    return response.data;
+};

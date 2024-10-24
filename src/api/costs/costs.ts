@@ -11,33 +11,30 @@ import type {
 export const getCosts = async (queryParams: Partial<CostsQueryParams>) => {
     const queryString = getQueryParamString(queryParams);
 
-    const response = await serverApi<CostsResponse>(`/costs?${queryString}`);
+    const response = await serverApi.get<CostsResponse>(
+        `/costs?${queryString}`
+    );
 
-    return response;
+    return response.data;
 };
 
 export const addCost = async (data: CostsAddData) => {
-    const response = await clientApi<CostsResponse>("/costs/", {
-        method: "POST",
-        body: JSON.stringify(data),
-    });
+    const response = await clientApi.post<CostsResponse>("/costs/", data);
 
-    return response;
+    return response.data;
 };
 
 export const updateCost = async (id: number, data: CostsAddData) => {
-    const response = await clientApi<CostsResponse>(`/costs/${id}/`, {
-        method: "PATCH",
-        body: JSON.stringify(data),
-    });
+    const response = await clientApi.patch<CostsResponse>(
+        `/costs/${id}/`,
+        data
+    );
 
-    return response;
+    return response.data;
 };
 
 export const deleteCost = async (id: number) => {
-    const response = await clientApi<CostsResponse>(`/costs/${id}/`, {
-        method: "DELETE",
-    });
+    const response = await clientApi.delete<CostsResponse>(`/costs/${id}/`);
 
-    return response;
+    return response.data;
 };

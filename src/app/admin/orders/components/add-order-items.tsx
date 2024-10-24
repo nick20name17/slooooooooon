@@ -61,13 +61,13 @@ export const AddOrderItems = ({
 
     const { data, isFetching } = useQuery({
         queryFn: () =>
-            clientApi<Product[]>(
+            clientApi.get<Product[]>(
                 `/products?search=${search}&categories=${category === "all" ? "" : category}`
             ),
         queryKey: ["products", search, category],
     });
 
-    const productsData = data || [];
+    const productsData = data?.data || [];
 
     const singleVariantProductsData = productsData.flatMap((item) =>
         item.variants.map((variant) => ({
@@ -340,7 +340,7 @@ interface CategoryFilterProps {
 
 const CategoryFilter = ({ category, setCategory }: CategoryFilterProps) => {
     const { data: categories, isLoading } = useQuery({
-        queryFn: () => clientApi<Category[]>("/categories"),
+        queryFn: () => clientApi.get<Category[]>("/categories"),
     });
 
     if (isLoading) {
@@ -360,7 +360,7 @@ const CategoryFilter = ({ category, setCategory }: CategoryFilterProps) => {
                 <SelectItem key="all" value="all">
                     Усі категорії
                 </SelectItem>
-                {categories?.map((category) => (
+                {categories?.data?.map((category) => (
                     <SelectItem
                         key={category.id}
                         value={category.id.toString()}>

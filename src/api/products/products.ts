@@ -1,96 +1,72 @@
-import axios from 'axios'
+import { clientApi } from "../client";
+import { serverApi } from "../server";
 
-import { clientApi } from '../client'
-import { serverApi } from '../server'
-
+import { getQueryParamString } from "@/app/admin/utils/get-query-params-string";
 import type {
     Product,
     ProductAddData,
     ProductResponse,
-    ProductsQueryParams
-} from './products.type'
-import { getQueryParamString } from '@/app/admin/utils/get-query-params-string'
+    ProductsQueryParams,
+} from "./products.type";
 
-export const getProducts = async (queryParams: Partial<ProductsQueryParams>) => {
-    const queryString = getQueryParamString(queryParams)
+export const getProducts = async (
+    queryParams: Partial<ProductsQueryParams>
+) => {
+    const queryString = getQueryParamString(queryParams);
 
-    const response = await serverApi<ProductResponse | Product[]>(
+    const response = await serverApi.get<ProductResponse | Product[]>(
         `/products?${queryString}`
-    )
+    );
 
-    return response
-}
+    return response.data;
+};
 
 export const getProduct = async (id: number) => {
-    // const queryString = getQueryParamString(queryParams)
+    const response = await serverApi.get<Product>(`/products/${id}`);
 
-    const response = await serverApi<Product>(`/products/${id}`)
-
-    return response
-}
+    return response.data;
+};
 
 export const addProduct = async (data: ProductAddData) => {
-    const response = await clientApi<Product>('/products/', {
-        method: 'POST',
-        body: JSON.stringify(data)
-    })
+    const response = await clientApi.post<Product>("/products/", data);
 
-    return response
-}
+    return response.data;
+};
 
 export const addProductThumbnail = async (id: number, data: FormData) => {
-    // const response = await clientApi<Product>(`/products/${id}/upload-thumbnail/`, {
-    //     method: 'POST',
-    //     headers: {
-    //         'Content-Type': 'multipart/form-data'
-    //     },
-    //     body: data
-    // })
+    const response = await clientApi.post(
+        `/products/${id}/upload-thumbnail/`,
+        data
+    );
 
-    axios.post(`https://api.slooon.shop/api/products/${id}/upload-thumbnail/`, data, {
-        headers: {
-            Authorization: 'Token 823b033432f4b63d1096167d4171564686886f50'
-        }
-    })
-
-    // return response
-}
+    return response.data;
+};
 
 export const addProductImage = async (id: number, data: FormData) => {
-    // await clientApi<Product>(`/products/${id}/upload-images/`, {
-    //     method: 'POST',
+    const response = await clientApi.post(
+        `/products/${id}/upload-images/`,
+        data
+    );
 
-    //     body: data
-    // })
-
-    axios.post(`https://api.slooon.shop/api/products/${id}/upload-images/`, data, {
-        headers: {
-            Authorization: 'Token 823b033432f4b63d1096167d4171564686886f50'
-        }
-    })
-}
+    return response.data;
+};
 
 export const updateProduct = async (id: number, data: ProductAddData) => {
-    const response = await clientApi<Product>(`/products/${id}/`, {
-        method: 'PATCH',
-        body: JSON.stringify(data)
-    })
+    const response = await clientApi.patch<Product>(`/products/${id}/`, data);
 
-    return response
-}
+    return response.data;
+};
 
 export const deleteProduct = async (id: number) => {
-    const response = await clientApi<ProductResponse>(`/products/${id}/`, {
-        method: 'DELETE'
-    })
+    const response = await clientApi.delete<ProductResponse>(
+        `/products/${id}/`
+    );
 
-    return response
-}
+    return response.data;
+};
 
 export const deleteProductImage = async (id: number) => {
-    const response = await clientApi(`/images/${id}/`, {
-        method: 'DELETE'
-    })
+    const response = await clientApi.delete(`/images/${id}/`);
 
-    return response
-}
+    return response.data;
+};

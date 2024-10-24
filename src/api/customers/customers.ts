@@ -1,40 +1,43 @@
-import { clientApi } from '../client'
-import { serverApi } from '../server'
+import { clientApi } from "../client";
+import { serverApi } from "../server";
 
-import type { Customer, CustomerAddData, CustomerResponse } from './customers.type'
-import { getQueryParamString } from '@/app/admin/utils/get-query-params-string'
-import type { BaseQueryParams } from '@/types/api'
+import { getQueryParamString } from "@/app/admin/utils/get-query-params-string";
+import type { BaseQueryParams } from "@/types/api";
+import type {
+    Customer,
+    CustomerAddData,
+    CustomerResponse,
+} from "./customers.type";
 
 export const getCustomers = async (queryParams: Partial<BaseQueryParams>) => {
-    const queryString = getQueryParamString(queryParams)
+    const queryString = getQueryParamString(queryParams);
 
-    const response = await serverApi<CustomerResponse>(`/customers?${queryString}`)
+    const response = await serverApi.get<CustomerResponse>(
+        `/customers?${queryString}`
+    );
 
-    return response
-}
+    return response.data;
+};
 
 export const addCustomer = async (data: CustomerAddData) => {
-    const response = await clientApi<Customer>('/customers/', {
-        method: 'POST',
-        body: JSON.stringify(data)
-    })
+    const response = await clientApi.post<Customer>("/customers/", data);
 
-    return response
-}
+    return response.data;
+};
 
 export const updateCustomer = async (id: number, data: CustomerAddData) => {
-    const response = await clientApi<CustomerResponse>(`/customers/${id}/`, {
-        method: 'PATCH',
-        body: JSON.stringify(data)
-    })
+    const response = await clientApi.patch<CustomerResponse>(
+        `/customers/${id}/`,
+        data
+    );
 
-    return response
-}
+    return response.data;
+};
 
 export const deleteCustomer = async (id: number) => {
-    const response = await clientApi<CustomerResponse>(`/customers/${id}/`, {
-        method: 'DELETE'
-    })
+    const response = await clientApi.delete<CustomerResponse>(
+        `/customers/${id}/`
+    );
 
-    return response
-}
+    return response.data;
+};

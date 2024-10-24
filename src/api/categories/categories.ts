@@ -1,40 +1,41 @@
-import { clientApi } from '../client'
-import { serverApi } from '../server'
+import { clientApi } from "../client";
+import { serverApi } from "../server";
 
-import type { CategoryAddData, CategoryResponse } from './categories.type'
-import { getQueryParamString } from '@/app/admin/utils/get-query-params-string'
-import type { BaseQueryParams } from '@/types/api'
+import { getQueryParamString } from "@/app/admin/utils/get-query-params-string";
+import type { BaseQueryParams } from "@/types/api";
+import type {
+    Category,
+    CategoryAddData,
+    CategoryResponse,
+} from "./categories.type";
 
 export const getCategories = async (queryParams: Partial<BaseQueryParams>) => {
-    const queryString = getQueryParamString(queryParams)
+    const queryString = getQueryParamString(queryParams);
 
-    const response = await serverApi<CategoryResponse>(`/categories?${queryString}`)
+    const response = await serverApi.get<CategoryResponse>(
+        `/categories?${queryString}`
+    );
 
-    return response
-}
+    return response.data;
+};
 
 export const addCategory = async (data: CategoryAddData) => {
-    const response = await clientApi<CategoryResponse>('/categories/', {
-        method: 'POST',
-        body: JSON.stringify(data)
-    })
+    const response = await clientApi.post<Category>("/categories/", data);
 
-    return response
-}
+    return response.data;
+};
 
 export const updateCategory = async (id: number, data: CategoryAddData) => {
-    const response = await clientApi<CategoryResponse>(`/categories/${id}/`, {
-        method: 'PATCH',
-        body: JSON.stringify(data)
-    })
+    const response = await clientApi.patch<Category>(
+        `/categories/${id}/`,
+        data
+    );
 
-    return response
-}
+    return response.data;
+};
 
 export const deleteCategory = async (id: number) => {
-    const response = await clientApi<CategoryResponse>(`/categories/${id}/`, {
-        method: 'DELETE'
-    })
+    const response = await clientApi.delete<Category>(`/categories/${id}/`);
 
-    return response
-}
+    return response.data;
+};

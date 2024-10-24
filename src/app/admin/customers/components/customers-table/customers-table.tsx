@@ -40,10 +40,10 @@ export const CustomersTable = <_, TValue>({
     } = useInfiniteQuery({
         queryKey: ["customers", searchParams.search],
         queryFn: async ({ pageParam = 0 }) => {
-            const res = await clientApi<CustomerResponse>(
+            const res = await clientApi.get<CustomerResponse>(
                 `/customers/?limit=${defaultLimit}&offset=${pageParam}&search=${searchParams.search}`
             );
-            return res?.results;
+            return res?.data.results;
         },
         getNextPageParam: (_, pages) => {
             if (pages.length * defaultLimit >= dataCount) return undefined;

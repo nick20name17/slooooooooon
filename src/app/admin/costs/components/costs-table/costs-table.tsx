@@ -31,10 +31,10 @@ export const CostsTable = <_, TValue>({
     } = useInfiniteQuery({
         queryKey: ["costs", searchParams.search],
         queryFn: async ({ pageParam = 0 }) => {
-            const res = await clientApi<CostsResponse>(
+            const res = await clientApi.get<CostsResponse>(
                 `/costs/?limit=${defaultLimit}&offset=${pageParam}&search=${searchParams.search}`
             );
-            return res?.results;
+            return res?.data.results;
         },
         getNextPageParam: (_, pages) => {
             if (pages.length * defaultLimit >= dataCount) return undefined;

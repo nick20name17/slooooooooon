@@ -242,7 +242,7 @@ export const AddProductsModal = () => {
                                                         </SelectTrigger>
                                                     </FormControl>
                                                     <SelectContent>
-                                                        {categories?.map(
+                                                        {categories?.data?.map(
                                                             (category: any) => (
                                                                 <SelectItem
                                                                     key={

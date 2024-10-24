@@ -1,7 +1,7 @@
 "use client";
 
-import type { User } from "@/api/login/login.type";
 import { passwordChange } from "@/api/passwords/passwords";
+import type { User } from "@/api/users/users.type";
 import { Button } from "@/components/ui/button";
 import {
     Form,
