@@ -8,7 +8,7 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 export const TypeFilter = () => {
     const [type, setType] = useQueryState("type", {
         shallow: false,
-        defaultValue: "all",
+        defaultValue: "b2c",
     });
 
     useEffect(() => {

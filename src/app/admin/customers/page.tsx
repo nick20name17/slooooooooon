@@ -7,6 +7,7 @@ import { defaultLimit } from "../config/api";
 import { getCustomers } from "@/api/customers/customers";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { BaseQueryParams } from "@/types/api";
+import { TypeFilter } from "../components/type-filter";
 import { AddCustomersModal } from "./components/add-customers-modal";
 import { columns } from "./components/customers-table/columns";
 import { CustomersTable } from "./components/customers-table/customers-table";
@@ -73,6 +74,9 @@ const Customers = async ({ searchParams }: CustomersProps) => {
                 <AddCustomersModal />
             </div>
             <div className="flex flex-col gap-y-7 p-5 max-md:p-4 max-md:gap-y-5">
+                <div className="flex justify-start">
+                    <TypeFilter />
+                </div>
                 <SearchBar />
                 <div className="h-[570px] overflow-auto rounded-2xl border">
                     <Suspense fallback={<Skeleton className="size-full" />}>

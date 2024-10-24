@@ -1,60 +1,62 @@
-'use client'
+"use client";
 
-import { type ColumnDef } from '@tanstack/react-table'
+import { type ColumnDef } from "@tanstack/react-table";
 
-import { ProductsActionsCell } from './cells/products-actions-cell'
-import type { Product } from '@/api/products/products.type'
+import type { Product } from "@/api/products/products.type";
+import { ProductsActionsCell } from "./cells/products-actions-cell";
 
 export const columns: ColumnDef<Product>[] = [
     {
-        accessorKey: 'title',
-        header: 'Title',
+        accessorKey: "title",
+        header: () => <div className="w-60">Назва</div>,
         cell: ({ row }) => (
-            <div className='w-60'>
+            <div className="w-60">
                 <div>
-                    {row.original.year} | Категорія: {row.original.category.name}
+                    {row.original.year} | Категорія:{" "}
+                    {row.original.category.name}
                 </div>
                 <div>{row.original.title}</div>
             </div>
-        )
+        ),
     },
     {
-        accessorKey: 'packaging',
-        header: 'Packaging',
+        accessorKey: "packaging",
+        header: () => <div className="w-32">Пакування</div>,
         cell: ({ row }) => (
-            <div className='w-32'>
+            <div className="w-32">
                 {row.original.variants
                     .map((variant) =>
-                        variant.packaging === 'гр' ? '-' : variant.packaging
+                        variant.packaging === "гр" ? "-" : variant.packaging
                     )
-                    .join(' / ')}
+                    .join(" / ")}
             </div>
-        )
+        ),
     },
     {
-        accessorKey: 'inventory',
-        header: 'Inventory',
+        accessorKey: "inventory",
+        header: () => <div className="w-32">Кількість</div>,
         cell: ({ row }) => (
-            <div className='w-32'>
+            <div className="w-32">
                 {row.original.variants
                     .map((variant) => `${variant.inventory} шт`)
-                    .join(' / ')}
+                    .join(" / ")}
             </div>
-        )
+        ),
     },
     {
-        accessorKey: 'price',
-        header: 'Price',
+        accessorKey: "price",
+        header: () => <div className="w-48">Ціна</div>,
         cell: ({ row }) => (
-            <div className='w-48'>
+            <div className="w-48">
                 {row.original.variants
                     .map((variant) => `${variant.price} грн`)
-                    .join(' / ')}
+                    .join(" / ")}
             </div>
-        )
+        ),
     },
     {
-        accessorKey: 'actions',
-        cell: ({ row }) => <ProductsActionsCell product={row.original} />
-    }
-]
+        accessorKey: "actions",
+        header: () => <div className="w-10">Дії</div>,
+        cell: ({ row }) => <ProductsActionsCell product={row.original} />,
+    },
+];

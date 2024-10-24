@@ -8,11 +8,11 @@ import type { OrdersQueryParams } from "@/api/orders/orders.type";
 import { defaultLimit } from "@/app/admin/config/api";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
+import { TypeFilter } from "../components/type-filter";
 import { AddOrdersModal } from "./components/add-orders-modal";
 import { columns } from "./components/orders-table/columns";
 import { OrdersTable } from "./components/orders-table/orders-table";
 import { StatusFilter } from "./components/status-filter";
-import { TypeFilter } from "./components/type-filter";
 
 export const metadata = {
     title: "Замовлення",
