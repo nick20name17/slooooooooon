@@ -78,7 +78,7 @@ const Customers = async ({ searchParams }: CustomersProps) => {
                     <TypeFilter />
                 </div>
                 <SearchBar />
-                <div className="h-[570px] overflow-auto rounded-2xl border">
+                <div className="h-[500px] overflow-auto rounded-2xl border">
                     <Suspense fallback={<Skeleton className="size-full" />}>
                         <CustomerTable
                             searchParams={{ search, limit: defaultLimit }}

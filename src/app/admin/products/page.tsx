@@ -88,7 +88,7 @@ const Products = async ({ searchParams }: ProductsProps) => {
             <div className="flex flex-col gap-y-7 p-5 max-md:gap-y-5 max-md:p-4">
                 <CategoryFilter />
                 <SearchBar />
-                <div className="h-[500px]  overflow-auto rounded-2xl border">
+                <div className="h-[500px] overflow-auto rounded-2xl border">
                     <Suspense fallback={<Skeleton className="size-full" />}>
                         <ProductTable
                             searchParams={{
