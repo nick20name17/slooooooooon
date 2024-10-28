@@ -10,6 +10,7 @@ import { costSchema } from "../../../../../config/schemas";
 
 import { updateCost } from "@/api/costs/costs";
 import type { Cost } from "@/api/costs/costs.type";
+import { FormDatePicker } from "@/app/admin/components/date-picker";
 import { Button } from "@/components/ui/button";
 import {
     Form,
@@ -30,7 +31,6 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { useCustomForm } from "@/hooks/use-custom-form";
 import { CategorySelect } from "../controls/category-select";
-import { CostDatePicker } from "../controls/date-picker";
 
 type CostFormValues = Zod.infer<typeof costSchema>;
 
@@ -136,7 +136,7 @@ export const EditCostModal = ({ cost }: EditCostProps) => {
                                         </FormLabel>
                                         <div className="flex w-full flex-col gap-y-2">
                                             <FormControl>
-                                                <CostDatePicker
+                                                <FormDatePicker
                                                     date={field.value}
                                                     setDate={field.onChange}
                                                 />

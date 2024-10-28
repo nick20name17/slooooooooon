@@ -6,7 +6,7 @@ interface CostDatePickerProps {
     setDate: any;
 }
 
-export const CostDatePicker = ({ date, setDate }: CostDatePickerProps) => {
+export const FormDatePicker = ({ date, setDate }: CostDatePickerProps) => {
     return (
         <div className="flex items-center gap-x-4">
             <DatePicker className="w-full" date={date} setDate={setDate} />

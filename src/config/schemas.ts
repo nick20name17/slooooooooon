@@ -230,3 +230,19 @@ export const markupSchema = object({
         required_error: "Це поле є обов'язковим",
     }).min(1, "Це поле є обов'язковим"),
 });
+
+export const warehouseSchema = object({
+    date: date({
+        required_error: "Це поле є обов'язковим",
+    }),
+    product_ids: array(string().min(1, "Це поле є обов'язковим")),
+    amount: string({
+        required_error: "Це поле є обов'язковим",
+    }).min(1, "Це поле є обов'язковим"),
+    category: string({
+        required_error: "Це поле є обов'язковим",
+    }).min(1, "Це поле є обов'язковим"),
+    price: string({
+        required_error: "Це поле є обов'язковим",
+    }).min(1, "Це поле є обов'язковим"),
+});
