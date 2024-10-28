@@ -106,11 +106,8 @@ export const SideBar = () => {
                                     variant="outline"
                                     size="sm"
                                     className={cn(
-                                        "w-full justify-start text-lg text-muted-foreground max-lg:justify-center max-lg:[&>span]:hidden",
-                                        pathname === link ? borderClass : "",
-                                        pathname === link
-                                            ? "text-foreground"
-                                            : ""
+                                        "w-full justify-start text-lg  max-lg:justify-center max-lg:[&>span]:hidden",
+                                        pathname === link ? borderClass : ""
                                     )}
                                     asChild>
                                     <Link href={link}>
@@ -118,7 +115,14 @@ export const SideBar = () => {
                                             className={`mr-3 flex size-5 items-center justify-center rounded ${bgClass} max-lg:mr-0`}>
                                             <Icon className="size-3 shrink-0" />
                                         </div>
-                                        <span>{label}</span>
+                                        <span
+                                            className={cn(
+                                                pathname === link
+                                                    ? "text-foreground"
+                                                    : "text-muted-foreground"
+                                            )}>
+                                            {label}
+                                        </span>
                                     </Link>
                                 </Button>
                             </li>

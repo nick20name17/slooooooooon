@@ -218,3 +218,15 @@ export const costSchema = object({
 });
 
 export const checkoutSchema = orderSchema.and(customerSchema);
+
+export const markupSchema = object({
+    name: string({
+        required_error: "Це поле є обов'язковим",
+    }).min(1, "Це поле є обов'язковим"),
+    price: string({
+        required_error: "Це поле є обов'язковим",
+    }).min(1, "Це поле є обов'язковим"),
+    status: string({
+        required_error: "Це поле є обов'язковим",
+    }).min(1, "Це поле є обов'язковим"),
+});
