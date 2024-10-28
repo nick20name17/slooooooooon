@@ -16,6 +16,10 @@ const config: Config = {
                 categories: "#1baff8",
                 costs: "#ff453a",
                 profile: "#5e5ce6",
+                warehouse: "#FF375F",
+                discount: "#16C091",
+                markup: "#BA5CE6",
+                dashboard: "#A245D8",
                 background: "hsl(var(--background))",
                 foreground: "hsl(var(--foreground))",
                 card: {

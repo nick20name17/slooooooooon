@@ -2,9 +2,13 @@
 
 import {
     Archive,
+    ChartPie,
+    ChartSpline,
     CircleDollarSign,
     LayoutGrid,
+    Percent,
     ShoppingBag,
+    ShoppingBasket,
     UserRound,
     UsersRound,
 } from "lucide-react";
@@ -15,133 +19,111 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { SignOut } from "./sign-out-button";
 
+const sidebarItems = [
+    {
+        link: "/admin/dashboard",
+        label: "Дашборд",
+        icon: ChartPie,
+        borderClass: "border-dashboard",
+        bgClass: "bg-dashboard",
+    },
+    {
+        link: "/admin/orders",
+        label: "Замовлення",
+        icon: ShoppingBag,
+        borderClass: "border-orders",
+        bgClass: "bg-orders",
+    },
+    {
+        link: "/admin/products",
+        label: "Товари",
+        icon: Archive,
+        borderClass: "border-products",
+        bgClass: "bg-products",
+    },
+    {
+        link: "/admin/customers",
+        label: "Клієнти",
+        icon: UsersRound,
+        borderClass: "border-clients",
+        bgClass: "bg-clients",
+    },
+    {
+        link: "/admin/categories",
+        label: "Категорії",
+        icon: LayoutGrid,
+        borderClass: "border-categories",
+        bgClass: "bg-categories",
+    },
+    {
+        link: "/admin/warehouse",
+        label: "Cклади",
+        icon: ShoppingBasket,
+        borderClass: "border-warehouse",
+        bgClass: "bg-warehouse",
+    },
+    {
+        link: "/admin/costs",
+        label: "Витрати",
+        icon: CircleDollarSign,
+        borderClass: "border-costs",
+        bgClass: "bg-costs",
+    },
+    {
+        link: "/admin/markup",
+        label: "Маркап",
+        icon: ChartSpline,
+        borderClass: "border-markup",
+        bgClass: "bg-markup",
+    },
+    {
+        link: "/admin/discounts",
+        label: "Знижки",
+        icon: Percent,
+        borderClass: "border-discount",
+        bgClass: "bg-discount",
+    },
+    {
+        link: "/admin/profile",
+        label: "Профайл",
+        icon: UserRound,
+        borderClass: "border-profile",
+        bgClass: "bg-profile",
+    },
+];
+
 export const SideBar = () => {
     const pathname = usePathname();
 
     return (
-        <aside className="h-full max-lg:w-full w-60 rounded-3xl border  overflow-hidden px-1">
-            {/* <ScrollArea className="w-full h-full"> */}
+        <aside className="h-full max-lg:w-full w-60 rounded-3xl border overflow-hidden px-1">
             <nav className="flex flex-col justify-between gap-6 max-lg:flex-row p-4 max-md:p-3 h-full">
                 <ul className="flex flex-col gap-4 max-lg:flex-row">
-                    <li>
-                        <Button
-                            variant="outline"
-                            size="sm"
-                            className={cn(
-                                "w-full justify-start text-lg max-lg:justify-center max-lg:[&>span]:hidden",
-                                pathname === "/admin/orders"
-                                    ? "border-orders"
-                                    : ""
-                            )}
-                            asChild>
-                            <Link href="/admin/orders">
-                                <div className="mr-3 flex size-5 items-center justify-center rounded bg-orders max-lg:mr-0">
-                                    <ShoppingBag className="size-3 shrink-0" />
-                                </div>
-                                <span>Замовлення</span>
-                            </Link>
-                        </Button>
-                    </li>
-                    <li>
-                        <Button
-                            variant="outline"
-                            size="sm"
-                            className={cn(
-                                "w-full justify-start text-lg max-lg:justify-center max-lg:[&>span]:hidden",
-                                pathname === "/admin/products"
-                                    ? "border-products"
-                                    : ""
-                            )}
-                            asChild>
-                            <Link href="/admin/products">
-                                <div className="mr-3 flex size-5 items-center justify-center rounded bg-products max-lg:mr-0">
-                                    <Archive className="size-3 shrink-0" />
-                                </div>
-                                <span>Товари</span>
-                            </Link>
-                        </Button>
-                    </li>
-                    <li>
-                        <Button
-                            variant="outline"
-                            size="sm"
-                            className={cn(
-                                "w-full justify-start text-lg max-lg:justify-center max-lg:[&>span]:hidden",
-                                pathname === "/admin/customers"
-                                    ? "border-clients"
-                                    : ""
-                            )}
-                            asChild>
-                            <Link href="/admin/customers">
-                                <div className="mr-3 flex size-5 items-center justify-center rounded bg-clients max-lg:mr-0">
-                                    <UsersRound className="size-3 shrink-0" />
-                                </div>
-                                <span>Клієнти</span>
-                            </Link>
-                        </Button>
-                    </li>
-                    <li>
-                        <Button
-                            variant="outline"
-                            size="sm"
-                            className={cn(
-                                "w-full justify-start text-lg max-lg:justify-center max-lg:[&>span]:hidden",
-                                pathname === "/admin/categories"
-                                    ? "border-categories"
-                                    : ""
-                            )}
-                            asChild>
-                            <Link href="/admin/categories">
-                                <div className="mr-3 flex size-5 items-center justify-center rounded bg-categories max-lg:mr-0">
-                                    <LayoutGrid className="size-3 shrink-0" />
-                                </div>
-                                <span>Категорії</span>
-                            </Link>
-                        </Button>
-                    </li>
-                    <li>
-                        <Button
-                            variant="outline"
-                            size="sm"
-                            className={cn(
-                                "w-full justify-start text-lg max-lg:justify-center max-lg:[&>span]:hidden",
-                                pathname === "/admin/costs"
-                                    ? "border-costs"
-                                    : ""
-                            )}
-                            asChild>
-                            <Link href="/admin/costs">
-                                <div className="mr-3 flex size-5 items-center justify-center rounded bg-costs max-lg:mr-0">
-                                    <CircleDollarSign className="size-3 shrink-0" />
-                                </div>
-                                <span>Витрати</span>
-                            </Link>
-                        </Button>
-                    </li>
-                    <li>
-                        <Button
-                            variant="outline"
-                            size="sm"
-                            className={cn(
-                                "w-full justify-start text-lg max-lg:justify-center max-lg:[&>span]:hidden",
-                                pathname === "/admin/profile"
-                                    ? "border-profile"
-                                    : ""
-                            )}
-                            asChild>
-                            <Link href="/admin/profile">
-                                <div className="mr-3 flex size-5 items-center justify-center rounded bg-profile max-lg:mr-0">
-                                    <UserRound className="size-3 shrink-0" />
-                                </div>
-                                <span>Профайл</span>
-                            </Link>
-                        </Button>
-                    </li>
+                    {sidebarItems.map(
+                        ({ link, label, icon: Icon, borderClass, bgClass }) => (
+                            <li key={link}>
+                                <Button
+                                    variant="outline"
+                                    size="sm"
+                                    className={cn(
+                                        "w-full justify-start text-lg max-lg:justify-center max-lg:[&>span]:hidden",
+                                        pathname === link ? borderClass : ""
+                                    )}
+                                    asChild>
+                                    <Link href={link}>
+                                        <div
+                                            className={`mr-3 flex size-5 items-center justify-center rounded ${bgClass} max-lg:mr-0`}>
+                                            <Icon className="size-3 shrink-0" />
+                                        </div>
+                                        <span>{label}</span>
+                                    </Link>
+                                </Button>
+                            </li>
+                        )
+                    )}
                 </ul>
                 <SignOut />
             </nav>
-            {/* <ScrollBar orientation="horizontal" />
-            </ScrollArea> */}
         </aside>
     );
 };
