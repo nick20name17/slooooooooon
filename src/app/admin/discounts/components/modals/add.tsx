@@ -40,12 +40,12 @@ export const AddDiscountModal = () => {
         description: "",
         total_coast: 0,
         type: 0,
-        order: 0,
         variant: "",
+        date: "" as any,
     });
 
     const mutation = useMutation({
-        mutationFn: (data: CostFormValues) => addCost(data),
+        mutationFn: (data: CostFormValues) => addCost(data as any),
         onSuccess: () => {
             form.reset();
             setOpen(false);
@@ -114,26 +114,7 @@ export const AddDiscountModal = () => {
                                     </FormItem>
                                 )}
                             />
-                            <FormField
-                                control={form.control}
-                                name="order"
-                                render={({ field }) => (
-                                    <FormItem className="flex w-full items-start justify-between gap-x-4 space-y-0">
-                                        <FormLabel className="w-1/5 text-lg">
-                                            Прізвище
-                                        </FormLabel>
-                                        <div className="flex w-full flex-col gap-y-2">
-                                            <FormControl>
-                                                <Input
-                                                    placeholder="Введіть прізвище"
-                                                    {...field}
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </div>
-                                    </FormItem>
-                                )}
-                            />
+
                             <FormField
                                 control={form.control}
                                 name="type"

@@ -42,13 +42,14 @@ export const EditDiscountModal = ({ discount }: EditDiscountProps) => {
     const form = useCustomForm(costSchema, {
         description: discount.description,
         total_coast: discount.total_coast,
-        order: discount.order,
         type: discount.type.id,
         variant: discount.variant,
+        date: discount.date,
     });
 
     const mutation = useMutation({
-        mutationFn: (data: DiscountFormValues) => updateCost(discount.id, data),
+        mutationFn: (data: DiscountFormValues) =>
+            updateCost(discount.id, data as any),
         onSuccess: () => {
             form.reset();
             setOpen(false);
@@ -118,26 +119,7 @@ export const EditDiscountModal = ({ discount }: EditDiscountProps) => {
                                     </FormItem>
                                 )}
                             />
-                            <FormField
-                                control={form.control}
-                                name="order"
-                                render={({ field }) => (
-                                    <FormItem className="flex w-full items-start justify-between gap-x-4 space-y-0">
-                                        <FormLabel className="w-1/5 text-lg">
-                                            Прізвище
-                                        </FormLabel>
-                                        <div className="flex w-full flex-col gap-y-2">
-                                            <FormControl>
-                                                <Input
-                                                    placeholder="Введіть прізвище"
-                                                    {...field}
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </div>
-                                    </FormItem>
-                                )}
-                            />
+
                             <FormField
                                 control={form.control}
                                 name="type"
