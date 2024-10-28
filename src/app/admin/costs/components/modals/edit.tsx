@@ -29,6 +29,8 @@ import {
 } from "@/components/ui/sheet";
 import { Textarea } from "@/components/ui/textarea";
 import { useCustomForm } from "@/hooks/use-custom-form";
+import { CategorySelect } from "../controls/category-select";
+import { CostDatePicker } from "../controls/date-picker";
 
 type CostFormValues = Zod.infer<typeof costSchema>;
 
@@ -41,16 +43,22 @@ export const EditCostModal = ({ cost }: EditCostProps) => {
     const [open, setOpen] = useState(false);
     const router = useRouter();
 
+    const [currentDate] = useState(new Date());
+
     const form = useCustomForm(costSchema, {
         description: cost.description,
         total_coast: cost.total_coast,
-        order: cost.order,
         type: cost.type.id,
         variant: cost.variant,
+        date: currentDate,
     });
 
     const mutation = useMutation({
-        mutationFn: (data: CostFormValues) => updateCost(cost.id, data),
+        mutationFn: (data: CostFormValues) =>
+            updateCost(cost.id, {
+                ...data,
+                order: 0,
+            }),
         onSuccess: () => {
             form.reset();
             setOpen(false);
@@ -81,19 +89,16 @@ export const EditCostModal = ({ cost }: EditCostProps) => {
                     <form onSubmit={form.handleSubmit(onCostAdd)}>
                         <SheetHeader className="flex flex-row items-center justify-between gap-x-4 border-b py-4">
                             <SheetTitle className="text-4xl">
-                                Редагувати клієнта
+                                Редагувати витрату
                             </SheetTitle>
                             <Button
                                 type="submit"
                                 variant="outline"
-                                className="w-36 rounded-full border-costs bg-background px-3.5 text-lg font-bold drop-shadow-[3px_4px_0px_#ff453a] transition-all hover:bg-costs/15 hover:drop-shadow-none">
+                                className="w-28 rounded-full border-costs bg-background px-3.5 text-lg font-bold drop-shadow-[3px_4px_0px_#ff453a] transition-all hover:bg-costs/15 hover:drop-shadow-none">
                                 {mutation.isLoading ? (
                                     <Loader2 className="h-4 w-4 animate-spin" />
                                 ) : (
-                                    <>
-                                        <Pencil className="mr-2 size-4 text-costs" />
-                                        Редагувати
-                                    </>
+                                    <>Редагувати</>
                                 )}
                             </Button>
                         </SheetHeader>
@@ -109,6 +114,7 @@ export const EditCostModal = ({ cost }: EditCostProps) => {
                                         <div className="flex w-full flex-col gap-y-2">
                                             <FormControl>
                                                 <Input
+                                                    min={0}
                                                     inputMode="decimal"
                                                     type="number"
                                                     placeholder="Введіть суму"
@@ -122,37 +128,17 @@ export const EditCostModal = ({ cost }: EditCostProps) => {
                             />
                             <FormField
                                 control={form.control}
-                                name="order"
+                                name="date"
                                 render={({ field }) => (
                                     <FormItem className="flex w-full items-start justify-between gap-x-4 space-y-0">
                                         <FormLabel className="w-1/5 text-lg">
-                                            Прізвище
+                                            Дата
                                         </FormLabel>
                                         <div className="flex w-full flex-col gap-y-2">
                                             <FormControl>
-                                                <Input
-                                                    placeholder="Введіть прізвище"
-                                                    {...field}
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </div>
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="type"
-                                render={({ field }) => (
-                                    <FormItem className="flex w-full items-start justify-between gap-x-4 space-y-0">
-                                        <FormLabel className="w-1/5 text-lg">
-                                            По батькові
-                                        </FormLabel>
-                                        <div className="flex w-full flex-col gap-y-2">
-                                            <FormControl>
-                                                <Input
-                                                    placeholder="Введіть по батькові"
-                                                    {...field}
+                                                <CostDatePicker
+                                                    date={field.value}
+                                                    setDate={field.onChange}
                                                 />
                                             </FormControl>
                                             <FormMessage />
@@ -172,9 +158,11 @@ export const EditCostModal = ({ cost }: EditCostProps) => {
                                             </FormLabel>
                                             <div className="flex w-full flex-col gap-y-2">
                                                 <FormControl>
-                                                    <Input
-                                                        placeholder="Введіть пошту"
-                                                        {...field}
+                                                    <CategorySelect
+                                                        category={field.value}
+                                                        onCategoryChange={
+                                                            field.onChange
+                                                        }
                                                     />
                                                 </FormControl>
                                                 <FormMessage />

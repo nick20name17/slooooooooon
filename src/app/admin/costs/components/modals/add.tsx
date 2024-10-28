@@ -28,10 +28,13 @@ import {
 } from "@/components/ui/sheet";
 import { Textarea } from "@/components/ui/textarea";
 import { useCustomForm } from "@/hooks/use-custom-form";
+import { CategorySelect } from "../controls/category-select";
+import { CostDatePicker } from "../controls/date-picker";
 
 type CostFormValues = Zod.infer<typeof costSchema>;
 
 export const AddCostModal = () => {
+    const [currentDate] = useState(new Date());
     const queryClient = useQueryClient();
 
     const [open, setOpen] = useState(false);
@@ -41,12 +44,16 @@ export const AddCostModal = () => {
         description: "",
         total_coast: 0,
         type: 0,
-        order: 0,
-        variant: "",
+        variant: "completed",
+        date: currentDate,
     });
 
     const mutation = useMutation({
-        mutationFn: (data: CostFormValues) => addCost(data),
+        mutationFn: (data: CostFormValues) =>
+            addCost({
+                ...data,
+                order: 0,
+            }),
         onSuccess: () => {
             form.reset();
             setOpen(false);
@@ -104,6 +111,7 @@ export const AddCostModal = () => {
                                         <div className="flex w-full flex-col gap-y-2">
                                             <FormControl>
                                                 <Input
+                                                    min={0}
                                                     inputMode="decimal"
                                                     type="number"
                                                     placeholder="Введіть суму"
@@ -117,37 +125,17 @@ export const AddCostModal = () => {
                             />
                             <FormField
                                 control={form.control}
-                                name="order"
+                                name="date"
                                 render={({ field }) => (
                                     <FormItem className="flex w-full items-start justify-between gap-x-4 space-y-0">
                                         <FormLabel className="w-1/5 text-lg">
-                                            Прізвище
+                                            Дата
                                         </FormLabel>
                                         <div className="flex w-full flex-col gap-y-2">
                                             <FormControl>
-                                                <Input
-                                                    placeholder="Введіть прізвище"
-                                                    {...field}
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </div>
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="type"
-                                render={({ field }) => (
-                                    <FormItem className="flex w-full items-start justify-between gap-x-4 space-y-0">
-                                        <FormLabel className="w-1/5 text-lg">
-                                            По батькові
-                                        </FormLabel>
-                                        <div className="flex w-full flex-col gap-y-2">
-                                            <FormControl>
-                                                <Input
-                                                    placeholder="Введіть по батькові"
-                                                    {...field}
+                                                <CostDatePicker
+                                                    date={field.value}
+                                                    setDate={field.onChange}
                                                 />
                                             </FormControl>
                                             <FormMessage />
@@ -167,9 +155,11 @@ export const AddCostModal = () => {
                                             </FormLabel>
                                             <div className="flex w-full flex-col gap-y-2">
                                                 <FormControl>
-                                                    <Input
-                                                        placeholder="Введіть пошту"
-                                                        {...field}
+                                                    <CategorySelect
+                                                        category={field.value}
+                                                        onCategoryChange={
+                                                            field.onChange
+                                                        }
                                                     />
                                                 </FormControl>
                                                 <FormMessage />

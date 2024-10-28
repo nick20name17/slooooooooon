@@ -1,5 +1,6 @@
 import {
     array,
+    date,
     discriminatedUnion,
     enum as enum_zod,
     instanceof as instanceof_zod,
@@ -199,9 +200,9 @@ export const changePasswordSchema = object({
 });
 
 export const costSchema = object({
-    order: number({
+    date: date({
         required_error: "Це поле є обов'язковим",
-    }).min(1, "Це поле є обов'язковим"),
+    }),
     variant: string({
         required_error: "Це поле є обов'язковим",
     }).min(1, "Це поле є обов'язковим"),
