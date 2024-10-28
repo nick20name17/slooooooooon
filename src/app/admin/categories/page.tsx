@@ -76,7 +76,7 @@ const CategoriesPage = async ({ searchParams }: CategoriesProps) => {
             </div>
             <div className="flex flex-col gap-y-7 p-5 max-md:p-4 max-md:gap-y-5">
                 <SearchBar />
-                <div className="h-[570px]  overflow-auto rounded-2xl border">
+                <div className="h-[570px] overflow-auto rounded-2xl border bg-background">
                     <Suspense fallback={<Skeleton className="size-full" />}>
                         <CategoriesTable
                             searchParams={{

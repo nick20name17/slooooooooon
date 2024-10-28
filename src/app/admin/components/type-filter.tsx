@@ -24,12 +24,12 @@ export const TypeFilter = () => {
             className="gap-x-4">
             <ToggleGroupItem
                 value="b2c"
-                className="rounded-full border text-lg data-[state=on]:border-foreground data-[state=on]:bg-transparent"
+                className="rounded-full border text-lg bg-background data-[state=on]:border-foreground data-[state=on]:bg-transparent"
                 aria-label="Toggle  B2C">
                 B2C
             </ToggleGroupItem>
             <ToggleGroupItem
-                className="rounded-full border text-lg data-[state=on]:border-foreground data-[state=on]:bg-transparent"
+                className="rounded-full border text-lg bg-background data-[state=on]:border-foreground data-[state=on]:bg-transparent"
                 value="b2b"
                 aria-label="Toggle B2B">
                 B2B

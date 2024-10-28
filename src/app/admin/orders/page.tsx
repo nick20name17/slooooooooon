@@ -92,7 +92,7 @@ const OrdersPage = async ({ searchParams }: OrdersProps) => {
                     <ScrollBar orientation="horizontal" />
                 </ScrollArea>
                 <SearchBar />
-                <div className="h-[500px] overflow-auto rounded-2xl border">
+                <div className="h-[500px] bg-background overflow-auto rounded-2xl border">
                     <Suspense fallback={<Skeleton className="size-full" />}>
                         <OrderTable
                             searchParams={{

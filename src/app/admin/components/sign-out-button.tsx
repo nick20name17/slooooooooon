@@ -26,7 +26,7 @@ export const SignOut = () => {
             variant="outline"
             size="sm"
             onClick={onSignOut}
-            className="flex items-center justify-between text-lg text-secondary max-lg:justify-center max-lg:[&>span]:hidden">
+            className="flex items-center justify-between text-lg text-muted-foreground max-lg:justify-center max-lg:[&>span]:hidden">
             <span> Вихід</span>
             <LogOut className="size-4 flex-shrink-0" />
         </Button>

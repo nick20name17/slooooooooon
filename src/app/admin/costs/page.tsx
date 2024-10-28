@@ -55,7 +55,7 @@ const CostsPage = async ({ searchParams }: ProductsProps) => {
             </div>
             <div className="flex flex-col gap-y-7 p-5 max-md:p-4 max-md:gap-y-5">
                 <SearchBar />
-                <div className="h-[500px]  overflow-auto rounded-2xl border">
+                <div className="h-[500px] bg-background  overflow-auto rounded-2xl border">
                     <Suspense
                         key={search + offset}
                         fallback={

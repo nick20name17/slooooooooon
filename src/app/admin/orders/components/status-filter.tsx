@@ -24,24 +24,24 @@ export const StatusFilter = () => {
             className="gap-x-4">
             <ToggleGroupItem
                 value="all"
-                className="rounded-full border text-lg data-[state=on]:border-foreground data-[state=on]:bg-transparent"
+                className="bg-background rounded-full border text-lg data-[state=on]:border-foreground data-[state=on]:bg-transparent"
                 aria-label="Toggle all">
                 Усі
             </ToggleGroupItem>
             <ToggleGroupItem
-                className="rounded-full border text-lg data-[state=on]:border-foreground data-[state=on]:bg-transparent"
+                className="bg-background rounded-full border text-lg data-[state=on]:border-foreground data-[state=on]:bg-transparent"
                 value="raw"
                 aria-label="Toggle italic">
                 Не опрацьовані
             </ToggleGroupItem>
             <ToggleGroupItem
-                className="rounded-full border text-lg data-[state=on]:border-foreground data-[state=on]:bg-transparent"
+                className="bg-background rounded-full border text-lg data-[state=on]:border-foreground data-[state=on]:bg-transparent"
                 value="completed"
                 aria-label="Toggle underline">
                 Виконані
             </ToggleGroupItem>
             <ToggleGroupItem
-                className="rounded-full border text-lg data-[state=on]:border-foreground data-[state=on]:bg-transparent"
+                className="bg-background rounded-full border text-lg data-[state=on]:border-foreground data-[state=on]:bg-transparent"
                 value="failed"
                 aria-label="Toggle underline">
                 Не успішні

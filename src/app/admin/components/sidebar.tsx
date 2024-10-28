@@ -96,7 +96,7 @@ export const SideBar = () => {
     const pathname = usePathname();
 
     return (
-        <aside className="h-full max-lg:w-full w-60 rounded-3xl border overflow-hidden px-1">
+        <aside className="h-full max-lg:w-full w-60 rounded-3xl border overflow-hidden px-1 bg-secondary">
             <nav className="flex flex-col justify-between gap-6 max-lg:flex-row p-4 max-md:p-3 h-full">
                 <ul className="flex flex-col gap-4 max-lg:flex-row">
                     {sidebarItems.map(
@@ -106,8 +106,11 @@ export const SideBar = () => {
                                     variant="outline"
                                     size="sm"
                                     className={cn(
-                                        "w-full justify-start text-lg max-lg:justify-center max-lg:[&>span]:hidden",
-                                        pathname === link ? borderClass : ""
+                                        "w-full justify-start text-lg text-muted-foreground max-lg:justify-center max-lg:[&>span]:hidden",
+                                        pathname === link ? borderClass : "",
+                                        pathname === link
+                                            ? "text-foreground"
+                                            : ""
                                     )}
                                     asChild>
                                     <Link href={link}>
