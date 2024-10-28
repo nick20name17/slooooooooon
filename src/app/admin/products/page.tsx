@@ -10,10 +10,10 @@ import type {
 } from "@/api/products/products.type";
 import { defaultLimit } from "@/app/admin/config/api";
 import { Skeleton } from "@/components/ui/skeleton";
-import { AddProductsModal } from "./components/add-products-modal";
 import { CategoryFilter } from "./components/category-filter";
+import { AddProductModal } from "./components/modals/add";
 import { columns } from "./components/products-table/columns";
-import { ProductsTable } from "./components/products-table/products-table";
+import { ProductsTable } from "./components/products-table/table";
 
 export const metadata = {
     title: "Товари",
@@ -54,7 +54,7 @@ const ProductTable = async ({ searchParams }: ProductsProps) => {
     );
 };
 
-const Products = async ({ searchParams }: ProductsProps) => {
+const ProductsPage = async ({ searchParams }: ProductsProps) => {
     const { search = "", categories = "all" } = searchParams;
 
     return (
@@ -83,7 +83,7 @@ const Products = async ({ searchParams }: ProductsProps) => {
                         />
                     </Suspense>
                 </div>
-                <AddProductsModal />
+                <AddProductModal />
             </div>
             <div className="flex flex-col gap-y-7 p-5 max-md:gap-y-5 max-md:p-4">
                 <CategoryFilter />
@@ -107,4 +107,4 @@ const Products = async ({ searchParams }: ProductsProps) => {
     );
 };
 
-export default Products;
+export default ProductsPage;

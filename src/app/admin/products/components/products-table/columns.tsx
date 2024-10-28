@@ -3,7 +3,7 @@
 import { type ColumnDef } from "@tanstack/react-table";
 
 import type { Product } from "@/api/products/products.type";
-import { ProductsActionsCell } from "./cells/products-actions-cell";
+import { ProductsActionsCell } from "./cells/actions";
 
 export const columns: ColumnDef<Product>[] = [
     {

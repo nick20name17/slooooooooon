@@ -8,9 +8,9 @@ import { getCustomers } from "@/api/customers/customers";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { BaseQueryParams } from "@/types/api";
 import { TypeFilter } from "../components/type-filter";
-import { AddCustomersModal } from "./components/add-customers-modal";
 import { columns } from "./components/customers-table/columns";
-import { CustomersTable } from "./components/customers-table/customers-table";
+import { CustomersTable } from "./components/customers-table/table";
+import { AddCustomerModal } from "./components/modals/add";
 
 export const metadata = {
     title: "Клієнти",
@@ -49,7 +49,7 @@ const CustomerTable = async ({ searchParams }: CustomersProps) => {
     );
 };
 
-const Customers = async ({ searchParams }: CustomersProps) => {
+const CustomersPage = async ({ searchParams }: CustomersProps) => {
     const { search = "" } = searchParams;
 
     return (
@@ -71,7 +71,7 @@ const Customers = async ({ searchParams }: CustomersProps) => {
                         />
                     </Suspense>
                 </div>
-                <AddCustomersModal />
+                <AddCustomerModal />
             </div>
             <div className="flex flex-col gap-y-7 p-5 max-md:p-4 max-md:gap-y-5">
                 <div className="flex justify-start">
@@ -90,4 +90,4 @@ const Customers = async ({ searchParams }: CustomersProps) => {
     );
 };
 
-export default Customers;
+export default CustomersPage;

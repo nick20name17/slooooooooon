@@ -7,9 +7,9 @@ import { getCategories } from "@/api/categories/categories";
 import { defaultLimit } from "@/app/admin/config/api";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { BaseQueryParams } from "@/types/api";
-import { AddCategoryModal } from "./components/add-category-modal";
-import { CategoryTable } from "./components/category-table/category-table";
-import { columns } from "./components/category-table/columns";
+import { AddCategoryModal } from "./components/modals/add";
+import { columns } from "./components/table/columns";
+import { CategoryTable } from "./components/table/table";
 
 export const metadata = {
     title: "Категорії",
@@ -47,7 +47,7 @@ const CategoriesTable = async ({ searchParams }: CategoriesProps) => {
     );
 };
 
-const Categories = async ({ searchParams }: CategoriesProps) => {
+const CategoriesPage = async ({ searchParams }: CategoriesProps) => {
     const { search = "" } = searchParams;
 
     return (
@@ -91,4 +91,4 @@ const Categories = async ({ searchParams }: CategoriesProps) => {
     );
 };
 
-export default Categories;
+export default CategoriesPage;

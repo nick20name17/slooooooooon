@@ -22,7 +22,7 @@ import { SignOut } from "./sign-out-button";
 const sidebarItems = [
     {
         link: "/admin/dashboard",
-        label: "Дашборд",
+        label: "Дешборд",
         icon: ChartPie,
         borderClass: "border-dashboard",
         bgClass: "bg-dashboard",

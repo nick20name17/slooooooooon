@@ -6,7 +6,7 @@ import { SearchBar } from "../components/search-bar";
 import { getCosts } from "@/api/costs/costs";
 import { defaultLimit } from "@/app/admin/config/api";
 import { Skeleton } from "@/components/ui/skeleton";
-import { AddWarehouseModal } from "./components/add-warehouse-modal";
+import { AddWarehouseModal } from "./components/modals/add";
 export const metadata = {
     title: "Склад",
 };

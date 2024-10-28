@@ -7,7 +7,7 @@ import { getCosts } from "@/api/costs/costs";
 import type { CostsQueryParams } from "@/api/costs/costs.type";
 import { defaultLimit } from "@/app/admin/config/api";
 import { Skeleton } from "@/components/ui/skeleton";
-import { AddCostsModal } from "./components/add-costs-modal";
+import { AddCostModal } from "./components/modals/add";
 
 export const metadata = {
     title: "Витрати",
@@ -30,7 +30,7 @@ const CostsCount = async ({ searchParams }: ProductsProps) => {
     );
 };
 
-const Costs = async ({ searchParams }: ProductsProps) => {
+const CostsPage = async ({ searchParams }: ProductsProps) => {
     const search = searchParams?.search || "";
     const offset = searchParams?.offset || 0;
 
@@ -51,7 +51,7 @@ const Costs = async ({ searchParams }: ProductsProps) => {
                         <CostsCount searchParams={searchParams} />
                     </Suspense>
                 </div>
-                <AddCostsModal />
+                <AddCostModal />
             </div>
             <div className="flex flex-col gap-y-7 p-5 max-md:p-4 max-md:gap-y-5">
                 <SearchBar />
@@ -67,4 +67,4 @@ const Costs = async ({ searchParams }: ProductsProps) => {
     );
 };
 
-export default Costs;
+export default CostsPage;

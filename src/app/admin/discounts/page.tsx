@@ -6,7 +6,7 @@ import { SearchBar } from "../components/search-bar";
 import { getCosts } from "@/api/costs/costs";
 import { defaultLimit } from "@/app/admin/config/api";
 import { Skeleton } from "@/components/ui/skeleton";
-import { AddDiscountModal } from "./components/add-discount-modal";
+import { AddDiscountModal } from "./components/modals/add";
 export const metadata = {
     title: "Склад",
 };
@@ -28,7 +28,7 @@ const DiscountCount = async ({ searchParams }: ProductsProps) => {
     );
 };
 
-const DiscountPage = async ({ searchParams }: ProductsProps) => {
+const DiscountsPage = async ({ searchParams }: ProductsProps) => {
     const search = searchParams?.search || "";
     const offset = searchParams?.offset || 0;
 
@@ -65,4 +65,4 @@ const DiscountPage = async ({ searchParams }: ProductsProps) => {
     );
 };
 
-export default DiscountPage;
+export default DiscountsPage;

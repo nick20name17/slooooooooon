@@ -6,7 +6,7 @@ import { SearchBar } from "../components/search-bar";
 import { getCosts } from "@/api/costs/costs";
 import { defaultLimit } from "@/app/admin/config/api";
 import { Skeleton } from "@/components/ui/skeleton";
-import { AddDashboardModal } from "./components/add-markup-modal";
+import { AddDashboardModal } from "./components/modals/add";
 export const metadata = {
     title: "Склад",
 };
@@ -40,7 +40,7 @@ const DashboardPage = async ({ searchParams }: ProductsProps) => {
                         <ChartPie className="size-6" />
                     </div>
                     <h1 className="text-4xl max-md:text-3xl font-bold">
-                        Дашборд
+                        Дешборд
                     </h1>
                     <Suspense
                         fallback={

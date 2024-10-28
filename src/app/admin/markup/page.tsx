@@ -6,7 +6,7 @@ import { SearchBar } from "../components/search-bar";
 import { getCosts } from "@/api/costs/costs";
 import { defaultLimit } from "@/app/admin/config/api";
 import { Skeleton } from "@/components/ui/skeleton";
-import { AddMarkupModal } from "./components/add-markup-modal";
+import { AddMarkupModal } from "./components/modals/add";
 export const metadata = {
     title: "Склад",
 };

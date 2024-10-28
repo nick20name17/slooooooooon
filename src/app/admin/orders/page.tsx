@@ -9,10 +9,10 @@ import { defaultLimit } from "@/app/admin/config/api";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
 import { TypeFilter } from "../components/type-filter";
-import { AddOrdersModal } from "./components/add-orders-modal";
-import { columns } from "./components/orders-table/columns";
-import { OrdersTable } from "./components/orders-table/orders-table";
+import { AddOrderModal } from "./components/modals/add";
 import { StatusFilter } from "./components/status-filter";
+import { columns } from "./components/table/columns";
+import { OrdersTable } from "./components/table/table";
 
 export const metadata = {
     title: "Замовлення",
@@ -55,7 +55,7 @@ const OrderTable = async ({ searchParams }: OrdersProps) => {
     );
 };
 
-const Orders = async ({ searchParams }: OrdersProps) => {
+const OrdersPage = async ({ searchParams }: OrdersProps) => {
     const { search = "", status = "all" } = searchParams;
 
     return (
@@ -81,7 +81,7 @@ const Orders = async ({ searchParams }: OrdersProps) => {
                         />
                     </Suspense>
                 </div>
-                <AddOrdersModal />
+                <AddOrderModal />
             </div>
             <div className="flex flex-col gap-y-7 p-5 max-md:p-4 max-md:gap-y-5">
                 <ScrollArea className="max-w-full whitespace-nowrap ">
@@ -109,4 +109,4 @@ const Orders = async ({ searchParams }: OrdersProps) => {
     );
 };
 
-export default Orders;
+export default OrdersPage;
