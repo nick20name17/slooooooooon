@@ -28,6 +28,7 @@ import {
     SheetTrigger,
 } from "@/components/ui/sheet";
 import { useCustomForm } from "@/hooks/use-custom-form";
+import { withMask } from "use-mask-input";
 
 type CustomerFormValues = Zod.infer<typeof customerSchema>;
 
@@ -185,7 +186,10 @@ export const EditCustomerModal = ({ customer }: EditCustomerProps) => {
                                                 Телефон
                                             </FormLabel>
                                             <div className="flex w-full flex-col gap-y-2">
-                                                <FormControl>
+                                                <FormControl
+                                                    ref={withMask(
+                                                        "+380 99 999 99 99"
+                                                    )}>
                                                     <Input
                                                         type="tel"
                                                         inputMode="tel"

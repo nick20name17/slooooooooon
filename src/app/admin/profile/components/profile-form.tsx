@@ -14,10 +14,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { customerSchema, profileSchema } from "@/config/schemas";
 import { useCustomForm } from "@/hooks/use-custom-form";
+import { formatPhoneNumber } from "@/util/format-phone-number";
 import { useMutation } from "@tanstack/react-query";
 import { Loader2, PlusCircle, XCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { withMask } from "use-mask-input";
 
 interface ProfileSchemaProps {
     user: User;
@@ -32,7 +34,7 @@ export const ProfileForm = ({ user }: ProfileSchemaProps) => {
         email: user.email,
         first_name: user.first_name,
         last_name: user.last_name,
-        phone: "",
+        phone: formatPhoneNumber(user.phone),
         surname: user.last_name,
     });
 
@@ -42,7 +44,7 @@ export const ProfileForm = ({ user }: ProfileSchemaProps) => {
                 email: data.email,
                 first_name: data.first_name,
                 last_name: data.last_name,
-                role: "admin",
+                phone: data.phone.replaceAll(" ", ""),
             }),
         onSuccess: () => {
             form.reset();
@@ -151,7 +153,8 @@ export const ProfileForm = ({ user }: ProfileSchemaProps) => {
                                     Телефон
                                 </FormLabel>
                                 <div className="flex w-full flex-col gap-y-2">
-                                    <FormControl>
+                                    <FormControl
+                                        ref={withMask("+380 99 999 99 99")}>
                                         <Input
                                             type="tel"
                                             inputMode="tel"

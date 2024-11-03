@@ -27,6 +27,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { checkoutSchema } from "@/config/schemas";
 import { useCustomForm } from "@/hooks/use-custom-form";
 import { useLocalStorage } from "@/hooks/use-local-storage";
+import { formatPhoneNumber } from "@/util/format-phone-number";
+import { withMask } from "use-mask-input";
 
 type OrderFormValues = Zod.infer<typeof checkoutSchema>;
 
@@ -70,7 +72,7 @@ export const CheckoutForm = () => {
                 first_name: data.first_name,
                 last_name: data.last_name,
                 surname: data.surname,
-                phone: data.phone,
+                phone: formatPhoneNumber(data.phone),
                 email: data.email,
             }),
         onSuccess: (response, values) => {
@@ -179,7 +181,8 @@ export const CheckoutForm = () => {
                             name="phone"
                             render={({ field }) => (
                                 <FormItem className="mt-5">
-                                    <FormControl>
+                                    <FormControl
+                                        ref={withMask("+380 99 999 99 99")}>
                                         <Input
                                             inputMode="tel"
                                             type="tel"
