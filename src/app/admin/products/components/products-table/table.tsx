@@ -59,7 +59,7 @@ export const ProductsTable = <_, TValue>({
     });
 
     const flatData = useMemo(() => {
-        return products?.pages.flatMap((page) => page) || [];
+        return products?.pages?.flatMap((page) => page) || [];
     }, [products]);
 
     const table = useReactTable({

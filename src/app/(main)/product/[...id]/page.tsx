@@ -11,11 +11,12 @@ import { getProduct } from "@/api/products/products";
 import type { Product } from "@/api/products/products.type";
 
 interface ProductProps {
-    params: { id: string };
+    params: { id: string[] };
 }
 
 export const generateMetadata = async ({ params }: ProductProps) => {
-    const product = await getProduct(+params.id);
+    const [_, id] = params.id;
+    const product = await getProduct(+id);
 
     return {
         title: product.title,
@@ -23,7 +24,8 @@ export const generateMetadata = async ({ params }: ProductProps) => {
 };
 
 const Product = async ({ params }: ProductProps) => {
-    const product = await getProduct(+params.id);
+    const [_, id] = params.id;
+    const product = await getProduct(+id);
 
     return (
         <section className="mt-12 w-full">

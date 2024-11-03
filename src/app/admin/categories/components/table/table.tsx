@@ -59,7 +59,7 @@ export const CategoryTable = <_, TValue>({
     });
 
     const flatData = useMemo(() => {
-        return categories?.pages.flatMap((page) => page) || [];
+        return categories?.pages?.flatMap((page) => page) || [];
     }, [categories]);
 
     const table = useReactTable({

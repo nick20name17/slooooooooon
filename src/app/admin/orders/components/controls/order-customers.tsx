@@ -47,18 +47,18 @@ export const OrderCustomers = ({
         queryKey: ["customers", search],
     });
 
-    const customers = data?.data.results;
+    const customers = data?.data?.results;
 
     const options =
         customers?.map((customer) => ({
-            value: customer.id.toString(),
+            value: customer?.id.toString(),
             label:
-                customer.first_name +
+                customer?.first_name +
                 " " +
-                customer.last_name +
+                customer?.last_name +
                 " " +
-                customer.surname +
-                ` (id:${customer.id})`,
+                customer?.surname +
+                ` (id:${customer?.id})`,
         })) || [];
 
     return (

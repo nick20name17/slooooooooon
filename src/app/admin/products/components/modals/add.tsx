@@ -3,7 +3,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Loader2, PlusCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 
 import { productsSchema } from "../../../../../config/schemas";
@@ -67,7 +67,6 @@ export const AddProductModal = () => {
 
     const form = useCustomForm(productsSchema, {
         title: "",
-        slug: "",
         year: "",
         category: "",
         description: "",
@@ -78,12 +77,7 @@ export const AddProductModal = () => {
         variants: [],
     });
 
-    const { title, recommendations, variants, images, thumbnail } =
-        form.watch();
-
-    useEffect(() => {
-        form.setValue("slug", generateSlug(title));
-    }, [title]);
+    const { recommendations, variants, images, thumbnail } = form.watch();
 
     const mutation = useMutation({
         mutationFn: (
@@ -91,7 +85,11 @@ export const AddProductModal = () => {
                 ProductsFormValues,
                 "thumbnail" | "recommendations" | "variants" | "images"
             >
-        ) => addProduct(data),
+        ) =>
+            addProduct({
+                ...data,
+                slug: generateSlug(data.title),
+            }),
         onSuccess: (response) => {
             variants.forEach(async (v) => {
                 addVariant({
@@ -153,54 +151,49 @@ export const AddProductModal = () => {
                 </Button>
             </SheetTrigger>
             <SheetContent className="min-w-[70vw] bg-primary-foreground/70 backdrop-blur-[5.5px]">
-                <SheetHeader>
-                    <SheetTitle>Додати товар</SheetTitle>
-                </SheetHeader>
                 <Form {...form}>
                     <form
                         noValidate
-                        className="mt-10 flex h-[90%] flex-col justify-between gap-4"
+                        className="flex h-[90%] flex-col justify-between gap-4"
                         onSubmit={form.handleSubmit(onProductAdd)}>
+                        <SheetHeader className="flex flex-row items-center justify-between gap-x-4 border-b py-4">
+                            <SheetTitle className="text-4xl">
+                                Додати товар
+                            </SheetTitle>
+                            <Button
+                                type="submit"
+                                variant="outline"
+                                className="w-28 rounded-full border-products bg-background px-3.5 text-lg font-bold drop-shadow-[3px_4px_0px_#0a84ff] transition-all hover:bg-products/15 hover:drop-shadow-none">
+                                {mutation.isLoading ? (
+                                    <Loader2 className="h-4 w-4 animate-spin" />
+                                ) : (
+                                    <>
+                                        <PlusCircle className="mr-2 size-4 text-products" />
+                                        Додати
+                                    </>
+                                )}
+                            </Button>
+                        </SheetHeader>
                         <ScrollArea className="h-full border-b pb-4">
                             <div className="h-full space-y-5 px-4 pb-1">
-                                <div className="flex gap-x-4">
-                                    <FormField
-                                        control={form.control}
-                                        name="title"
-                                        render={({ field }) => (
-                                            <FormItem className="flex-1">
-                                                <FormLabel className="text-lg">
-                                                    Назва товару
-                                                </FormLabel>
-                                                <FormControl>
-                                                    <Input
-                                                        placeholder="Пес"
-                                                        {...field}
-                                                    />
-                                                </FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
-                                    <FormField
-                                        control={form.control}
-                                        name="slug"
-                                        render={({ field }) => (
-                                            <FormItem className="flex-1">
-                                                <FormLabel className="text-lg">
-                                                    Slug
-                                                </FormLabel>
-                                                <FormControl>
-                                                    <Input
-                                                        placeholder="43534534"
-                                                        {...field}
-                                                    />
-                                                </FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
-                                </div>
+                                <FormField
+                                    control={form.control}
+                                    name="title"
+                                    render={({ field }) => (
+                                        <FormItem className="flex-1">
+                                            <FormLabel className="text-lg">
+                                                Назва товару
+                                            </FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    placeholder="Улун молочний"
+                                                    {...field}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
                                 <div className="flex gap-x-4">
                                     <FormField
                                         control={form.control}
@@ -379,17 +372,6 @@ export const AddProductModal = () => {
                                 />
                             </div>
                         </ScrollArea>
-
-                        <Button
-                            disabled={mutation.isLoading}
-                            type="submit"
-                            className="w-20 self-end">
-                            {mutation.isLoading ? (
-                                <Loader2 className="h-4 w-4 animate-spin" />
-                            ) : (
-                                "Додати"
-                            )}
-                        </Button>
                     </form>
                 </Form>
             </SheetContent>

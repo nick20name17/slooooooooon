@@ -83,9 +83,7 @@ export const productsSchema = object({
     title: string({
         required_error: "Це поле є обов'язковим",
     }).min(1, "Це поле є обов'язковим"),
-    slug: string({
-        required_error: "Це поле є обов'язковим",
-    }).min(1, "Це поле є обов'язковим"),
+
     year: string({
         required_error: "Це поле є обов'язковим",
     }).min(1, "Це поле є обов'язковим"),

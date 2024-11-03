@@ -3,7 +3,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Loader2, Pencil } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 
 import { productsSchema } from "../../../../../config/schemas";
@@ -99,13 +99,11 @@ export const EditProductModal = ({ product }: EditProductsProps) => {
         })),
         description: product.description,
         full_description: product.full_description,
-        slug: product.slug,
         year: product.year.toString(),
         title: product.title,
     });
 
-    const { title, recommendations, variants, images, thumbnail } =
-        form.watch();
+    const { recommendations, variants, images, thumbnail } = form.watch();
 
     const imagesToMutate = {
         add: images.filter((img) => (img as File).size),
@@ -128,17 +126,17 @@ export const EditProductModal = ({ product }: EditProductsProps) => {
         update: recommendations.filter((rec) => rec.id !== -1),
     };
 
-    useEffect(() => {
-        form.setValue("slug", generateSlug(title));
-    }, [title]);
-
     const mutation = useMutation({
         mutationFn: (
             data: Omit<
                 ProductsFormValues,
                 "thumbnail" | "recommendations" | "variants" | "images"
             >
-        ) => updateProduct(product.id, data),
+        ) =>
+            updateProduct(product.id, {
+                ...data,
+                slug: generateSlug(data.title),
+            }),
         onSuccess: () => {
             variantsToMutate.add.forEach(async (v) =>
                 addVariant({
@@ -227,14 +225,28 @@ export const EditProductModal = ({ product }: EditProductsProps) => {
                 </Button>
             </SheetTrigger>
             <SheetContent className="min-w-[70vw] bg-primary-foreground/70 backdrop-blur-[5.5px]">
-                <SheetHeader>
-                    <SheetTitle>Додати товар</SheetTitle>
-                </SheetHeader>
                 <Form {...form}>
                     <form
-                        noValidate
                         className="mt-10 flex h-[90%] flex-col justify-between gap-4"
                         onSubmit={form.handleSubmit(onProductEdit)}>
+                        <SheetHeader className="flex flex-row items-center justify-between gap-x-4 border-b py-4">
+                            <SheetTitle className="text-4xl">
+                                Редагувати товар
+                            </SheetTitle>
+                            <Button
+                                type="submit"
+                                variant="outline"
+                                className="w-36 rounded-full border-products bg-background px-3.5 text-lg font-bold drop-shadow-[3px_4px_0px_#0a84ff] transition-all hover:bg-products/15 hover:drop-shadow-none">
+                                {mutation.isLoading ? (
+                                    <Loader2 className="h-4 w-4 animate-spin" />
+                                ) : (
+                                    <>
+                                        <Pencil className="mr-2 size-4 text-products" />
+                                        Редагувати
+                                    </>
+                                )}
+                            </Button>
+                        </SheetHeader>
                         <ScrollArea className="h-full border-b pb-4">
                             <div className="h-full space-y-5 px-4 pb-1">
                                 <div className="flex gap-x-4">
@@ -248,25 +260,7 @@ export const EditProductModal = ({ product }: EditProductsProps) => {
                                                 </FormLabel>
                                                 <FormControl>
                                                     <Input
-                                                        placeholder="Пес"
-                                                        {...field}
-                                                    />
-                                                </FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
-                                    <FormField
-                                        control={form.control}
-                                        name="slug"
-                                        render={({ field }) => (
-                                            <FormItem className="flex-1">
-                                                <FormLabel className="text-lg">
-                                                    Slug
-                                                </FormLabel>
-                                                <FormControl>
-                                                    <Input
-                                                        placeholder="43534534"
+                                                        placeholder="Улун молочний"
                                                         {...field}
                                                     />
                                                 </FormControl>
@@ -453,17 +447,6 @@ export const EditProductModal = ({ product }: EditProductsProps) => {
                                 />
                             </div>
                         </ScrollArea>
-
-                        <Button
-                            disabled={mutation.isLoading}
-                            type="submit"
-                            className="w-20 self-end">
-                            {mutation.isLoading ? (
-                                <Loader2 className="h-4 w-4 animate-spin" />
-                            ) : (
-                                "Додати"
-                            )}
-                        </Button>
                     </form>
                 </Form>
             </SheetContent>

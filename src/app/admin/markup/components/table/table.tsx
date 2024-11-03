@@ -50,7 +50,7 @@ export const MarkupTable = <_, TValue>({
     });
 
     const flatData = useMemo(() => {
-        return costs?.pages.flatMap((page) => page) || [];
+        return costs?.pages?.flatMap((page) => page) || [];
     }, [costs]);
 
     const table = useReactTable({
