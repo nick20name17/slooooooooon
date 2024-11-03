@@ -1,5 +1,5 @@
 import { getProducts } from "@/api/products/products";
-import type { Product } from "@/api/products/products.type";
+import type { ProductResponse } from "@/api/products/products.type";
 import { cn } from "@/lib/utils";
 import { CatalogueProduct } from "./catalogue-product";
 import { CategoryFilter } from "./category-filter";
@@ -9,9 +9,11 @@ interface CatalogueProps {
 }
 
 export const Catalogue = async ({ categories }: CatalogueProps) => {
-    const products = (await getProducts({
+    const productsResponse = (await getProducts({
         categories,
-    })) as Product[];
+    })) as ProductResponse;
+
+    const products = productsResponse?.results;
 
     return (
         <section className="mt-10 w-full max-md:mt-8">
@@ -19,9 +21,9 @@ export const Catalogue = async ({ categories }: CatalogueProps) => {
             <ul
                 className={cn(
                     "mt-10 grid min-h-[520px] max-md:p-3.5 w-full grid-cols-3 gap-5 rounded-[30px] bg-[#e6ddb9] p-5 max-xl:grid-cols-2 max-sm:grid-cols-1 max-md:mt-8",
-                    products.length ? "" : "grid-cols-1 items-center"
+                    products?.length ? "" : "grid-cols-1 items-center"
                 )}>
-                {products.length ? (
+                {products?.length ? (
                     products?.map((product) => (
                         <li key={product.id}>
                             <CatalogueProduct product={product} />

@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useQueryState } from "nuqs";
 import { useEffect } from "react";
 
-import type { Category } from "@/api/categories/categories.type";
+import type { CategoryResponse } from "@/api/categories/categories.type";
 import { clientApi } from "@/api/client";
 import {
     Select,
@@ -22,7 +22,7 @@ export const CategoryFilter = () => {
     });
 
     const { data: categories, isLoading } = useQuery({
-        queryFn: () => clientApi<Category[]>("/categories"),
+        queryFn: () => clientApi<CategoryResponse>("/categories"),
     });
 
     useEffect(() => {
@@ -46,7 +46,7 @@ export const CategoryFilter = () => {
                 <SelectItem key="all" value="all">
                     Усі категорії
                 </SelectItem>
-                {categories?.data?.map((category) => (
+                {categories?.data?.results?.map((category) => (
                     <SelectItem
                         key={category.id}
                         value={category.id.toString()}>

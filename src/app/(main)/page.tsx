@@ -1,19 +1,21 @@
-import { Suspense } from 'react'
+import { Suspense } from "react";
 
-import { CartButton } from './components/cart-button'
-import { Catalogue } from './components/catalogue/catalogue'
-import { CatalogueSkeleton } from './components/catalogue/catalogue-skeleton'
-import { Hero } from './components/hero'
+import { CartButton } from "./components/cart-button";
+import { Catalogue } from "./components/catalogue/catalogue";
+import { CatalogueSkeleton } from "./components/catalogue/catalogue-skeleton";
+import { Hero } from "./components/hero";
 
 interface HomeProps {
     searchParams: {
-        categories: string
-    }
+        categories: string;
+    };
 }
 
 const Home = async ({ searchParams }: HomeProps) => {
     const categories =
-        searchParams?.categories === 'all' ? '' : searchParams?.categories || ''
+        searchParams?.categories === "all"
+            ? ""
+            : searchParams?.categories || "";
 
     return (
         <>
@@ -23,7 +25,7 @@ const Home = async ({ searchParams }: HomeProps) => {
             </Suspense>
             <CartButton />
         </>
-    )
-}
+    );
+};
 
-export default Home
+export default Home;

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useQueryState } from "nuqs";
 import { useEffect } from "react";
 
-import type { Category } from "@/api/categories/categories.type";
+import type { CategoryResponse } from "@/api/categories/categories.type";
 import { clientApi } from "@/api/client";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -20,7 +20,7 @@ export const CategoryFilter = () => {
     });
 
     const { data: categories, isLoading } = useQuery({
-        queryFn: () => clientApi.get<Category[]>("/categories"),
+        queryFn: () => clientApi.get<CategoryResponse>("/categories"),
     });
 
     const onCategoryChange = (value: string) => {
@@ -36,6 +36,8 @@ export const CategoryFilter = () => {
         return <Skeleton className="mx-auto h-16 w-[884px] rounded-full" />;
     }
 
+    console.log("categories");
+
     return (
         <ScrollArea className="whitespace-nowrap w-full">
             <Tabs
@@ -50,7 +52,7 @@ export const CategoryFilter = () => {
                         }>
                         Усі
                     </TabsTrigger>
-                    {categories?.data.map((category) => (
+                    {categories?.data?.results?.map((category) => (
                         <TabsTrigger
                             key={category.id}
                             value={category.id.toString()}

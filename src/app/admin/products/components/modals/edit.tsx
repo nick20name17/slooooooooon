@@ -10,7 +10,7 @@ import { productsSchema } from "../../../../../config/schemas";
 import { getUniqueItems } from "../../../utils/get-unique-items";
 import { transliterate } from "../../../utils/transliterate";
 
-import type { Category } from "@/api/categories/categories.type";
+import type { CategoryResponse } from "@/api/categories/categories.type";
 import { clientApi } from "@/api/client";
 import {
     addProductImage,
@@ -194,7 +194,7 @@ export const EditProductModal = ({ product }: EditProductsProps) => {
     });
 
     const { data: categories } = useQuery({
-        queryFn: () => clientApi.get<Category[]>("/categories"),
+        queryFn: () => clientApi.get<CategoryResponse>("/categories"),
     });
 
     const onProductEdit = (formData: ProductsFormValues) => {
@@ -316,7 +316,7 @@ export const EditProductModal = ({ product }: EditProductsProps) => {
                                                         </SelectTrigger>
                                                     </FormControl>
                                                     <SelectContent>
-                                                        {categories?.data?.map(
+                                                        {categories?.data?.results?.map(
                                                             (category) => (
                                                                 <SelectItem
                                                                     key={

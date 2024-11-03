@@ -9,7 +9,7 @@ import { toast } from "sonner";
 import { productsSchema } from "../../../../../config/schemas";
 import { transliterate } from "../../../utils/transliterate";
 
-import type { Category } from "@/api/categories/categories.type";
+import type { CategoryResponse } from "@/api/categories/categories.type";
 import { clientApi } from "@/api/client";
 import {
     addProduct,
@@ -131,7 +131,7 @@ export const AddProductModal = () => {
     });
 
     const { data: categories } = useQuery({
-        queryFn: () => clientApi<Category[]>("/categories"),
+        queryFn: () => clientApi<CategoryResponse>("/categories"),
     });
 
     const onProductAdd = (formData: ProductsFormValues) => {
@@ -242,7 +242,7 @@ export const AddProductModal = () => {
                                                         </SelectTrigger>
                                                     </FormControl>
                                                     <SelectContent>
-                                                        {categories?.data?.map(
+                                                        {categories?.data?.results?.map(
                                                             (category: any) => (
                                                                 <SelectItem
                                                                     key={

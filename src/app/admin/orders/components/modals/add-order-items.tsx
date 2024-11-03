@@ -4,11 +4,14 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 
-import type { Category } from "@/api/categories/categories.type";
+import type {
+    Category,
+    CategoryResponse,
+} from "@/api/categories/categories.type";
 import { clientApi } from "@/api/client";
 import type { OrderItemsVariant } from "@/api/order-items/order-items.type";
 import type { OrderItems } from "@/api/orders/orders.type";
-import type { Product } from "@/api/products/products.type";
+import type { ProductResponse } from "@/api/products/products.type";
 import type { Variant } from "@/api/variants/variants.type";
 import productFallback from "@/assets/images/product-fallback.jpg";
 import { Button } from "@/components/ui/button";
@@ -61,15 +64,15 @@ export const AddOrderItems = ({
 
     const { data, isFetching } = useQuery({
         queryFn: () =>
-            clientApi.get<Product[]>(
+            clientApi.get<ProductResponse>(
                 `/products?search=${search}&categories=${category === "all" ? "" : category}`
             ),
         queryKey: ["products", search, category],
     });
 
-    const productsData = data?.data || [];
+    const productsData = data?.data.results || [];
 
-    const singleVariantProductsData = productsData.flatMap((item) =>
+    const singleVariantProductsData = productsData?.flatMap((item) =>
         item.variants.map((variant) => ({
             ...item,
 
@@ -340,7 +343,7 @@ interface CategoryFilterProps {
 
 const CategoryFilter = ({ category, setCategory }: CategoryFilterProps) => {
     const { data: categories, isLoading } = useQuery({
-        queryFn: () => clientApi.get<Category[]>("/categories"),
+        queryFn: () => clientApi.get<CategoryResponse>("/categories"),
     });
 
     if (isLoading) {
@@ -360,7 +363,7 @@ const CategoryFilter = ({ category, setCategory }: CategoryFilterProps) => {
                 <SelectItem key="all" value="all">
                     Усі категорії
                 </SelectItem>
-                {categories?.data?.map((category) => (
+                {categories?.data?.results?.map((category) => (
                     <SelectItem
                         key={category.id}
                         value={category.id.toString()}>

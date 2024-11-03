@@ -43,8 +43,7 @@ const Profile = async () => {
                     </div>
                     <div className="flex flex-col gap-y-0.5 font-bold">
                         <h2 className="text-[32px]">
-                            {/* {user.first_name + " " + user.last_name} */}
-                            Соцький Олександр
+                            {user.last_name + " " + user.first_name}
                         </h2>
                         <div className="text-foreground/60 text-lg">
                             {user.email}
