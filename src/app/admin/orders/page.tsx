@@ -38,7 +38,7 @@ const OrdersCount = async ({ searchParams }: OrdersProps) => {
 };
 
 const OrderTable = async ({ searchParams }: OrdersProps) => {
-    const { results, count } = await getOrders({
+    const { results } = await getOrders({
         search: searchParams.search || "",
         limit: searchParams.limit,
         status: searchParams?.status,
@@ -49,7 +49,6 @@ const OrderTable = async ({ searchParams }: OrdersProps) => {
         <OrdersTable
             columns={columns}
             data={results}
-            dataCount={count}
             searchParams={searchParams}
         />
     );

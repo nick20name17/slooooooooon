@@ -32,7 +32,7 @@ const CategoriesCount = async ({ searchParams }: CategoriesProps) => {
 };
 
 const CategoriesTable = async ({ searchParams }: CategoriesProps) => {
-    const { results, count } = await getCategories({
+    const { results } = await getCategories({
         search: searchParams.search || "",
         limit: searchParams.limit,
     });
@@ -41,7 +41,6 @@ const CategoriesTable = async ({ searchParams }: CategoriesProps) => {
         <CategoryTable
             columns={columns}
             data={results}
-            dataCount={count}
             searchParams={searchParams}
         />
     );

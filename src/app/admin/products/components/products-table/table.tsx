@@ -26,7 +26,7 @@ import type { DataTableProps } from "@/types/table";
 export const ProductsTable = <_, TValue>({
     columns,
     data,
-    dataCount,
+
     searchParams,
 }: DataTableProps<Product, TValue>) => {
     const parsedCategories =
@@ -45,11 +45,10 @@ export const ProductsTable = <_, TValue>({
             );
             return res?.data.results;
         },
-        getNextPageParam: (_, pages) => {
-            if (pages.length * defaultLimit >= dataCount) return undefined;
-            else {
-                return pages.length * defaultLimit;
-            }
+        getNextPageParam(lastPage, allPages) {
+            return lastPage.length >= allPages.length * defaultLimit
+                ? allPages.length * defaultLimit
+                : undefined;
         },
         initialData: {
             pages: [data],

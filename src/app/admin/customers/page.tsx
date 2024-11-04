@@ -8,9 +8,9 @@ import { getCustomers } from "@/api/customers/customers";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { BaseQueryParams } from "@/types/api";
 import { TypeFilter } from "../components/type-filter";
-import { columns } from "./components/customers-table/columns";
-import { CustomersTable } from "./components/customers-table/table";
 import { AddCustomerModal } from "./components/modals/add";
+import { columns } from "./components/table/columns";
+import { CustomersTable } from "./components/table/table";
 
 export const metadata = {
     title: "Клієнти",
@@ -34,7 +34,7 @@ const CustomersCount = async ({ searchParams }: CustomersProps) => {
 };
 
 const CustomerTable = async ({ searchParams }: CustomersProps) => {
-    const { results, count } = await getCustomers({
+    const { results } = await getCustomers({
         search: searchParams.search || "",
         limit: searchParams.limit,
     });
@@ -43,7 +43,6 @@ const CustomerTable = async ({ searchParams }: CustomersProps) => {
         <CustomersTable
             columns={columns}
             data={results}
-            dataCount={count}
             searchParams={searchParams}
         />
     );

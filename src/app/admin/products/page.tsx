@@ -48,7 +48,6 @@ const ProductTable = async ({ searchParams }: ProductsProps) => {
         <ProductsTable
             columns={columns}
             data={data.results}
-            dataCount={data.count}
             searchParams={searchParams}
         />
     );
