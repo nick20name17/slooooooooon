@@ -2,14 +2,16 @@ import { clientApi } from "../client";
 import { serverApi } from "../server";
 
 import { getQueryParamString } from "@/app/admin/utils/get-query-params-string";
-import type { BaseQueryParams } from "@/types/api";
 import type {
     Customer,
     CustomerAddData,
     CustomerResponse,
+    CustomersQueryParams,
 } from "./customers.type";
 
-export const getCustomers = async (queryParams: Partial<BaseQueryParams>) => {
+export const getCustomers = async (
+    queryParams: Partial<CustomersQueryParams>
+) => {
     const queryString = getQueryParamString(queryParams);
 
     const response = await serverApi.get<CustomerResponse>(

@@ -12,8 +12,8 @@ import { defaultLimit } from "@/app/admin/config/api";
 import { Skeleton } from "@/components/ui/skeleton";
 import { CategoryFilter } from "./components/category-filter";
 import { AddProductModal } from "./components/modals/add";
-import { columns } from "./components/products-table/columns";
-import { ProductsTable } from "./components/products-table/table";
+import { columns } from "./components/table/columns";
+import { ProductsTable } from "./components/table/table";
 
 export const metadata = {
     title: "Товари",

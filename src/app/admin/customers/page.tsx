@@ -5,8 +5,8 @@ import { SearchBar } from "../components/search-bar";
 import { defaultLimit } from "../config/api";
 
 import { getCustomers } from "@/api/customers/customers";
+import type { CustomersQueryParams } from "@/api/customers/customers.type";
 import { Skeleton } from "@/components/ui/skeleton";
-import type { BaseQueryParams } from "@/types/api";
 import { TypeFilter } from "../components/type-filter";
 import { AddCustomerModal } from "./components/modals/add";
 import { columns } from "./components/table/columns";
@@ -17,13 +17,14 @@ export const metadata = {
 };
 
 interface CustomersProps {
-    searchParams: BaseQueryParams;
+    searchParams: CustomersQueryParams;
 }
 
 const CustomersCount = async ({ searchParams }: CustomersProps) => {
     const { count } = await getCustomers({
         search: searchParams.search || "",
         limit: searchParams.limit,
+        type: searchParams.type,
     });
 
     return (
@@ -37,6 +38,7 @@ const CustomerTable = async ({ searchParams }: CustomersProps) => {
     const { results } = await getCustomers({
         search: searchParams.search || "",
         limit: searchParams.limit,
+        type: searchParams.type,
     });
 
     return (
@@ -49,7 +51,7 @@ const CustomerTable = async ({ searchParams }: CustomersProps) => {
 };
 
 const CustomersPage = async ({ searchParams }: CustomersProps) => {
-    const { search = "" } = searchParams;
+    const { search = "", type = "b2c" } = searchParams;
 
     return (
         <>
@@ -66,7 +68,11 @@ const CustomersPage = async ({ searchParams }: CustomersProps) => {
                             <Skeleton className="size-10 rounded-full" />
                         }>
                         <CustomersCount
-                            searchParams={{ search, limit: defaultLimit }}
+                            searchParams={{
+                                search,
+                                limit: defaultLimit,
+                                type,
+                            }}
                         />
                     </Suspense>
                 </div>
@@ -80,7 +86,7 @@ const CustomersPage = async ({ searchParams }: CustomersProps) => {
                 <div className="h-[500px] bg-background overflow-auto rounded-2xl border">
                     <Suspense fallback={<Skeleton className="size-full" />}>
                         <CustomerTable
-                            searchParams={{ search, limit: defaultLimit }}
+                            searchParams={{ search, limit: defaultLimit, type }}
                         />
                     </Suspense>
                 </div>
